@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard del Cliente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .profile-pic {
+            display: block;
+            margin: 0 auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+        }
+        .pqr-form {
+            margin: 20px 0;
+        }
+        .pqr-form label {
+            display: block;
+            margin: 5px 0;
+        }
+        .pqr-form select, .pqr-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .pqr-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .pqr-table th, .pqr-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .pqr-table th {
+            background-color: #007bff;
+            color: white;
+        }
+        .pqr-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Bienvenido al Dashboard del Cliente</h1>
+    <img th:src="${cliente.foto} ?: '/images/default-profile.png'" 
+         class="profile-pic" 
+         alt="Foto de perfil del cliente" />
+    <p style="text-align: center;">Bienvenido, <span th:text="${cliente.nombreCompleto}"></span></p>
+    
+    <!-- Formulario para crear PQR -->
+    <h2>Crear nuevo PQR</h2>
+    <form th:action="@{/admin/clientes/pqr/crear(id=${cliente.id})}" 
+          th:object="${nuevoPqr}" 
+          method="post" 
+          class="pqr-form">
+        <label for="tipo">Tipo de PQR:</label>
+        <select id="tipo" th:field="*{tipo}" required>
+            <option value="Queja">Queja</option>
+            <option value="Reclamo">Reclamo</option>
+            <option value="Sugerencia">Sugerencia</option>
+            <option value="Petición">Petición</option>
+        </select>
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" th:field="*{mensaje}" rows="5" required></textarea>
+        <button type="submit" class="btn">Enviar PQR</button>
+    </form>
+    
+    <!-- Lista de PQRs -->
+    <h2>Mis PQRs</h2>
+    <table class="pqr-table" th:if="${not #lists.isEmpty(pqrs)}">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Mensaje</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Respuesta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pqr : ${pqrs}">
+                <td th:text="${pqr.tipo}"></td>
+                <td th:text="${pqr.mensaje}"></td>
+                <td th:text="${pqr.fecha}"></td>
+                <td th:text="${pqr.estado}"></td>
+                <td th:text="${pqr.respuesta} ?: 'Sin respuesta'"></td>
+            </tr>
+        </tbody>
+    </table>
+    <p th:if="${#lists.isEmpty(pqrs)}" style="text-align: center;">No tienes PQRs registrados.</p>
+    
+    <div style="text-align: center;">
+        <a th:href="@{/admin/clientes/profile(id=${cliente.id})}" class="btn">Ver Perfil</a>
+        <a th:href="@{/admin/clientes/loginclientes}" class="btn">Volver a Login</a>
+    </div>
+</div>
+</body>
+</html>

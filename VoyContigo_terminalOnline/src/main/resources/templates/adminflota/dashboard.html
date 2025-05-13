@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Flota</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+        }
+
+        .navbar a:hover {
+            background-color: #495057;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 15px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background-color: #34495e;
+        }
+
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .card-header {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            font-size: 1.1em;
+        }
+
+        .card-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .card-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .card-warning {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">Gestor de Flota</div>
+    <div>
+        <a href="#">Dashboard</a>
+        <a href="#">Cerrar sesión</a>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="/gestor-buses">Gestor de Buses</a>
+    <a href="/gestor-rutas">Gestor de Rutas</a>
+    <a href="#">Gestión de Horarios</a>
+    <a href="#">Ajustes de Precios</a>
+    <a href="#">Reportes</a>
+    <a href="#">Estadísticas de Ocupación</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <h2>Bienvenido, Administrador de Flota</h2>
+	<span class="navbar-text text-light">
+	    Empresa: <strong th:text="${empresaNombre}">Nombre de la Empresa</strong>
+	</span>
+
+    <!-- Quick Stats Cards -->
+    <div class="card card-info">
+        <div class="card-header">Tasa de Ocupación</div>
+        <div class="card-body">
+            <h3>70%</h3>
+            <p>Porcentaje de asientos ocupados por ruta.</p>
+        </div>
+    </div>
+
+    <div class="card card-success">
+        <div class="card-header">Buses Asignados</div>
+        <div class="card-body">
+            <h3>12 Buses</h3>
+            <p>Número total de buses asignados a rutas.</p>
+        </div>
+    </div>
+
+    <div class="card card-warning">
+        <div class="card-header">Viajes Programados</div>
+        <div class="card-body">
+            <h3>8 Viajes</h3>
+            <p>Viajes programados para hoy.</p>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div>
+        <a href="/adminflota/gestor-buses" class="btn">Ir al Gestor de Buses</a>
+        <a href="/adminflota/gestor-empleados" class="btn">Gestionar Empleados</a>
+        <a href="/adminflota/gestor-rutas" class="btn">Gestionar Rutas</a>
+    </div>
+</div>
+
+</body>
+</html>

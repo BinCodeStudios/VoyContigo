@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Responder PQR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .detalles {
+            margin-top: 20px;
+        }
+        .detalles p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .detalles strong {
+            display: inline-block;
+            width: 150px;
+            color: #555;
+        }
+        form {
+            margin-top: 20px;
+        }
+        textarea {
+            width: calc(100% - 170px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            vertical-align: top;
+        }
+        select {
+            padding: 8px;
+            width: calc(100% - 170px);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-back {
+            background-color: #6c757d;
+        }
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Responder PQR</h1>
+    <div class="detalles">
+        <p><strong>ID:</strong> <span th:text="${pqr.id}"></span></p>
+        <p><strong>Cliente:</strong> <span th:text="${pqr.cliente.nombreCompleto}"></span></p>
+        <p><strong>Tipo:</strong> <span th:text="${pqr.tipo}"></span></p>
+        <p><strong>Mensaje:</strong> <span th:text="${pqr.mensaje}"></span></p>
+        <p><strong>Fecha:</strong> <span th:text="${pqr.fecha}"></span></p>
+        <p><strong>Estado:</strong> <span th:text="${pqr.estado}"></span></p>
+        <p><strong>Respuesta Actual:</strong> <span th:text="${pqr.respuesta} ?: 'Sin respuesta'"></span></p>
+    </div>
+    <form th:action="@{/admin/pqrs/responder/{id}(id=${pqr.id})}" method="post">
+        <p>
+            <strong>Respuesta:</strong>
+            <textarea name="respuesta" rows="5" th:text="${pqr.respuesta}"></textarea>
+        </p>
+        <p>
+            <strong>Estado:</strong>
+            <select name="estado">
+                <option value="Abierto" th:selected="${pqr.estado == 'Abierto'}">Abierto</option>
+                <option value="En proceso" th:selected="${pqr.estado == 'En proceso'}">En proceso</option>
+                <option value="Cerrado" th:selected="${pqr.estado == 'Cerrado'}">Cerrado</option>
+            </select>
+        </p>
+        <button type="submit" class="btn">Enviar Respuesta</button>
+        <a th:href="@{/admin/pqrs}" class="btn btn-back">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>

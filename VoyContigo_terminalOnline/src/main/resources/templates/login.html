@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Voy Contigo - Inicio de Sesión</title>
+	<!-- Bootstrap 4 CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<div class="container">
+			<a class="navbar-brand" href="#">
+				<img src="img/VoyContigoLogo.png" alt="Voy Contigo">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="btn btn-cliente" href="/admin/clientes/loginclientes">Iniciar Sesión Cliente</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Trabajador</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="login-adminflota">Admin.Flota</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="/login">Admin. General</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/"><i class="fas fa-search search-icon"></i></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Login Section -->
+	<section class="login-section">
+		<div class="container">
+			<div class="row login-container">
+				<!-- Terminal Image Column -->
+				<div class="col-md-6 terminal-image-col">
+					<div class="terminal-content">
+						<h2 class="welcome-text">¡Bienvenido a <span>Voy Contigo</span>!</h2>
+						<p class="welcome-message">Conectando destinos, uniendo caminos</p>
+						<div class="terminal-badges">
+							<div class="badge-item">
+								<i class="fas fa-bus"></i>
+								<span>Viajes seguros</span>
+							</div>
+							<div class="badge-item">
+								<i class="fas fa-clock"></i>
+								<span>24/7 Servicio</span>
+							</div>
+							<div class="badge-item">
+								<i class="fas fa-map-marker-alt"></i>
+								<span>Múltiples destinos</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Login Form Column -->
+				<div class="col-md-6 login-form-col">
+					<div class="login-form-container">
+						<div class="login-form-header">
+							<h3>Inicio de Sesión Admin General</h3>
+							<p>Accede a tu cuenta de administrador General</p>
+						</div>
+
+						<form class="login-form" th:action="@{/login}" method="POST">
+							<div class="alert alert-danger" th:if="${error}" th:text="${error}">
+								Usuario o contraseña incorrectos
+							</div>
+
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fas fa-user"></i></span>
+									</div>
+									<input type="text" id="username" name="username" class="form-control"
+										placeholder="Usuario" required autofocus>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fas fa-lock"></i></span>
+									</div>
+									<input type="password" id="password" name="password" class="form-control"
+										placeholder="Contraseña" required>
+									<div class="input-group-append">
+										<span class="input-group-text toggle-password"><i class="fas fa-eye"></i></span>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group form-check">
+
+
+							</div>
+
+							<button type="submit" class="btn btn-login btn-block">
+								<span>Iniciar Sesión</span>
+								<i class="fas fa-arrow-right"></i>
+							</button>
+						</form>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center text-md-left mb-3">
+					<img src="img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+					<p class="small">© Voy Contigo</p>
+				</div>
+				<div class="col-md-8 text-center text-md-right">
+					<div class="footer-links">
+						<a href="#">Enlaces de interés</a>
+						<a href="#">Contacto</a>
+						<a href="#">Mapa del sitio</a>
+						<a href="#">Política de privacidad</a>
+					</div>
+					<div class="footer-social">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+			</div>
+		</div>
+	</footer>
+
+	<!-- Bootstrap 4 JS Dependencies -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+	<script>
+		// Toggle password visibility
+		document.querySelector('.toggle-password').addEventListener('click', function () {
+			const passwordInput = document.getElementById('password');
+			const icon = this.querySelector('i');
+
+			if (passwordInput.type === 'password') {
+				passwordInput.type = 'text';
+				icon.classList.remove('fa-eye');
+				icon.classList.add('fa-eye-slash');
+			} else {
+				passwordInput.type = 'password';
+				icon.classList.remove('fa-eye-slash');
+				icon.classList.add('fa-eye');
+			}
+		});
+
+		// Add floating label effect
+		const inputs = document.querySelectorAll('.form-control');
+		inputs.forEach(input => {
+			input.addEventListener('focus', () => {
+				input.parentElement.classList.add('input-focused');
+			});
+
+			input.addEventListener('blur', () => {
+				if (input.value === '') {
+					input.parentElement.classList.remove('input-focused');
+				}
+			});
+
+			// Check on load if input has value
+			if (input.value !== '') {
+				input.parentElement.classList.add('input-focused');
+			}
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de PQRs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+    <div class="container pqr-container">
+        <h1 class="pqr-title">Lista de PQRs</h1>
+        <a th:href="@{/admin/dashboard}" class="btn btn-back">Volver al Dashboard</a>
+        <table class="table pqr-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Tipo</th>
+                    <th>Mensaje</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pqr : ${pqrs}">
+                    <td th:text="${pqr.id}"></td>
+                    <td th:text="${pqr.cliente?.nombreCompleto} ?: 'Sin cliente'"></td>
+                    <td th:text="${pqr.tipo}"></td>
+                    <td th:text="${pqr.mensaje}"></td>
+                    <td th:text="${pqr.fecha}"></td>
+                    <td th:text="${pqr.estado}"></td>
+                    <td>
+                        <a th:href="@{/admin/pqrs/responder/{id}(id=${pqr.id})}" class="btn btn-primary">Responder</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

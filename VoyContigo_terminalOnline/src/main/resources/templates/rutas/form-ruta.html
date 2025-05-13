@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${ruta.id} ? 'Editar Ruta' : 'Crear Ruta'">Crear Ruta - voyContigo</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.75rem;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+        #sameSelectionAlert {
+            display: none;
+            color: red;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${ruta.id} ? 'Editar Ruta' : 'Crear Ruta'">Crear Ruta</h1>
+    <div id="sameSelectionAlert">El origen y el destino no pueden ser iguales.</div>
+    <form th:action="@{/admin/rutas/save}" th:object="${ruta}" method="post">
+        <input type="hidden" th:field="*{id}" th:unless="${ruta.id == null}"/>
+        <div class="form-group">
+            <label for="origen">Origen</label>
+            <select th:field="*{origen}" id="origen" required>
+                <option value="">Seleccione un origen</option>
+                <option th:each="od : ${origenDestinos}" 
+                        th:value="${od.id}" 
+                        th:text="${od.nombre}" 
+                        th:selected="${ruta.origen?.id == od.id}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('origen')}" th:errors="*{origen}" class="error"></span>
+        </div>
+        <div class="form-group">
+            <label for="destino">Destino</label>
+            <select th:field="*{destino}" id="destino" required>
+                <option value="">Seleccione un destino</option>
+                <option th:each="od : ${origenDestinos}" 
+                        th:value="${od.id}" 
+                        th:text="${od.nombre}" 
+                        th:selected="${ruta.destino?.id == od.id}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('destino')}" th:errors="*{destino}" class="error"></span>
+        </div>
+        <div class="form-group">
+            <label for="duracionEstimada">Duración Estimada</label>
+            <input type="text" th:field="*{duracionEstimada}" id="duracionEstimada" required/>
+            <span th:if="${#fields.hasErrors('duracionEstimada')}" th:errors="*{duracionEstimada}" class="error"></span>
+        </div>
+        <div class="form-group">
+            <label for="precio">Precio</label>
+            <input type="number" step="0.01" th:field="*{precio}" id="precio" required/>
+            <span th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" class="error"></span>
+        </div>
+        <button type="submit" class="btn" id="submitButton">Guardar</button>
+        <a th:href="@{/admin/rutas}" class="btn">Cancelar</a>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const origenSelect = document.getElementById('origen');
+        const destinoSelect = document.getElementById('destino');
+        const submitButton = document.getElementById('submitButton');
+        const sameSelectionAlert = document.getElementById('sameSelectionAlert');
+        const originalDestinoOptions = Array.from(destinoSelect.options);
+
+        function updateDestinoOptions() {
+            const selectedOrigen = origenSelect.value;
+            const currentDestino = destinoSelect.value; // Preservar la selección actual
+
+            // Restaurar todas las opciones de destino
+            destinoSelect.innerHTML = '';
+            originalDestinoOptions.forEach(option => {
+                destinoSelect.appendChild(option.cloneNode(true));
+            });
+
+            // Eliminar la opción que coincide con el origen seleccionado
+            if (selectedOrigen) {
+                const optionToRemove = destinoSelect.querySelector(`option[value="${selectedOrigen}"]`);
+                if (optionToRemove) {
+                    optionToRemove.remove();
+                }
+            }
+
+            // Restaurar la selección previa de destino si sigue siendo válida
+            if (currentDestino) {
+                destinoSelect.value = currentDestino;
+            }
+
+            // Verificar si origen y destino son iguales (en caso de manipulación)
+            if (selectedOrigen && currentDestino && selectedOrigen === currentDestino) {
+                sameSelectionAlert.style.display = 'block';
+                submitButton.disabled = true;
+            } else {
+                sameSelectionAlert.style.display = 'none';
+                submitButton.disabled = false;
+            }
+        }
+
+        // Actualizar opciones solo al cambiar origen
+        origenSelect.addEventListener('change', updateDestinoOptions);
+
+        // Verificar selección inválida al cambiar destino
+        destinoSelect.addEventListener('change', function () {
+            const selectedOrigen = origenSelect.value;
+            const selectedDestino = destinoSelect.value;
+
+            if (selectedOrigen && selectedDestino && selectedOrigen === selectedDestino) {
+                sameSelectionAlert.style.display = 'block';
+                submitButton.disabled = true;
+            } else {
+                sameSelectionAlert.style.display = 'none';
+                submitButton.disabled = false;
+            }
+        });
+
+        // Ejecutar al cargar la página para manejar casos de edición
+        updateDestinoOptions();
+    });
+</script>
+</body>
+</html>

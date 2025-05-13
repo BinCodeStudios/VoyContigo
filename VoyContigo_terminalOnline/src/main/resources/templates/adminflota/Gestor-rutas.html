@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestor de Rutas</title>
+    <meta charset="UTF-8">
+    <style>
+        .lista-rutas, .rutas-seleccionadas {
+            width: 45%;
+            display: inline-block;
+            vertical-align: top;
+            margin: 0 2%;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 4px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            margin-left: 10px;
+        }
+        .btn-disabled {
+            background-color: lightgreen;
+            color: black;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+<h1>Gestor de Rutas - <span th:text="${empresaNombre}"></span></h1>
+
+<form th:action="@{/adminflota/gestor-rutas/guardar}" method="post" onsubmit="seleccionarRutasFinales()">
+    <div class="lista-rutas">
+        <h2>Rutas Disponibles</h2>
+        <ul id="rutas-disponibles">
+            <li th:each="ruta : ${rutas}" th:attr="data-id=${ruta.id}">
+                <span th:text="${ruta.origen.nombre + ' - ' + ruta.destino.nombre + ' (' + ruta.duracionEstimada + ')'}"></span>
+
+                <!-- Mostrar botón 'Activa' si la ruta ya está seleccionada -->
+                <span th:if="${#lists.contains(rutasSeleccionadas, ruta)}">
+                    <button type="button" class="btn-disabled" disabled>Activa</button>
+                </span>
+
+                <!-- Mostrar botón 'Agregar' si la ruta no está seleccionada -->
+                <span th:if="${!#lists.contains(rutasSeleccionadas, ruta)}">
+                    <button type="button" onclick="agregarRuta(this)">Agregar</button>
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="rutas-seleccionadas">
+        <h2>Rutas Seleccionadas</h2>
+        <ul id="rutas-seleccionadas">
+            <li th:each="ruta : ${rutasSeleccionadas}" th:attr="data-id=${ruta.id}">
+                <span th:text="${ruta.origen.nombre + ' - ' + ruta.destino.nombre + ' (' + ruta.duracionEstimada + ')'}"></span>
+                <button type="button" onclick="quitarRuta(this)">Quitar</button>
+                <input type="hidden" name="rutasSeleccionadas" th:value="${ruta.id}" />
+            </li>
+        </ul>
+    </div>
+
+    <br style="clear: both;" />
+    <button type="submit">Guardar Cambios</button>
+</form>
+
+<script>
+    function agregarRuta(button) {
+        const li = button.closest('li');
+        const id = li.getAttribute('data-id');
+        const texto = li.querySelector('span').textContent;
+
+        // 1. Cambiar el botón de "Agregar" a "Activa" en la lista de disponibles
+        li.innerHTML = `
+            <span>${texto}</span>
+            <button type="button" class="btn-disabled" disabled>Activa</button>
+        `;
+
+        // 2. Crear nuevo li en la lista de seleccionadas
+        const nuevaLi = document.createElement('li');
+        nuevaLi.setAttribute('data-id', id);
+        nuevaLi.innerHTML = `
+            <span>${texto}</span>
+            <button type="button" onclick="quitarRuta(this)">Quitar</button>
+            <input type="hidden" name="rutasSeleccionadas" value="${id}" />
+        `;
+        document.getElementById('rutas-seleccionadas').appendChild(nuevaLi);
+    }
+
+    function quitarRuta(button) {
+        const li = button.closest('li');
+        const id = li.getAttribute('data-id');
+        const texto = li.querySelector('span').textContent;
+        li.remove();
+
+        // Restaurar ruta en lista de disponibles con botón Agregar
+        const disponibleLi = document.querySelector(`#rutas-disponibles li[data-id="${id}"]`);
+        if (disponibleLi) {
+            disponibleLi.innerHTML = `
+                <span>${texto}</span>
+                <button type="button" onclick="agregarRuta(this)">Agregar</button>
+            `;
+        }
+    }
+
+    function seleccionarRutasFinales() {
+        // Los inputs ya están generados dinámicamente
+    }
+</script>
+
+</body>
+</html>

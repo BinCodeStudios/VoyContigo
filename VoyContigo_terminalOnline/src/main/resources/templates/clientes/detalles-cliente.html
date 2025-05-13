@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Cliente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .detalles {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .detalles p {
+            font-size: 16px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+        }
+        .detalles strong {
+            display: inline-block;
+            width: 150px;
+            color: #555;
+        }
+        .cliente-foto {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-back {
+            background-color: #6c757d;
+        }
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Detalles del Cliente</h1>
+    <div class="detalles">
+        <img th:if="${cliente.foto}" th:src="${cliente.foto}" alt="Foto del Cliente" class="cliente-foto"/>
+        <img th:unless="${cliente.foto}" src="/images/default-user.png" alt="Foto por Defecto" class="cliente-foto"/>
+        <p><strong>Nombre Completo:</strong> <span th:text="${cliente.nombreCompleto}"></span></p>
+        <p><strong>Correo:</strong> <span th:text="${cliente.correo}"></span></p>
+        <p><strong>Contraseña:</strong> ******</p>
+        <p><strong>PQRs registrados:</strong> <span th:text="${pqrsCount}"></span></p>
+    </div>
+    <a th:href="@{/admin/clientes}" class="btn btn-back">Volver a la Lista</a>
+</div>
+</body>
+</html>

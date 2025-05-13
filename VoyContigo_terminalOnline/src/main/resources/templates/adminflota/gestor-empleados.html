@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Empleados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .btn-open {
+            background-color: #007bff;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 18px;
+            padding: 12px 16px;
+            border-radius: 50%;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1 th:text="'Gestión de empleados - ' + ${empresaNombre}"></h1>
+
+    <!-- Botón abrir modal -->
+    <button class="btn-open" onclick="document.getElementById('crearModal').style.display='block'">+</button>
+
+    <!-- Modal Crear -->
+    <div id="crearModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('crearModal').style.display='none'">&times;</span>
+            <h2>Nuevo Empleado</h2>
+            <form th:action="@{/adminflota/gestor-empleados/crear}" method="POST" enctype="multipart/form-data">
+                <input type="text" name="nombre" placeholder="Nombre" required>
+                <input type="text" name="apellido" placeholder="Apellido" required>
+                <input type="email" name="correo" placeholder="Correo" required>
+                <input type="text" name="arl" placeholder="ARL" required>
+                <select name="tipoDocumento" required>
+                    <option value="">Tipo de documento</option>
+                    <option value="CC">CC</option>
+                    <option value="CE">CE</option>
+                </select>
+                <input type="text" name="numeroDocumento" placeholder="Número de Documento" required>
+                <input type="password" name="contrasena" placeholder="Contraseña" required>
+
+                <select name="tipo" id="tipo" onchange="mostrarLicencia()" required>
+                    <option value="">Tipo de trabajador</option>
+                    <option value="chofer">Chofer</option>
+                    <option value="taquillero">Taquillero</option>
+                </select>
+
+                <label>Contrato (PDF):</label>
+                <input type="file" name="contrato" accept="application/pdf" required>
+
+                <div id="licenciaDiv" style="display:none;">
+                    <label>Licencia (PDF):</label>
+                    <input type="file" name="licencia" accept="application/pdf">
+                </div>
+
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lista de empleados -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="trabajador : ${trabajadores}">
+                <td th:text="${trabajador.nombre} + ' ' + ${trabajador.apellido}"></td>
+                <td th:text="${trabajador.correo}"></td>
+                <td th:text="${trabajador.tipo}"></td>
+				<td>
+					<a th:href="@{'/adminflota/gestor-empleados/ver-documento/' + ${'contrato'} + '/' + ${trabajador.id}}">Ver Contrato</a>
+				    <span th:if="${trabajador.tipo == 'chofer'}">
+				        | <a th:href="@{'/adminflota/gestor-empleados/ver-documento/licencia/' + ${trabajador.id}}" target="_blank">Ver Licencia</a>
+				    </span>
+				</td>
+
+                <td>
+                    <a th:href="@{'/adminflota/gestor-empleados/editar/' + ${trabajador.id}}">Editar</a>
+                    <a th:href="@{'/adminflota/gestor-empleados/eliminar/' + ${trabajador.id}}">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function mostrarLicencia() {
+            const tipo = document.getElementById('tipo').value;
+            document.getElementById('licenciaDiv').style.display = (tipo === 'chofer') ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
