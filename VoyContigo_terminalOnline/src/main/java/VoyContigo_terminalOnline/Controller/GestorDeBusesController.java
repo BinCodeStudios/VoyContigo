@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import jakarta.servlet.http.HttpSession;
 import VoyContigo_terminalOnline.entity.AdminFlota;
 import VoyContigo_terminalOnline.entity.Bus;
+import VoyContigo_terminalOnline.entity.Trabajador;
 import VoyContigo_terminalOnline.repository.AdminFlotaRepository;
 import VoyContigo_terminalOnline.repository.BusRepository;
+import VoyContigo_terminalOnline.repository.TrabajadorRepository;
 
 @Controller
 public class GestorDeBusesController {
@@ -21,28 +23,10 @@ public class GestorDeBusesController {
 	private AdminFlotaRepository adminRepository;
     @Autowired
     private BusRepository busRepository; // Asegúrate de que tienes un repositorio para gestionar buses.
-
- // Método para mostrar el formulario de registro de un nuevo bus + lista de buses
-    @GetMapping("/adminflota/gestor-buses")
-    public String showRegisterBusForm(Model model, HttpSession session) {
-        AdminFlota admin = (AdminFlota) session.getAttribute("adminFlota");
-        if (admin == null || admin.getFlota() == null) {
-            return "redirect:/login-adminflota";
-        }
-
-        // Agregar objeto vacío para el formulario
-        model.addAttribute("bus", new Bus());
-
-        // Agregar nombre de la empresa
-        model.addAttribute("empresaNombre", admin.getFlota().getNombre());
-
-        // Obtener lista de buses de esa flota
-        List<Bus> buses = busRepository.findByFlotaId(admin.getFlota().getId());
-        model.addAttribute("buses", buses);
-
-        return "adminflota/gestor-buses";
-    }
-
+    @Autowired
+    private TrabajadorRepository trabajadorRepository;
+    
+    
 
 
     // Método para registrar un nuevo bus
@@ -76,6 +60,53 @@ public class GestorDeBusesController {
         return "redirect:/adminflota/gestor-buses";
     }
 
+
+
+
+    @GetMapping("/adminflota/gestor-buses")
+    public String showRegisterBusForm(Model model, HttpSession session) {
+        AdminFlota admin = (AdminFlota) session.getAttribute("adminFlota");
+        if (admin == null || admin.getFlota() == null) {
+            return "redirect:/login-adminflota";
+        }
+
+        model.addAttribute("bus", new Bus());
+        model.addAttribute("empresaNombre", admin.getFlota().getNombre());
+
+        List<Bus> buses = busRepository.findByFlotaId(admin.getFlota().getId());
+        model.addAttribute("buses", buses);
+
+        // Obtener todos los choferes
+        List<Trabajador> todosLosChoferes = trabajadorRepository.findByTipo("chofer");
+
+        // Obtener los choferes asignados en algún bus
+        List<Bus> todosLosBuses = busRepository.findAll();
+
+        // Filtrar choferes disponibles: los que NO están asignados
+        List<String> choferesAsignadosIds = todosLosBuses.stream()
+                .filter(b -> b.getChofer() != null)
+                .map(b -> b.getChofer().getId())
+                .toList();
+
+        List<Trabajador> choferesDisponibles = todosLosChoferes.stream()
+                .filter(c -> !choferesAsignadosIds.contains(c.getId()))
+                .toList();
+
+        model.addAttribute("choferes", choferesDisponibles);
+
+        return "adminflota/gestor-buses";
+    }
+
+
+    @PostMapping("/adminflota/gestor-buses/quitar-chofer")
+    public String quitarChofer(@RequestParam("busId") String busId) {
+        Bus bus = busRepository.findById(busId).orElse(null);
+        if (bus != null) {
+            bus.setChofer(null);
+            busRepository.save(bus);
+        }
+        return "redirect:/adminflota/gestor-buses";
+    }
 
 
 
@@ -142,6 +173,28 @@ public class GestorDeBusesController {
             bus.setModelo(modelo);
             bus.setCapacidad(capacidad);
             bus.setFlota(admin.getFlota()); // por si quieres asegurar que sigue con la flota actual
+            busRepository.save(bus);
+        }
+
+        return "redirect:/adminflota/gestor-buses";
+    }
+    @PostMapping("/adminflota/gestor-buses/asignar-chofer")
+    public String asignarChofer(@RequestParam("busId") String busId,
+                                @RequestParam("choferId") String choferId) {
+
+        // Verifica si el chofer ya está asignado a otro bus
+        List<Bus> todosLosBuses = busRepository.findAll();
+        for (Bus b : todosLosBuses) {
+            if (b.getChofer() != null && b.getChofer().getId().equals(choferId)) {
+                return "redirect:/adminflota/gestor-buses?error=choferYaAsignado";
+            }
+        }
+
+        Bus bus = busRepository.findById(busId).orElse(null);
+        Trabajador chofer = trabajadorRepository.findById(choferId).orElse(null);
+
+        if (bus != null && chofer != null) {
+            bus.setChofer(chofer);
             busRepository.save(bus);
         }
 

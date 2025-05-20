@@ -70,8 +70,7 @@
 <div class="container">
     <h1>Detalles del Cliente</h1>
     <div class="detalles">
-        <img th:if="${cliente.foto}" th:src="${cliente.foto}" alt="Foto del Cliente" class="cliente-foto"/>
-        <img th:unless="${cliente.foto}" src="/images/default-user.png" alt="Foto por Defecto" class="cliente-foto"/>
+        <img th:src="@{'/admin/clientes/foto/' + ${cliente.id}}" alt="Foto del Cliente" class="cliente-foto"/>
         <p><strong>Nombre Completo:</strong> <span th:text="${cliente.nombreCompleto}"></span></p>
         <p><strong>Correo:</strong> <span th:text="${cliente.correo}"></span></p>
         <p><strong>Contraseña:</strong> ******</p>

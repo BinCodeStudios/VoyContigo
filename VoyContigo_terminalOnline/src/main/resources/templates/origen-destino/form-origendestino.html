@@ -1,75 +1,210 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title th:text="${origenDestino.id} ? 'Editar Origen/Destino' : 'Crear Origen/Destino'">Crear Origen/Destino - voyContigo</title>
+    <!-- Metadatos -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${origenDestino.id} ? 'Editar Origen/Destino' : 'Crear Origen/Destino'">Crear Origen/Destino - VoyContigo</title>
+
+    <!-- Estilos Externos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+    <!-- Estilos Inline -->
     <style>
+        :root {
+            --primary-dark: #0A5959;
+            --primary-medium: #238C82;
+            --primary-light: #41A677;
+            --accent: #F2BB16;
+            --dark: #0D0D0D;
+            --light-gray: #f5f5f5;
+            --translucent: rgba(3, 41, 24, 0.79);
+        }
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-image: url('/img/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
             min-height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f4f4f4;
         }
-        .container {
-            background: #fff;
+        .od-container {
+            max-width: 600px;
+            margin: 40px auto;
             padding: 2rem;
+            background: rgba(245, 245, 245, 0.95); /* Usando --light-gray con opacidad */
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
+            min-height: calc(100vh - 200px); /* Adjust for navbar and footer */
         }
-        h1 {
+        .od-title {
             text-align: center;
-            color: #333;
+            color: var(--dark);
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
         .form-group {
+			background: rgba(245, 245, 245, 0.95); /* Usando --light-gray con opacidad */
+
             margin-bottom: 1rem;
         }
         label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #333;
+            color: var(--dark);
+            font-weight: 500;
         }
         input {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
             box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-medium);
+            box-shadow: 0 0 8px rgba(35, 140, 130, 0.2);
         }
         .btn {
             display: inline-block;
             margin: 0.5rem;
             padding: 0.75rem;
-            background: #007bff;
+            background: var(--primary-medium);
             color: #fff;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 6px;
             text-align: center;
             border: none;
             cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
         }
         .btn:hover {
-            background: #0056b3;
+            background: var(--primary-dark);
+        }
+   
+        .log {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+        .footer-social .social-icon {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.2rem;
+        }
+        .footer-social .social-icon:hover {
+            color: var(--primary-light);
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1 th:text="${origenDestino.id} ? 'Editar Origen/Destino' : 'Crear Origen/Destino'">Crear Origen/Destino</h1>
-    <form th:action="@{/admin/origen-destino/save}" th:object="${origenDestino}" method="post">
-        <input type="hidden" th:field="*{id}" th:unless="${origenDestino.id == null}"/>
-        <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" th:field="*{nombre}" id="nombre" required/>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/admin/dashboard}">
+                <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/flota}">Gestionar Flotas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/admin-flota}">Admin. de Flota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/clientes}">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/pqrs}">PQRs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/rutas}">Rutas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/origen-destino}">Orígenes y Destinos</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <button type="submit" class="btn">Guardar</button>
-        <a th:href="@{/admin/origen-destino}" class="btn">Cancelar</a>
-    </form>
-</div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="container od-container">
+        <h1 class="od-title" th:text="${origenDestino.id} ? 'Editar Origen/Destino' : 'Crear Origen/Destino'">Crear Origen/Destino</h1>
+        <form th:action="@{/admin/origen-destino/save}" th:object="${origenDestino}" method="post">
+            <input type="hidden" th:field="*{id}" th:unless="${origenDestino.id == null}"/>
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" th:field="*{nombre}" id="nombre" required/>
+            </div>
+            <button type="submit" class="btn">Guardar</button>
+            <a th:href="@{/admin/origen-destino}" class="btn">Cancelar</a>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center text-md-left mb-3">
+                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
+                    <p class="small">© Voy Contigo</p>
+                </div>
+                <div class="col-md-8 text-center text-md-right">
+                    <div class="footer-links">
+                        <a href="#">Enlaces de interés</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">Mapa del sitio</a>
+                        <a href="#">Política de privacidad</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,87 +1,204 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Crear Administrador - voyContigo</title>
+    <!-- Metadatos -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Administrador - VoyContigo</title>
+
+    <!-- Estilos Externos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+
+    <!-- Estilos Inline -->
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-        }
-        .container {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		
+        .card-container {
+            position: relative;
             width: 100%;
-            max-width: 400px;
+            min-height: 100vh;
         }
-        h1 {
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+        }
+        .card-header {
+            background: #238C82;
+            color: #fff;
             text-align: center;
-            margin-bottom: 1.5rem;
-            color: #333;
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .card-body {
+            padding: 2rem;
         }
         form {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.2rem;
         }
         label {
             font-size: 1rem;
-            color: #555;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
         }
         input {
-            padding: 0.75rem;
+            padding: 0.8rem;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         input:focus {
             outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            border-color: #238C82;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
         }
         button {
-            padding: 0.75rem;
-            background: #007bff;
+            padding: 0.8rem;
+            background: #238C82;
             color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
         button:hover {
-            background: #0056b3;
+            background: #238C82;
         }
         .error {
             color: #d32f2f;
             text-align: center;
-            margin-top: 1rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #238C82;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .back-link:hover {
+            color: #238C82;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Crear Administrador</h1>
-    <form th:action="@{/admin/create}" th:object="${admin}" method="POST">
-        <div th:if="${error}" class="error" th:text="${error}"></div>
-        <label for="username">Usuario:</label>
-        <input type="text" id="username" th:field="*{username}" required/>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/admin/dashboard}">
+                <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/flota}">Gestionar Flotas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/admin-flota}">Admin. de Flota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/clientes}">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/pqrs}">PQRs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/rutas}">Rutas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/origen-destino}">Orígenes y Destinos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" th:field="*{password}" required/>
+    <!-- Contenido Principal -->
+    <div class="card-container">
+        <div class="card">
+            <div class="card-header">Crear Administrador</div>
+            <div class="card-body">
+                <form th:action="@{/admin/create}" th:object="${admin}" method="POST">
+                    <div th:if="${error}" class="error" th:text="${error}"></div>
+                    <div>
+                        <label for="username">Usuario:</label>
+                        <input type="text" id="username" th:field="*{username}" required/>
+                    </div>
+                    <div>
+                        <label for="password">Contraseña:</label>
+                        <input type="password" id="password" th:field="*{password}" required/>
+                    </div>
+                    <div>
+                        <label for="email">Correo Electrónico:</label>
+                        <input type="email" id="email" th:field="*{email}" required/>
+                    </div>
+                    <button type="submit">Crear Administrador</button>
+                </form>
+                <a th:href="@{/admin/dashboard}" class="back-link">Volver al Dashboard</a>
+            </div>
+        </div>
+    </div>
 
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" id="email" th:field="*{email}" required/>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center text-md-left mb-3">
+                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
+                    <p class="small">© Voy Contigo</p>
+                </div>
+                <div class="col-md-8 text-center text-md-right">
+                    <div class="footer-links">
+                        <a href="#">Enlaces de interés</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">Mapa del sitio</a>
+                        <a href="#">Política de privacidad</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
 
-        <button type="submit">Crear Administrador</button>
-    </form>
-</div>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 </body>
 </html>

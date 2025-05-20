@@ -33,17 +33,19 @@ public class GestorDeRutasController {
         }
 
         Flota flotaActual = admin.getFlota();
-        
-        // Listar todas las rutas disponibles
-        List<Ruta> todasRutas = rutaRepository.findAll();
-        
-        // Obtener las rutas asociadas a la flota actual
+
+        // Rutas ya seleccionadas por esta flota
         List<Ruta> rutasSeleccionadas = rutaRepository.findByFlotas_Id(flotaActual.getId());
 
-        // Añadir las rutas y la flota actual a los atributos del modelo
-        model.addAttribute("rutas", todasRutas);
+        // Rutas disponibles = todas - seleccionadas
+        List<Ruta> todasRutas = rutaRepository.findAll();
+        List<Ruta> rutasDisponibles = todasRutas.stream()
+            .filter(r -> !rutasSeleccionadas.contains(r))
+            .toList();
+
+        model.addAttribute("rutasDisponibles", rutasDisponibles);
         model.addAttribute("rutasSeleccionadas", rutasSeleccionadas);
-        model.addAttribute("empresaNombre", admin.getFlota().getNombre());
+        model.addAttribute("empresaNombre", flotaActual.getNombre());
 
         return "adminflota/gestor-rutas";
     }

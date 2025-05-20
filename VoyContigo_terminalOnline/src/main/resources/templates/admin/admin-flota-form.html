@@ -1,103 +1,232 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title th:text="${adminFlota.id} ? 'Editar Administrador - voyContigo' : 'Crear Administrador - voyContigo'"></title>
+    <!-- Metadatos -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${adminFlota.id} ? 'Editar Administrador - VoyContigo' : 'Crear Administrador - VoyContigo'"></title>
+
+    <!-- Estilos Externos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+
+    <!-- Estilos Inline -->
     <style>
+        :root {
+            --primary-dark: #0A5959;
+            --primary-medium: #238C82;
+            --primary-light: #41A677;
+            --accent: #F2BB16;
+            --dark: #0D0D0D;
+            --light-gray: #f5f5f5;
+            --translucent: rgba(3, 41, 24, 0.79);
+        }
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-image: url('/img/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
             min-height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f4f4f4;
         }
-        .container {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        .card-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+        }
+        .card {
+            background: rgba(245, 245, 245, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 600px;
+            margin: 0 auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
         }
-        h1 {
+        .card-header {
+            background: var(--primary-dark);
+            color: #fff;
             text-align: center;
-            color: #333;
-            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
-        .error {
-            color: #d32f2f;
-            text-align: center;
-            margin-bottom: 1rem;
+        .card-body {
+            padding: 2rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
         }
         label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
+            font-size: 1rem;
+            color: var(--dark);
+            font-weight: 500;
+            margin-bottom: 0.3rem;
         }
         input[type="text"], input[type="email"], input[type="password"], select {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
+            padding: 0.8rem;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-medium);
+            box-shadow: 0 0 8px rgba(35, 140, 130, 0.2);
         }
         button {
-            display: block;
-            width: 100%;
-            padding: 0.75rem;
-            background: #007bff;
+            padding: 0.8rem;
+            background: var(--primary-medium);
             color: #fff;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            border-radius: 6px;
             font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
         }
         button:hover {
-            background: #0056b3;
+            background: var(--primary-dark);
+        }
+        .error {
+            color: var(--accent);
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 1rem;
-            color: #007bff;
+            margin-top: 1.5rem;
+            color: var(--primary-light);
+            font-size: 0.9rem;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
         .back-link:hover {
+            color: var(--primary-medium);
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1 th:text="${adminFlota.id} ? 'Editar Administrador' : 'Crear Administrador'"></h1>
-    <form th:action="${adminFlota.id} ? @{/admin/admin-flota/edit/{id}(id=${adminFlota.id})} : @{/admin/admin-flota/create}" th:object="${adminFlota}" method="POST">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" th:if="${_csrf}"/>
-        <div th:if="${error}" class="error" th:text="${error}"></div>
-        <label for="nombreCompleto">Nombre Completo:</label>
-        <input type="text" id="nombreCompleto" th:field="*{nombreCompleto}" required/>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/admin/dashboard}">
+                <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/flota}">Gestionar Flotas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/admin-flota}">Admin. de Flota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/clientes}">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/pqrs}">PQRs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/rutas}">Rutas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/origen-destino}">Orígenes y Destinos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-        <label for="correo">Correo:</label>
-        <input type="email" id="correo" th:field="*{correo}" required/>
+    <!-- Contenido Principal -->
+    <div class="card-container">
+        <div class="card">
+            <div class="card-header" th:text="${adminFlota.id} ? 'Editar Administrador' : 'Crear Administrador'"></div>
+            <div class="card-body">
+                <form th:action="${adminFlota.id} ? @{/admin/admin-flota/edit/{id}(id=${adminFlota.id})} : @{/admin/admin-flota/create}" th:object="${adminFlota}" method="POST">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" th:if="${_csrf}"/>
+                    <div th:if="${error}" class="error" th:text="${error}"></div>
+                    <div>
+                        <label for="nombreCompleto">Nombre Completo:</label>
+                        <input type="text" id="nombreCompleto" th:field="*{nombreCompleto}" required/>
+                    </div>
+                    <div>
+                        <label for="correo">Correo:</label>
+                        <input type="email" id="correo" th:field="*{correo}" required/>
+                    </div>
+                    <div>
+                        <label for="contrasena">Contraseña:</label>
+                        <input type="password" id="contrasena" th:field="*{contrasena}" required/>
+                    </div>
+                    <div>
+                        <label for="flotaId">Flota:</label>
+                        <select id="flotaId" name="flotaId" required>
+                            <option value="">Seleccione una flota</option>
+                            <option th:each="flota : ${flotas}"
+                                    th:value="${flota.id}"
+                                    th:text="${flota.nombre}"
+                                    th:selected="${adminFlota.flota?.id == flota.id}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" th:text="${adminFlota.id} ? 'Actualizar Administrador' : 'Crear Administrador'"></button>
+                </form>
+                <a th:href="@{/admin/admin-flota}" class="back-link">Volver a la Lista de Administradores</a>
+            </div>
+        </div>
+    </div>
 
-        <label for="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" th:field="*{contrasena}" required/>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center text-md-left mb-3">
+                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
+                    <p class="small">© Voy Contigo</p>
+                </div>
+                <div class="col-md-8 text-center text-md-right">
+                    <div class="footer-links">
+                        <a href="#">Enlaces de interés</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">Mapa del sitio</a>
+                        <a href="#">Política de privacidad</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
 
-        <label for="flotaId">Flota:</label>
-        <select id="flotaId" name="flotaId" required>
-            <option value="">Seleccione una flota</option>
-            <option th:each="flota : ${flotas}"
-                    th:value="${flota.id}"
-                    th:text="${flota.nombre}"
-                    th:selected="${adminFlota.flota?.id == flota.id}"></option>
-        </select>
-
-        <button type="submit" th:text="${adminFlota.id} ? 'Actualizar Administrador' : 'Crear Administrador'"></button>
-    </form>
-    <a th:href="@{/admin/admin-flota}" class="back-link">Volver a la Lista de Administradores</a>
-</div>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 </body>
 </html>

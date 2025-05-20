@@ -13,14 +13,17 @@ public class Bus {
     private int capacidad;
     @DBRef
     private Flota flota;
+    @DBRef
+    private Trabajador chofer;
 
     public Bus() {}
 
-    public Bus(String placa, String modelo, int capacidad, String empresaId) {
+    public Bus(String placa, String modelo, int capacidad, String empresaId, Trabajador chofer) {
         this.placa = placa;
         this.modelo = modelo;
         this.capacidad = capacidad;
         this.flota = flota;
+        this.chofer = chofer;
     }
 
     public String getId() { return id; }
@@ -38,4 +41,12 @@ public class Bus {
     public void setFlota(Flota flota) {
         this.flota = flota;
     }
+    public Trabajador getChofer() {
+        return chofer;
+    }
+
+    public void setChofer(Trabajador chofer) {
+        this.chofer = chofer;
+    }
+
 }

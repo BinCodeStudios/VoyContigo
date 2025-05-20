@@ -1,8 +1,12 @@
 package VoyContigo_terminalOnline.Controller;
 
 import VoyContigo_terminalOnline.entity.AdministradorGeneral;
+import VoyContigo_terminalOnline.entity.Cliente;
 import VoyContigo_terminalOnline.repository.AdministradorGeneralRepository;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,6 +55,8 @@ public class AdministradorGeneralController {
         }
     }
 
+ 
+    
     @GetMapping("/admin/dashboard")
     public String showAdminDashboard(HttpSession session) {
         if (session.getAttribute("adminLoggedIn") == null) {

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Viaje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto p-6">
+    <!-- Información del usuario -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Detalles del Viaje</h1>
+        <div class="text-right">
+            <p th:if="${usuarioNombre != 'Invitado'}" class="text-lg font-semibold">
+                Bienvenido, <span th:text="${usuarioNombre}"></span> (<span th:text="${usuarioCorreo}"></span>)
+            </p>
+            <p th:if="${usuarioNombre == 'Invitado'}" class="text-lg font-semibold">
+                <a th:href="@{/admin/clientes/loginclientes}" class="text-blue-600 hover:underline">Iniciar sesión</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Mensaje de error (si existe) -->
+    <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
+        <span th:text="${error}"></span>
+    </div>
+
+    <!-- Información del viaje -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold" th:text="${viaje.origen?.nombre} + ' - ' + ${viaje.destino?.nombre}"></h2>
+        <p class="text-gray-600" th:text="'Flota: ' + ${viaje.flota?.nombre ?: 'N/A'}"></p>
+        <p class="text-gray-600" th:text="'Salida: ' + ${viaje.fechaSalida ?: 'N/A'}"></p>
+        <p class="text-gray-600" th:text="'Llegada: ' + ${viaje.fechaLlegadaEstimada ?: 'N/A'}"></p>
+        <p class="text-gray-600" th:text="'Precio por asiento: $' + ${viaje.ruta?.precio ?: 0}"></p>
+        <div class="mt-2">
+            <p class="text-sm font-medium">Servicios:</p>
+            <ul class="flex space-x-2 text-sm text-gray-500">
+                <li th:if="${viaje.bus?.modelo?.contains('WiFi')}">WiFi</li>
+                <li th:if="${viaje.bus?.modelo?.contains('TV')}">Televisión</li>
+                <li th:if="${viaje.bus?.modelo?.contains('AC')}">Aire Acondicionado</li>
+                <li th:if="${viaje.bus?.modelo?.contains('Camas')}">Camas Reclinables</li>
+                <li th:if="${viaje.bus?.modelo?.contains('Baño')}">Baño</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Selección de asientos -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold mb-4">Seleccionar Asientos</h2>
+        <form id="compraForm" th:action="@{/clientes/viajes/comprar}" method="post">
+            <input type="hidden" name="viajeId" th:value="${viaje?.id}">
+            <input type="hidden" name="clienteId" th:value="${clienteId}">
+            <div class="grid grid-cols-4 gap-4">
+                <div th:each="i : ${#numbers.sequence(1, capacidadBus)}" class="text-center">
+                    <input type="checkbox" 
+                           th:id="'asiento-' + ${i}" 
+                           name="asientos" 
+                           th:value="${i}" 
+                           th:disabled="${asientosOcupados?.contains(i)}"
+                           class="hidden asiento-checkbox">
+                    <label th:for="'asiento-' + ${i}" 
+                           th:class="${asientosOcupados?.contains(i)} ? 'bg-red-500 text-white p-2 rounded' : 'bg-green-500 text-white p-2 rounded cursor-pointer'"
+                           th:text="${i}"></label>
+                </div>
+            </div>
+            <div class="mt-6">
+                <p class="text-lg font-semibold">Asientos seleccionados: <span id="asientosSeleccionados"></span></p>
+                <p class="text-lg font-semibold">Total: $<span id="totalPrecio">0</span></p>
+            </div>
+            <button type="submit" th:disabled="${usuarioNombre == 'Invitado'}" 
+                    class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                    th:classappend="${usuarioNombre == 'Invitado'} ? 'opacity-50 cursor-not-allowed' : ''">Pagar</button>
+        </form>
+    </div>
+</div>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    const checkboxes = document.querySelectorAll('.asiento-checkbox');
+    const asientosSeleccionados = document.getElementById('asientosSeleccionados');
+    const totalPrecio = document.getElementById('totalPrecio');
+    const precioPorAsiento = /*[[${viaje.ruta?.precio ?: 0}]]*/ 0;
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelection);
+    });
+
+    function updateSelection() {
+        const selected = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
+        asientosSeleccionados.textContent = selected.join(', ') || 'Ninguno';
+        totalPrecio.textContent = (selected.length * precioPorAsiento).toFixed(2);
+    }
+/*]]>*/
+</script>
+</body>
+</html>

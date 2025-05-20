@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Información del Viaje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto p-6">
+    <!-- Información del cliente -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Información del Viaje</h1>
+        <div class="text-right">
+            <p class="text-lg font-semibold" th:text="'Bienvenido, ' + ${cliente.nombreCompleto} + ' (' + ${cliente.correo} + ')'"></p>
+            <a th:href="@{/admin/clientes/dashboard(id=${cliente.id})}" class="text-blue-600 hover:underline">Volver al Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Mensaje de error (si existe) -->
+    <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
+        <span th:text="${error}"></span>
+    </div>
+
+    <!-- Información del ticket -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">Detalles del Ticket</h2>
+        <table class="w-full table-auto">
+            <tbody>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">ID del Ticket</td>
+                    <td class="px-4 py-2" th:text="${ticket.id}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Asiento</td>
+                    <td class="px-4 py-2" th:text="${ticket.asiento}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Fecha de Compra</td>
+                    <td class="px-4 py-2" th:text="${ticket.fechaCompra}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Información del viaje -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">Detalles del Viaje</h2>
+        <table class="w-full table-auto">
+            <tbody>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">ID del Viaje</td>
+                    <td class="px-4 py-2" th:text="${viaje.id}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Origen</td>
+                    <td class="px-4 py-2" th:text="${viaje.origen.nombre}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Destino</td>
+                    <td class="px-4 py-2" th:text="${viaje.destino.nombre}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Fecha de Salida</td>
+                    <td class="px-4 py-2" th:text="${viaje.fechaSalida}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Fecha de Llegada Estimada</td>
+                    <td class="px-4 py-2" th:text="${viaje.fechaLlegadaEstimada}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Estado</td>
+                    <td class="px-4 py-2" th:text="${viaje.estado}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Observaciones</td>
+                    <td class="px-4 py-2" th:text="${viaje.observaciones} ?: 'Ninguna'"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Información de la ruta -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">Detalles de la Ruta</h2>
+        <table class="w-full table-auto">
+            <tbody>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Origen</td>
+                    <td class="px-4 py-2" th:text="${ruta.origen.nombre}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Destino</td>
+                    <td class="px-4 py-2" th:text="${ruta.destino.nombre}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Duración Estimada</td>
+                    <td class="px-4 py-2" th:text="${ruta.duracionEstimada}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Precio</td>
+                    <td class="px-4 py-2" th:text="'$' + ${#numbers.formatDecimal(ruta.precio, 1, 2)}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Información del bus -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">Detalles del Bus</h2>
+        <table class="w-full table-auto">
+            <tbody>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Placa</td>
+                    <td class="px-4 py-2" th:text="${bus.placa}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Modelo</td>
+                    <td class="px-4 py-2" th:text="${bus.modelo}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Capacidad</td>
+                    <td class="px-4 py-2" th:text="${bus.capacidad}"></td>
+                </tr>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Servicios</td>
+                    <td class="px-4 py-2">
+                        <span th:if="${bus.modelo.contains('WiFi')}">WiFi, </span>
+                        <span th:if="${bus.modelo.contains('TV')}">TV, </span>
+                        <span th:if="${bus.modelo.contains('AC')}">Aire Acondicionado, </span>
+                        <span th:if="${bus.modelo.contains('Camas')}">Camas Reclinables, </span>
+                        <span th:if="${bus.modelo.contains('Baño')}">Baño</span>
+                        <span th:unless="${bus.modelo.contains('WiFi') or bus.modelo.contains('TV') or bus.modelo.contains('AC') or bus.modelo.contains('Camas') or bus.modelo.contains('Baño')}">Ninguno</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Información de la flota -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">Detalles de la Flota</h2>
+        <table class="w-full table-auto">
+            <tbody>
+                <tr class="border-b">
+                    <td class="px-4 py-2 font-medium">Nombre</td>
+                    <td class="px-4 py-2" th:text="${flota.nombre}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Botón para descargar PDF -->
+    <div class="text-center">
+        <a th:href="@{/admin/clientes/ticket/{ticketId}/pdf(ticketId=${ticket.id},clienteId=${cliente.id})}"
+           class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700">Descargar PDF</a>
+    </div>
+</div>
+</body>
+</html>

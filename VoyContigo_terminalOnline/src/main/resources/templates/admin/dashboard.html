@@ -8,12 +8,73 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	<link rel="stylesheet" href="/css/style.css">
-		<link rel="stylesheet" href="/css/login.css">
-		<link rel="stylesheet" href="/css/dashboard.css">
-		<link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/style.css">
+	<style>
+	    /* Estilos para el carrusel con imágenes largas */
+	    .info-carousel .carousel-item {
+	        padding: 10px 20px;
+	    }
+	    .info-card {
+	        background: #fff;
+	        border-radius: 8px;
+	        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	        overflow: hidden;
+	        text-align: center;
+	        margin: 0 auto;
+	        max-width: 1000px;
+	    }
+	    .info-card img {
+	        width: 100%;
+	        height: 250px; /* Más larga */
+	        object-fit: cover;
+	        object-position: center;
+	    }
+	    .info-card .content {
+	        padding: 15px;
+	    }
 
-	</head>
+	    /* Cards de funciones optimizadas - solo agrandar */
+	    .function-cards {
+	        display: flex;
+	        flex-wrap: wrap;
+	        justify-content: center;
+	        gap: 15px;
+	        margin-top: 30px;
+	    }
+	    .function-card {
+	        width: 120px;
+	        height: 120px;
+	        border-radius: 8px;
+	        overflow: hidden;
+	        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	        transition: all 0.3s ease;
+	        cursor: pointer;
+	    }
+	    .function-card:hover {
+	        transform: scale(1.1); /* Solo se agranda */
+	        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+	    }
+	    .function-card img {
+	        width: 100%;
+	        height: 100%;
+	        object-fit: cover;
+	    }
+
+	    /* Responsive */
+	    @media (max-width: 768px) {
+	        .info-card img {
+	            height: 180px;
+	        }
+	        .function-card {
+	            width: 100px;
+	            height: 100px;
+	        }
+	    }
+	</style>
+</head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
@@ -29,7 +90,6 @@
                     <li class="nav-item">
                         <a class="nav-link active" th:href="@{/admin/dashboard}">Dashboard</a>
                     </li>
-                   
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/flota}">Gestionar Flotas</a>
                     </li>
@@ -47,10 +107,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/origen-destino}">Orígenes y Destinos</a>
-         <!--           </li>
-                   <li class="nav-item">
-                        <a class="btn btn-logout" th:href="@{/admin/logout}">Cerrar Sesión</a>
-                    </li>-->
+                    </li>
                 </ul>
             </div>
         </div>
@@ -62,105 +119,124 @@
             <h1 class="dashboard-title">Dashboard Administrador General</h1>
             <p class="dashboard-subtitle">Gestiona todas las operaciones de Voy Contigo desde aquí</p>
 
-            <!-- Carousel -->
-            <div id="dashboardCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Carrusel Informativo -->
+            <h2 class="text-center mt-4">Información de la Empresa</h2>
+            <div id="infoCarousel" class="carousel slide info-carousel" data-ride="carousel">
                 <ol class="carousel-indicators">
-                    <li data-target="#dashboardCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#dashboardCarousel" data-slide-to="1"></li>
-                    <li data-target="#dashboardCarousel" data-slide-to="2"></li>
-                    <li data-target="#dashboardCarousel" data-slide-to="3"></li>
-                    <li data-target="#dashboardCarousel" data-slide-to="4"></li>
-                    <li data-target="#dashboardCarousel" data-slide-to="5"></li>
-                    <li data-target="#dashboardCarousel" data-slide-to="6"></li>
+                    <li data-target="#infoCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#infoCarousel" data-slide-to="1"></li>
+                    <li data-target="#infoCarousel" data-slide-to="2"></li>
                 </ol>
-                <div class="carousel-inner">
-                    <!-- Card 1: Crear Nuevo Administrador -->
-                    <div class="carousel-item active">
-                        <div class="card dashboard-card">
-                            <img th:src="@{/img/admingeneral.jpg}" class="card-img-top" alt="Crear Administrador">
-                            <div class="card-body">
-                                <h5 class="card-title">Crear Nuevo Administrador</h5>
-                                <p class="card-text">Registra nuevos administradores para gestionar el sistema.</p>
-                                <a th:href="@{/admin/create}" class="btn btn-primary">Entrar</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 2: Gestionar Flotas -->
-                    <div class="carousel-item">
-                        <div class="card dashboard-card">
-                            <img th:src="@{/img/flota.jpg}" class="card-img-top" alt="Gestionar Flotas">
-                            <div class="card-body">
-                                <h5 class="card-title">Gestionar Flotas</h5>
-                                <p class="card-text">Administra las flotas, incluyendo creación, edición y eliminación.</p>
-                                <a th:href="@{/admin/flota}" class="btn btn-primary">Entrar</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 3: Gestionar Administradores de Flota -->
-                    <div class="carousel-item">
-                        <div class="card dashboard-card">
-                            <img th:src="@{/img/admins.jpg}" class="card-img-top" alt="Admin. de Flota">
-                            <div class="card-body">
-                                <h5 class="card-title">Gestionar Administradores de Flota</h5>
-                                <p class="card-text">Crea y gestiona los administradores asignados a las flotas.</p>
-                                <a th:href="@{/admin/admin-flota}" class="btn btn-primary">Entrar</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 4: Clientes -->
-                    <div class="carousel-item">
-                        <div class="card dashboard-card">
-                            <img th:src="@{/img/clientes.jpg}" class="card-img-top" alt="Clientes">
-                            <div class="card-body">
-                                <h5 class="card-title">Clientes</h5>
-                                <p class="card-text">Visualiza y edita la información de los clientes registrados.</p>
-                                <a th:href="@{/admin/clientes}" class="btn btn-primary">Entrar</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 5: PQRs -->
-                    <div class="carousel-item">
-                        <div class="card dashboard-card">
-                            <img th:src="@{/img/pqr.jpg}" class="card-img-top" alt="PQRs">
-                            <div class="card-body">
-                                <h5 class="card-title">PQRs</h5>
-                                <p class="card-text">Gestiona las quejas, reclamos y sugerencias de los clientes.</p>
-                                <a th:href="@{/admin/pqrs}" class="btn btn-primary">Entrar</a>
-                            </div>
-							
-                        </div>
-                    </div>
-                    <!-- Card 6: Gestionar Rutas -->
-                    <div class="carousel-item">
-                        <div class="card dashboard-card">
-                            <img th:src="@{/img/imgadmin.jpg}" class="card-img-top" alt="Rutas">
-                            <div class="card-body">
-                                <h5 class="card-title">Gestionar Rutas</h5>
-                                <p class="card-text">Crea y administra las rutas disponibles para los viajes.</p>
-                                <a th:href="@{/admin/rutas}" class="btn btn-primary">Entrar</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 7: Gestionar Orígenes y Destinos -->
-                    <div class="carousel-item">
-                        <div class="card dashboard-card">
-                            <img th:src="@{/img/destinos.jpg}" class="card-img-top" alt="Orígenes y Destinos">
-                            <div class="card-body">
-                                <h5 class="card-title">Orígenes y Destinos</h5>
-                                <p class="card-text">Define los puntos de origen y destino para las rutas.</p>
-                                <a th:href="@{/admin/origen-destino}" class="btn btn-primary">Entrar</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <a class="carousel-control-prev" href="#dashboardCarousel" role="button" data-slide="prev">
+				<div class="carousel-inner">
+				    <!-- Card 1: Gestionar Flotas -->
+				    <div class="carousel-item active">
+				        <div class="info-card">
+				            <img th:src="@{/img/3.png}" alt="Voy Contigo">
+				            <div class="content">
+				                <h3>Gestiona tus Flotas</h3>
+				                <p>Administra las flotas de transporte, crea nuevas, edita o elimina las existentes para mantener tu operación eficiente.</p>
+				                <a th:href="@{/admin/flota}" class="btn">Ir a Flotas</a>
+				            </div>
+				        </div>
+				    </div>
+				    <!-- Card 2: Gestionar Clientes -->
+				    <div class="carousel-item">
+				        <div class="info-card">
+				            <img th:src="@{/img/1.png}" alt="Voy Contigo">
+				            <div class="content">
+				                <h3>Conoce a tus Clientes</h3>
+				                <p>Visualiza y edita la información de los clientes registrados, asegurando un servicio personalizado.</p>
+				                <a th:href="@{/admin/clientes/listarClientes}" class="btn">Ir a Clientes</a>
+				            </div>
+				        </div>
+				    </div>
+				    <!-- Card 3: Gestionar Rutas -->
+				    <div class="carousel-item">
+				        <div class="info-card">
+				            <img th:src="@{/img/2.png}" alt="Voy Contigo">
+				            <div class="content">
+				                <h3>Planifica tus Rutas</h3>
+				                <p>Crea y gestiona rutas para conectar destinos, optimizando los viajes de tus clientes.</p>
+				                <a th:href="@{/admin/rutas}" class="btn">Ir a Rutas</a>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+                <a class="carousel-control-prev" href="#infoCarousel" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </a>
-                <a class="carousel-control-next" href="#dashboardCarousel" role="button" data-slide="next">
+                <a class="carousel-control-next" href="#infoCarousel" role="button" data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
+            </div>
+
+            <!-- Cards de Funciones -->
+            <div class="function-cards">
+                <!-- Card 1: Crear Nuevo Administrador -->
+                <div class="function-card">
+                    <img th:src="@{/img/admingeneral.jpg}" alt="Crear Administrador">
+                    <div class="overlay">
+                        <h5>Crear Administrador</h5>
+                        <p>Registra nuevos administradores para gestionar el sistema.</p>
+                        <a th:href="@{/admin/create}">Entrar</a>
+                    </div>
+                </div>
+                <!-- Card 2: Gestionar Flotas -->
+                <div class="function-card">
+                    <img th:src="@{/img/flota.jpg}" alt="Gestionar Flotas">
+                    <div class="overlay">
+                        <h5>Gestionar Flotas</h5>
+                        <p>Administra las flotas, incluyendo creación, edición y eliminación.</p>
+                        <a th:href="@{/admin/flota}">Entrar</a>
+                    </div>
+                </div>
+                <!-- Card 3: Gestionar Administradores de Flota -->
+                <div class="function-card">
+                    <img th:src="@{/img/admins.jpg}" alt="Admin. de Flota">
+                    <div class="overlay">
+                        <h5>Admin. de Flota</h5>
+                        <p>Crea y gestiona los administradores asignados a las flotas.</p>
+                        <a th:href="@{/admin/admin-flota}">Entrar</a>
+                    </div>
+                </div>
+                <!-- Card 4: Clientes -->
+                <div class="function-card">
+                    <img th:src="@{/img/clientes.jpg}" alt="Clientes">
+                    <div class="overlay">
+                        <h5>Clientes</h5>
+                        <p>Visualiza y edita la información de los clientes registrados.</p>
+                        <a th:href="@{/admin/clientes/listarClientes}">Entrar</a>
+                    </div>
+                </div>
+                <!-- Card 5: PQRs -->
+                <div class="function-card">
+                    <img th:src="@{/img/pqr.jpg}" alt="PQRs">
+                    <div class="overlay">
+                        <h5>PQRs</h5>
+                        <p>Gestiona las quejas, reclamos y sugerencias de los clientes.</p>
+                        <a th:href="@{/admin/pqrs}">Entrar</a>
+                    </div>
+                </div>
+                <!-- Card 6: Gestionar Rutas -->
+                <div class="function-card">
+                    <img th:src="@{/img/imgadmin.jpg}" alt="Rutas">
+                    <div class="overlay">
+                        <h5>Gestionar Rutas</h5>
+                        <p>Crea y administra las rutas disponibles para los viajes.</p>
+                        <a th:href="@{/admin/rutas}">Entrar</a>
+                    </div>
+                </div>
+                <!-- Card 7: Gestionar Orígenes y Destinos -->
+                <div class="function-card">
+                    <img th:src="@{/img/destinos.jpg}" alt="Orígenes y Destinos">
+                    <div class="overlay">
+                        <h5>Orígenes y Destinos</h5>
+                        <p>Define los puntos de origen y destino para las rutas.</p>
+                        <a th:href="@{/admin/origen-destino}">Entrar</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

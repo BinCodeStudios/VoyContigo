@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Editar Cliente</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        label {
+            font-size: 1rem;
+            color: #555;
+        }
+        input {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+        button {
+            padding: 0.75rem;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .error {
+            color: #d32f2f;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .info {
+            color: #555;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Editar Cliente</h1>
+    <form th:action="@{/admin/clientes/editar/{id}(id=${cliente.id})}" th:object="${cliente}" method="POST" enctype="multipart/form-data" onsubmit="return confirm('¿Confirma la edición de sus datos personales?');">
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <label for="nombreCompleto">Nombre Completo:</label>
+        <input type="text" id="nombreCompleto" th:field="*{nombreCompleto}" required/>
+
+        <label for="correo">Correo:</label>
+        <input type="email" id="correo" th:field="*{correo}" required/>
+
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" th:field="*{contrasena}" required/>
+
+        <label for="fotoFile">Foto (opcional, máx. 10MB):</label>
+        <input type="file" id="fotoFile" name="fotoFile" accept="image/png"/>
+        <p class="info">La foto debe ser una imagen PNG de hasta 10MB.</p>
+
+        <button type="submit">Actualizar Datos</button>
+    </form>
+    <a th:href="@{'/admin/clientes/porfile/' + ${cliente.id}}" class="back-link">Volver al Perfil</a>
+</div>
+<script>
+    // Mostrar alerta de confirmación
+    function confirm(message) {
+        return window.confirm(message);
+    }
+</script>
+</body>
+</html>

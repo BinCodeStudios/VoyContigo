@@ -10,15 +10,15 @@ public class Cliente {
     private String nombreCompleto;
     private String correo;
     private String contrasena;
-    private String foto;
+    private String fotoFileID;
 
     public Cliente() {}
 
-    public Cliente(String nombreCompleto, String correo, String contrasena, String foto) {
+    public Cliente(String nombreCompleto, String correo, String contrasena, String fotoFileID) {
         this.nombreCompleto = nombreCompleto;
         this.correo = correo;
         this.contrasena = contrasena;
-        this.foto = foto;
+        this.fotoFileID = fotoFileID;
     }
 
     public String getId() { return id; }
@@ -29,6 +29,13 @@ public class Cliente {
     public void setCorreo(String correo) { this.correo = correo; }
     public String getContrasena() { return contrasena; }
     public void setContrasena(String contrasena) { this.contrasena = contrasena; }
-    public String getFoto() { return foto; }
-    public void setFoto(String foto) { this.foto = foto; }
+
+	public String getFotoFileID() {
+		return fotoFileID;
+	}
+
+	public void setFotoFileID(String fotoFileID) {
+		this.fotoFileID = fotoFileID;
+	}
+    
 }

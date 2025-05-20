@@ -1,26 +1,52 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!-- Metadatos -->
     <meta charset="UTF-8">
-    <title>Responder PQR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responder PQR - VoyContigo</title>
+
+    <!-- Estilos Externos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+    <!-- Estilos Inline -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+        :root {
+            --primary-dark: #0A5959;
+            --primary-medium: #238C82;
+            --primary-light: #41A677;
+            --accent: #F2BB16;
+            --dark: #0D0D0D;
+            --light-gray: #f5f5f5;
+            --translucent: rgba(3, 41, 24, 0.79);
         }
-        .container {
+        body {
+            background-image: url('/img/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .containers {
             max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
+            margin: 40px auto;
+            background: rgba(245, 245, 245, 0.95); /* Usando --light-gray con opacidad */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            min-height: calc(100vh - 200px); /* Adjust for navbar and footer */
         }
         h1 {
             text-align: center;
-            color: #333;
+            color: var(--dark);
+            font-size: 2rem;
+            font-weight: bold;
         }
         .detalles {
             margin-top: 20px;
@@ -32,7 +58,8 @@
         .detalles strong {
             display: inline-block;
             width: 150px;
-            color: #555;
+            color: var(--dark);
+            font-weight: 500;
         }
         form {
             margin-top: 20px;
@@ -40,66 +67,182 @@
         textarea {
             width: calc(100% - 170px);
             padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
             vertical-align: top;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-medium);
+            box-shadow: 0 0 8px rgba(35, 140, 130, 0.2);
         }
         select {
             padding: 8px;
             width: calc(100% - 170px);
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        select:focus {
+            outline: none;
+            border-color: var(--primary-medium);
+            box-shadow: 0 0 8px rgba(35, 140, 130, 0.2);
         }
         .btn {
             display: inline-block;
             padding: 10px 20px;
             margin: 10px 5px;
-            background-color: #007bff;
+            background: var(--primary-medium);
             color: white;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 6px;
             border: none;
             cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
         }
         .btn:hover {
-            background-color: #0056b3;
+            background: var(--primary-dark);
         }
         .btn-back {
-            background-color: #6c757d;
+            background: #6c757d;
         }
         .btn-back:hover {
-            background-color: #5a6268;
+            background: #5a6268;
+        }
+  
+        .log {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+        .footer-social .social-icon {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.2rem;
+        }
+        .footer-social .social-icon:hover {
+            color: var(--primary-light);
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Responder PQR</h1>
-    <div class="detalles">
-        <p><strong>ID:</strong> <span th:text="${pqr.id}"></span></p>
-        <p><strong>Cliente:</strong> <span th:text="${pqr.cliente.nombreCompleto}"></span></p>
-        <p><strong>Tipo:</strong> <span th:text="${pqr.tipo}"></span></p>
-        <p><strong>Mensaje:</strong> <span th:text="${pqr.mensaje}"></span></p>
-        <p><strong>Fecha:</strong> <span th:text="${pqr.fecha}"></span></p>
-        <p><strong>Estado:</strong> <span th:text="${pqr.estado}"></span></p>
-        <p><strong>Respuesta Actual:</strong> <span th:text="${pqr.respuesta} ?: 'Sin respuesta'"></span></p>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/admin/dashboard}">
+                <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/flota}">Gestionar Flotas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/admin-flota}">Admin. de Flota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/clientes}">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/pqrs}">PQRs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/rutas}">Rutas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/origen-destino}">Orígenes y Destinos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="containers">
+        <h1>Responder PQR</h1>
+        <div class="detalles">
+            <p><strong>ID:</strong> <span th:text="${pqr.id}"></span></p>
+            <p><strong>Cliente:</strong> <span th:text="${pqr.cliente.nombreCompleto}"></span></p>
+            <p><strong>Tipo:</strong> <span th:text="${pqr.tipo}"></span></p>
+            <p><strong>Mensaje:</strong> <span th:text="${pqr.mensaje}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${pqr.fecha}"></span></p>
+            <p><strong>Estado:</strong> <span th:text="${pqr.estado}"></span></p>
+            <p><strong>Respuesta Actual:</strong> <span th:text="${pqr.respuesta} ?: 'Sin respuesta'"></span></p>
+        </div>
+        <form th:action="@{/admin/pqrs/responder/{id}(id=${pqr.id})}" method="post">
+            <p>
+                <strong>Respuesta:</strong>
+                <textarea name="respuesta" rows="5" th:text="${pqr.respuesta}"></textarea>
+            </p>
+            <p>
+                <strong>Estado:</strong>
+                <select name="estado">
+                    <option value="Abierto" th:selected="${pqr.estado == 'Abierto'}">Abierto</option>
+                    <option value="En proceso" th:selected="${pqr.estado == 'En proceso'}">En proceso</option>
+                    <option value="Cerrado" th:selected="${pqr.estado == 'Cerrado'}">Cerrado</option>
+                </select>
+            </p>
+            <button type="submit" class="btn">Enviar Respuesta</button>
+            <a th:href="@{/admin/pqrs}" class="btn btn-back">Cancelar</a>
+        </form>
     </div>
-    <form th:action="@{/admin/pqrs/responder/{id}(id=${pqr.id})}" method="post">
-        <p>
-            <strong>Respuesta:</strong>
-            <textarea name="respuesta" rows="5" th:text="${pqr.respuesta}"></textarea>
-        </p>
-        <p>
-            <strong>Estado:</strong>
-            <select name="estado">
-                <option value="Abierto" th:selected="${pqr.estado == 'Abierto'}">Abierto</option>
-                <option value="En proceso" th:selected="${pqr.estado == 'En proceso'}">En proceso</option>
-                <option value="Cerrado" th:selected="${pqr.estado == 'Cerrado'}">Cerrado</option>
-            </select>
-        </p>
-        <button type="submit" class="btn">Enviar Respuesta</button>
-        <a th:href="@{/admin/pqrs}" class="btn btn-back">Cancelar</a>
-    </form>
-</div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center text-md-left mb-3">
+                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
+                    <p class="small">© Voy Contigo</p>
+                </div>
+                <div class="col-md-8 text-center text-md-right">
+                    <div class="footer-links">
+                        <a href="#">Enlaces de interés</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">Mapa del sitio</a>
+                        <a href="#">Política de privacidad</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 </body>
 </html>

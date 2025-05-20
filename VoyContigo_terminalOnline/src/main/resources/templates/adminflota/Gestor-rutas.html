@@ -1,115 +1,369 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Gestor de Rutas</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Rutas - VoyContigo</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
     <style>
-        .lista-rutas, .rutas-seleccionadas {
-            width: 45%;
-            display: inline-block;
-            vertical-align: top;
-            margin: 0 2%;
+        :root {
+            --primary-dark: #0A5959;
+            --primary-medium: #238C82;
+            --primary-light: #41A677;
+            --accent: #F2BB16;
+            --dark: #0D0D0D;
+            --light-gray: #f5f5f5;
+            --translucent: rgba(3, 41, 24, 0.79);
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
+        body {
+            background-image: url('/img/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
         }
-        li {
-            margin: 4px 0;
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            min-height: calc(100vh - 200px);
+            background: rgba(245, 245, 245, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .page-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary-medium), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .empresa-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .empresa-info span {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        .routes-container {
             display: flex;
             justify-content: space-between;
+            gap: 20px;
         }
-        button {
-            margin-left: 10px;
+        .lista-rutas, .rutas-seleccionadas {
+            flex: 1;
         }
-        .btn-disabled {
-            background-color: lightgreen;
-            color: black;
-            cursor: default;
+        .card {
+            background: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background: linear-gradient(45deg, var(--primary-medium), var(--primary-light));
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+            font-weight: bold;
+            padding: 15px;
+        }
+        .card-body {
+            padding: 15px;
+        }
+        .route-item {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .route-item.entering {
+            animation: slideInRight 0.3s ease forwards;
+        }
+        .route-item.exiting {
+            animation: slideOutLeft 0.3s ease forwards;
+        }
+        .btn {
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
+            overflow: hidden;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary {
+            background: var(--primary-medium);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        .btn:active::after {
+            width: 200px;
+            height: 200px;
+            opacity: 0;
+        }
+        .mensaje-vacio {
+            color: gray;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
+   
+        .log {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+        .footer-social .social-icon {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.2rem;
+        }
+        .footer-social .social-icon:hover {
+            color: var(--primary-light);
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOutLeft {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(-50px); opacity: 0; }
+        }
+        @media (max-width: 768px) {
+            .routes-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-<h1>Gestor de Rutas - <span th:text="${empresaNombre}"></span></h1>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/adminflota/dashboard}">
+                <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" width="150">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/adminflota/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/adminflota/gestor-buses}">Gestor de Buses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/adminflota/gestor-empleados}">Gestionar Empleados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/adminflota/gestor-rutas}">Gestor de Rutas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/adminflota/gestor-viajes}">Gestor de Viajes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-<form th:action="@{/adminflota/gestor-rutas/guardar}" method="post" onsubmit="seleccionarRutasFinales()">
-    <div class="lista-rutas">
-        <h2>Rutas Disponibles</h2>
-        <ul id="rutas-disponibles">
-            <li th:each="ruta : ${rutas}" th:attr="data-id=${ruta.id}">
-                <span th:text="${ruta.origen.nombre + ' - ' + ruta.destino.nombre + ' (' + ruta.duracionEstimada + ')'}"></span>
+    <div class="container main-container">
+        <h2 class="page-title">Gestor de Rutas</h2>
+        <div class="empresa-info">
+            <span>Flota: <strong th:text="${empresaNombre != null} ? ${empresaNombre} : 'Nombre de la Empresa'"></strong></span>
+        </div>
 
-                <!-- Mostrar botón 'Activa' si la ruta ya está seleccionada -->
-                <span th:if="${#lists.contains(rutasSeleccionadas, ruta)}">
-                    <button type="button" class="btn-disabled" disabled>Activa</button>
-                </span>
-
-                <!-- Mostrar botón 'Agregar' si la ruta no está seleccionada -->
-                <span th:if="${!#lists.contains(rutasSeleccionadas, ruta)}">
-                    <button type="button" onclick="agregarRuta(this)">Agregar</button>
-                </span>
-            </li>
-        </ul>
+        <form th:action="@{/adminflota/gestor-rutas/guardar}" method="post" onsubmit="seleccionarRutasFinales()">
+            <div class="routes-container">
+                <div class="lista-rutas card">
+                    <div class="card-header">Rutas Disponibles</div>
+                    <div class="card-body">
+                        <div id="rutas-disponibles">
+                            <div class="mensaje-vacio" th:if="${#lists.isEmpty(rutas) || rutas.?[!#lists.contains(rutasSeleccionadas, this)].isEmpty()}">
+                                No hay rutas disponibles
+                            </div>
+                            <div class="route-item" th:each="ruta : ${rutas}" th:if="${!#lists.contains(rutasSeleccionadas, ruta)}" th:attr="data-id=${ruta.id}">
+                                <span th:text="${ruta.origen != null and ruta.destino != null} ? ${ruta.origen.nombre + ' - ' + ruta.destino.nombre + ' (' + ruta.duracionEstimada + ')'} : 'Ruta desconocida'"></span>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="agregarRuta(this)">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rutas-seleccionadas card">
+                    <div class="card-header">Rutas Seleccionadas</div>
+                    <div class="card-body">
+                        <div id="rutas-seleccionadas">
+                            <div class="route-item" th:each="ruta : ${rutasSeleccionadas}" th:attr="data-id=${ruta.id}">
+                                <span th:text="${ruta.origen != null and ruta.destino != null} ? ${ruta.origen.nombre + ' - ' + ruta.destino.nombre + ' (' + ruta.duracionEstimada + ')'} : 'Ruta desconocida'"></span>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="quitarRuta(this)">Quitar</button>
+                                <input type="hidden" name="rutasSeleccionadas" th:value="${ruta.id}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </form>
     </div>
 
-    <div class="rutas-seleccionadas">
-        <h2>Rutas Seleccionadas</h2>
-        <ul id="rutas-seleccionadas">
-            <li th:each="ruta : ${rutasSeleccionadas}" th:attr="data-id=${ruta.id}">
-                <span th:text="${ruta.origen.nombre + ' - ' + ruta.destino.nombre + ' (' + ruta.duracionEstimada + ')'}"></span>
-                <button type="button" onclick="quitarRuta(this)">Quitar</button>
-                <input type="hidden" name="rutasSeleccionadas" th:value="${ruta.id}" />
-            </li>
-        </ul>
-    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center text-md-left mb-3">
+                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
+                    <p class="small">© Voy Contigo</p>
+                </div>
+                <div class="col-md-8 text-center text-md-right">
+                    <div class="footer-links">
+                        <a href="#">Enlaces de interés</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">Mapa del sitio</a>
+                        <a href="#">Política de privacidad</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
 
-    <br style="clear: both;" />
-    <button type="submit">Guardar Cambios</button>
-</form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function agregarRuta(button) {
+            const item = button.closest('.route-item');
+            const id = item.getAttribute('data-id');
+            const texto = item.querySelector('span').textContent;
 
-<script>
-    function agregarRuta(button) {
-        const li = button.closest('li');
-        const id = li.getAttribute('data-id');
-        const texto = li.querySelector('span').textContent;
+            // Animación de salida
+            item.classList.add('exiting');
+            setTimeout(() => {
+                item.remove();
 
-        // 1. Cambiar el botón de "Agregar" a "Activa" en la lista de disponibles
-        li.innerHTML = `
-            <span>${texto}</span>
-            <button type="button" class="btn-disabled" disabled>Activa</button>
-        `;
+                // Crear nuevo item en seleccionadas
+                const nuevaItem = document.createElement('div');
+                nuevaItem.className = 'route-item entering';
+                nuevaItem.setAttribute('data-id', id);
+                nuevaItem.innerHTML = `
+                    <span>${texto}</span>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="quitarRuta(this)">Quitar</button>
+                    <input type="hidden" name="rutasSeleccionadas" value="${id}" />
+                `;
+                document.getElementById('rutas-seleccionadas').appendChild(nuevaItem);
 
-        // 2. Crear nuevo li en la lista de seleccionadas
-        const nuevaLi = document.createElement('li');
-        nuevaLi.setAttribute('data-id', id);
-        nuevaLi.innerHTML = `
-            <span>${texto}</span>
-            <button type="button" onclick="quitarRuta(this)">Quitar</button>
-            <input type="hidden" name="rutasSeleccionadas" value="${id}" />
-        `;
-        document.getElementById('rutas-seleccionadas').appendChild(nuevaLi);
-    }
+                // Remover clase de animación después de que termine
+                setTimeout(() => nuevaItem.classList.remove('entering'), 300);
 
-    function quitarRuta(button) {
-        const li = button.closest('li');
-        const id = li.getAttribute('data-id');
-        const texto = li.querySelector('span').textContent;
-        li.remove();
-
-        // Restaurar ruta en lista de disponibles con botón Agregar
-        const disponibleLi = document.querySelector(`#rutas-disponibles li[data-id="${id}"]`);
-        if (disponibleLi) {
-            disponibleLi.innerHTML = `
-                <span>${texto}</span>
-                <button type="button" onclick="agregarRuta(this)">Agregar</button>
-            `;
+                // Verificar rutas disponibles
+                verificarRutasDisponibles();
+            }, 300);
         }
-    }
 
-    function seleccionarRutasFinales() {
-        // Los inputs ya están generados dinámicamente
-    }
-</script>
+        function quitarRuta(button) {
+            const item = button.closest('.route-item');
+            const id = item.getAttribute('data-id');
+            const texto = item.querySelector('span').textContent;
 
+            // Animación de salida
+            item.classList.add('exiting');
+            setTimeout(() => {
+                item.remove();
+
+                // Restaurar en disponibles
+                const nuevaItem = document.createElement('div');
+                nuevaItem.className = 'route-item entering';
+                nuevaItem.setAttribute('data-id', id);
+                nuevaItem.innerHTML = `
+                    <span>${texto}</span>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="agregarRuta(this)">Agregar</button>
+                `;
+                document.getElementById('rutas-disponibles').appendChild(nuevaItem);
+
+                // Remover clase de animación
+                setTimeout(() => nuevaItem.classList.remove('entering'), 300);
+
+                // Quitar mensaje si estaba
+                const mensaje = document.getElementById('rutas-disponibles').querySelector('.mensaje-vacio');
+                if (mensaje) mensaje.remove();
+            }, 300);
+        }
+
+        function seleccionarRutasFinales() {
+            // No es necesario, los inputs ya están generados
+        }
+
+        function verificarRutasDisponibles() {
+            const lista = document.getElementById('rutas-disponibles');
+            if (!lista.querySelector('.route-item')) {
+                const mensaje = document.createElement('div');
+                mensaje.className = 'mensaje-vacio';
+                mensaje.textContent = 'No hay rutas disponibles';
+                lista.appendChild(mensaje);
+            }
+        }
+    </script>
 </body>
 </html>

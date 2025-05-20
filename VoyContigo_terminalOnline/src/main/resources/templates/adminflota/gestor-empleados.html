@@ -1,185 +1,440 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Empleados</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Empleados - VoyContigo</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
     <style>
+        :root {
+            --primary-dark: #0A5959;
+            --primary-medium: #238C82;
+            --primary-light: #41A677;
+            --accent: #F2BB16;
+            --dark: #0D0D0D;
+            --light-gray: #f5f5f5;
+            --translucent: rgba(3, 41, 24, 0.79);
+        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            background-image: url('/img/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            min-height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
             padding: 20px;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 30px;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ccc;
-        }
-
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        td a {
-            margin-right: 10px;
-            text-decoration: none;
-            color: #007bff;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 20px;
-            width: 90%;
-            max-width: 500px;
+            min-height: calc(100vh - 200px);
+            background: rgba(245, 245, 245, 0.95);
             border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        .page-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary-medium), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
-        button {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
+        .empresa-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .empresa-info span {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        .total-empleados {
+            font-size: 1rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        .btn {
+            position: relative;
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-align: center;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            font-weight: bold;
+            overflow: hidden;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
-
-        button:hover {
-            background-color: #218838;
+        .btn-primary {
+            background: var(--primary-medium);
+            color: #fff;
         }
-
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn-info {
+            background: #17a2b8;
+            color: #fff;
+        }
+        .btn-info:hover {
+            background: #138496;
+        }
+        .btn-success {
+            background: #28a745;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        .btn:active::after {
+            width: 200px;
+            height: 200px;
+            opacity: 0;
+        }
         .btn-open {
-            background-color: #007bff;
+            background: var(--primary-medium);
+            color: #fff;
             position: fixed;
             bottom: 20px;
             right: 20px;
             font-size: 18px;
             padding: 12px 16px;
             border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
+        .btn-open:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .card {
+            background: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            background: linear-gradient(45deg, var(--primary-medium), var(--primary-light));
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+            font-weight: bold;
+            padding: 15px;
+        }
+        .card-body p {
+            margin: 0.5rem 0;
+            color: var(--dark);
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .form-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .form-card .card-header {
+            background: var(--primary-dark);
+        }
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-medium);
+            box-shadow: 0 0 8px rgba(35, 140, 130, 0.2);
+        }
+        .modal-content {
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+            padding: 20px;
+        }
+        .modal {
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
         .close {
-            float: right;
             font-size: 24px;
             font-weight: bold;
             color: #aaa;
             cursor: pointer;
+            float: right;
         }
-
         .close:hover {
-            color: black;
+            color: var(--dark);
+        }
+     
+        .log {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+        .footer-social .social-icon {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.2rem;
+        }
+        .footer-social .social-icon:hover {
+            color: var(--primary-light);
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .empresa-info {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
-    <h1 th:text="'Gestión de empleados - ' + ${empresaNombre}"></h1>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/adminflota/dashboard}">
+                <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" width="150">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/adminflota/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/adminflota/gestor-buses}">Gestor de Buses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/adminflota/gestor-empleados}">Gestionar Empleados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/adminflota/gestor-rutas}">Gestor de Rutas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/adminflota/gestor-viajes}">Gestor de Viajes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Botón abrir modal -->
-    <button class="btn-open" onclick="document.getElementById('crearModal').style.display='block'">+</button>
+    <div class="container main-container">
+        <h2 class="page-title">Gestión de Empleados - <span th:text="${empresaNombre != null} ? ${empresaNombre} : 'Nombre de la Empresa'"></span></h2>
+        <div class="empresa-info">
+            <span>Empresa: <strong th:text="${empresaNombre != null} ? ${empresaNombre} : 'Nombre de la Empresa'"></strong></span>
+        </div>
+        <p class="total-empleados"><strong>Total de empleados registrados:</strong> <span th:text="${trabajadores != null} ? ${#lists.size(trabajadores)} : 0">0</span></p>
+
+        <div class="form-card">
+            <div class="card-header">Registrar Nuevo Empleado</div>
+            <div class="card-body">
+                <button class="btn btn-primary" onclick="document.getElementById('crearModal').style.display='block'">Registrar Nuevo Empleado</button>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card" th:each="trabajador, iterStat : ${trabajadores}" th:style="'animation-delay: ' + ${iterStat.index * 0.1} + 's'">
+                <div class="card-header" th:text="${trabajador.nombre != null and trabajador.apellido != null} ? ${trabajador.nombre + ' ' + trabajador.apellido} : 'Sin Nombre'"></div>
+                <div class="card-body">
+                    <p><strong>Correo:</strong> <span th:text="${trabajador.correo != null} ? ${trabajador.correo} : 'Sin Correo'"></span></p>
+                    <p><strong>Tipo:</strong> <span th:text="${trabajador.tipo != null} ? ${trabajador.tipo} : 'Sin Tipo'"></span></p>
+                    <p><strong>Documentos:</strong></p>
+                    <div>
+                        <a th:href="@{/adminflota/gestor-empleados/ver-documento/contrato/{id}(id=${trabajador.id})}" class="btn btn-sm btn-info">Ver Contrato</a>
+                        <a th:if="${trabajador.tipo == 'chofer'}" th:href="@{/adminflota/gestor-empleados/ver-documento/licencia/{id}(id=${trabajador.id})}" class="btn btn-sm btn-info" target="_blank">Ver Licencia</a>
+                    </div>
+                    <div class="mt-2">
+                        <a th:href="@{/adminflota/gestor-empleados/editar/{id}(id=${trabajador.id})}" class="btn btn-sm btn-warning">Editar</a>
+                        <a th:href="@{/adminflota/gestor-empleados/eliminar/{id}(id=${trabajador.id})}" class="btn btn-sm btn-danger">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card mensaje-vacio" th:if="${trabajadores == null or #lists.isEmpty(trabajadores)}">
+                <div class="card-body">
+                    <p>No hay empleados registrados.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal Crear -->
     <div id="crearModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="document.getElementById('crearModal').style.display='none'">&times;</span>
+            <span class="close" onclick="document.getElementById('crearModal').style.display='none'">×</span>
             <h2>Nuevo Empleado</h2>
             <form th:action="@{/adminflota/gestor-empleados/crear}" method="POST" enctype="multipart/form-data">
-                <input type="text" name="nombre" placeholder="Nombre" required>
-                <input type="text" name="apellido" placeholder="Apellido" required>
-                <input type="email" name="correo" placeholder="Correo" required>
-                <input type="text" name="arl" placeholder="ARL" required>
-                <select name="tipoDocumento" required>
-                    <option value="">Tipo de documento</option>
-                    <option value="CC">CC</option>
-                    <option value="CE">CE</option>
-                </select>
-                <input type="text" name="numeroDocumento" placeholder="Número de Documento" required>
-                <input type="password" name="contrasena" placeholder="Contraseña" required>
-
-                <select name="tipo" id="tipo" onchange="mostrarLicencia()" required>
-                    <option value="">Tipo de trabajador</option>
-                    <option value="chofer">Chofer</option>
-                    <option value="taquillero">Taquillero</option>
-                </select>
-
-                <label>Contrato (PDF):</label>
-                <input type="file" name="contrato" accept="application/pdf" required>
-
-                <div id="licenciaDiv" style="display:none;">
-                    <label>Licencia (PDF):</label>
-                    <input type="file" name="licencia" accept="application/pdf">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre" required>
                 </div>
-
-                <button type="submit">Guardar</button>
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo</label>
+                    <input type="email" id="correo" name="correo" class="form-control" placeholder="Correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="arl">ARL</label>
+                    <input type="text" id="arl" name="arl" class="form-control" placeholder="ARL" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipoDocumento">Tipo de Documento</label>
+                    <select id="tipoDocumento" name="tipoDocumento" class="form-control" required>
+                        <option value="" disabled selected>Tipo de documento</option>
+                        <option value="CC">CC</option>
+                        <option value="CE">CE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="numeroDocumento">Número de Documento</label>
+                    <input type="text" id="numeroDocumento" name="numeroDocumento" class="form-control" placeholder="Número de Documento" required>
+                </div>
+                <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="password" id="contrasena" name="contrasena" class="form-control" placeholder="Contraseña" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Tipo de Trabajador</label>
+                    <select id="tipo" name="tipo" class="form-control" onchange="mostrarLicencia()" required>
+                        <option value="" disabled selected>Tipo de trabajador</option>
+                        <option value="chofer">Chofer</option>
+                        <option value="taquillero">Taquillero</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contrato">Contrato (PDF)</label>
+                    <input type="file" id="contrato" name="contrato" class="form-control" accept="application/pdf" required>
+                </div>
+                <div id="licenciaDiv" style="display:none;" class="form-group">
+                    <label for="licencia">Licencia (PDF)</label>
+                    <input type="file" id="licencia" name="licencia" class="form-control" accept="application/pdf">
+                </div>
+                <button type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
     </div>
 
-    <!-- Lista de empleados -->
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Tipo</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="trabajador : ${trabajadores}">
-                <td th:text="${trabajador.nombre} + ' ' + ${trabajador.apellido}"></td>
-                <td th:text="${trabajador.correo}"></td>
-                <td th:text="${trabajador.tipo}"></td>
-				<td>
-					<a th:href="@{'/adminflota/gestor-empleados/ver-documento/' + ${'contrato'} + '/' + ${trabajador.id}}">Ver Contrato</a>
-				    <span th:if="${trabajador.tipo == 'chofer'}">
-				        | <a th:href="@{'/adminflota/gestor-empleados/ver-documento/licencia/' + ${trabajador.id}}" target="_blank">Ver Licencia</a>
-				    </span>
-				</td>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center text-md-left mb-3">
+                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
+                    <p class="small">© Voy Contigo</p>
+                </div>
+                <div class="col-md-8 text-center text-md-right">
+                    <div class="footer-links">
+                        <a href="#">Enlaces de interés</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">Mapa del sitio</a>
+                        <a href="#">Política de privacidad</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
 
-                <td>
-                    <a th:href="@{'/adminflota/gestor-empleados/editar/' + ${trabajador.id}}">Editar</a>
-                    <a th:href="@{'/adminflota/gestor-empleados/eliminar/' + ${trabajador.id}}">Eliminar</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script>
         function mostrarLicencia() {
             const tipo = document.getElementById('tipo').value;
-            document.getElementById('licenciaDiv').style.display = (tipo === 'chofer') ? 'block' : 'none';
+            document.getElementById('licenciaDiv').style.display = tipo === 'chofer' ? 'block' : 'none';
         }
     </script>
 </body>
