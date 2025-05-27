@@ -59,10 +59,12 @@ import com.itextpdf.text.Chunk;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/admin/clientes")
+@RequestMapping("/user/clientes")
 public class ClientesController {
 
     @Autowired
@@ -102,7 +104,7 @@ public class ClientesController {
     @GetMapping
     public String listarClientes(Model model, HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         List<Cliente> clientes = clienteRepository.findAll();
         model.addAttribute("clientes", clientes);
@@ -113,10 +115,10 @@ public class ClientesController {
     @GetMapping("/detalles/{id}")
     public String verDetallesCliente(@PathVariable("id") String id, Model model, HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         if (!id.equals(session.getAttribute("clienteLoggedIn"))) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado: " + id));
@@ -130,10 +132,10 @@ public class ClientesController {
     @GetMapping("/porfile/{id}")
     public String verDetallesClienteOne(@PathVariable("id") String id, Model model, HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         if (!id.equals(session.getAttribute("clienteLoggedIn"))) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado: " + id));
@@ -147,10 +149,10 @@ public class ClientesController {
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable("id") String id, Model model, HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         if (!id.equals(session.getAttribute("clienteLoggedIn"))) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado: " + id));
@@ -163,10 +165,10 @@ public class ClientesController {
     public String actualizarCliente(@PathVariable("id") String id, @ModelAttribute("cliente") Cliente cliente,
                                     @RequestParam("fotoFile") MultipartFile fotoFile, Model model, HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         if (!id.equals(session.getAttribute("clienteLoggedIn"))) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         try {
             Cliente existingCliente = clienteRepository.findById(id)
@@ -184,7 +186,7 @@ public class ClientesController {
             }
 
             clienteRepository.save(existingCliente);
-            return "redirect:/admin/clientes/porfile/" + id;
+            return "redirect:/user/clientes/porfile/" + id;
         } catch (MaxUploadSizeExceededException e) {
             model.addAttribute("error", "El archivo excede el tamaño máximo permitido de 10MB");
             model.addAttribute("cliente", cliente);
@@ -214,9 +216,9 @@ public class ClientesController {
         Cliente cliente = clienteRepository.findByCorreo(correo);
         if (cliente != null && contrasena.equals(cliente.getContrasena())) {
             session.setAttribute("clienteLoggedIn", cliente.getId());
-            return "redirect:/admin/clientes/dashboard?id=" + cliente.getId();
+            return "redirect:/user/clientes/dashboard?id=" + cliente.getId();
         }
-        return "redirect:/admin/clientes/loginclientes?error";
+        return "redirect:/user/clientes/loginclientes?error";
     }
 
     // Mostrar página de registro
@@ -237,9 +239,9 @@ public class ClientesController {
                 cliente.setFotoFileID(fotoFileId);
             }
             clienteRepository.save(cliente);
-            return "redirect:/admin/clientes/loginclientes?registered";
+            return "redirect:/user/clientes/loginclientes?registered";
         } catch (MaxUploadSizeExceededException e) {
-            return "redirect:/admin/clientes/register?fileSizeError";
+            return "redirect:/user/clientes/register?fileSizeError";
         }
     }
 
@@ -247,10 +249,10 @@ public class ClientesController {
     @GetMapping("/dashboard")
     public String showDashboard(@RequestParam("id") String id, Model model, HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         if (!id.equals(session.getAttribute("clienteLoggedIn"))) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado: " + id));
@@ -267,11 +269,11 @@ public class ClientesController {
     @GetMapping("/foto/{id}")
     public void obtenerFotoCliente(@PathVariable("id") String id, HttpServletResponse response, HttpSession session) throws IOException {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            response.sendRedirect("/admin/clientes/loginclientes");
+            response.sendRedirect("/user/clientes/loginclientes");
             return;
         }
         if (!id.equals(session.getAttribute("clienteLoggedIn"))) {
-            response.sendRedirect("/admin/clientes/loginclientes");
+            response.sendRedirect("/user/clientes/loginclientes");
             return;
         }
         Cliente cliente = clienteRepository.findById(id)
@@ -309,10 +311,10 @@ public class ClientesController {
     @GetMapping("/pqr/crear")
     public String mostrarFormularioPqr(@RequestParam("id") String id, Model model, HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         if (!id.equals(session.getAttribute("clienteLoggedIn"))) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado: " + id));
@@ -325,10 +327,10 @@ public class ClientesController {
     @PostMapping("/pqr/crear")
     public String crearPqr(@RequestParam("id") String id, @ModelAttribute("pqr") Pqrs pqr, Model model, HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         if (!id.equals(session.getAttribute("clienteLoggedIn"))) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado: " + id));
@@ -337,7 +339,7 @@ public class ClientesController {
         pqr.setEstado("Abierto");
         pqr.setRespuesta("");
         pqrsRepository.save(pqr);
-        return "redirect:/admin/clientes/dashboard?id=" + id;
+        return "redirect:/user/clientes/dashboard?id=" + id;
     }
 
     // Mostrar página de información del ticket
@@ -346,10 +348,10 @@ public class ClientesController {
                                  @RequestParam("clienteId") String clienteId,
                                  Model model, HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         if (!clienteId.equals(session.getAttribute("clienteLoggedIn"))) {
-            return "redirect:/admin/clientes/loginclientes";
+            return "redirect:/user/clientes/loginclientes";
         }
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado: " + clienteId));
@@ -397,10 +399,10 @@ public class ClientesController {
                                                   @RequestParam("clienteId") String clienteId,
                                                   HttpSession session) {
         if (session.getAttribute("clienteLoggedIn") == null) {
-            return ResponseEntity.status(302).header("Location", "/admin/clientes/loginclientes").build();
+            return ResponseEntity.status(302).header("Location", "/user/clientes/loginclientes").build();
         }
         if (!clienteId.equals(session.getAttribute("clienteLoggedIn"))) {
-            return ResponseEntity.status(302).header("Location", "/admin/clientes/loginclientes").build();
+            return ResponseEntity.status(302).header("Location", "/user/clientes/loginclientes").build();
         }
 
         Cliente cliente = clienteRepository.findById(clienteId)
@@ -438,7 +440,55 @@ public class ClientesController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/admin/clientes/loginclientes";
+        return "redirect:/user/clientes/loginclientes";
+    }
+    // Procesar la compra de tickets
+    @PostMapping("/viajes/comprar")
+    public String comprarViaje(@RequestParam("viajeId") String viajeId,
+                               @RequestParam("clienteId") String clienteId,
+                               @RequestParam("asientos") List<Integer> asientos,
+                               Model model) {
+        // Validar clienteId
+        if (clienteId == null || clienteId.trim().isEmpty()) {
+            model.addAttribute("error", "Debes iniciar sesión para comprar un ticket.");
+            return "redirect:/admin/clientes/loginclientes";
+        }
+
+        // Verificar si el cliente existe
+        Cliente cliente = clienteRepository.findById(clienteId).orElse(null);
+        if (cliente == null) {
+            model.addAttribute("error", "Cliente no encontrado con ID: " + clienteId);
+            Viaje viaje = viajeRepository.findById(viajeId)
+                    .orElseThrow(() -> new IllegalArgumentException("Viaje no encontrado: " + viajeId));
+            Integer capacidadBus = viaje.getBus() != null ? viaje.getBus().getCapacidad() : 0;
+            List<Integer> asientosOcupados = ticketRepository.findByAsignacionId(viajeId)
+                    .stream()
+                    .map(Ticket::getAsiento)
+                    .collect(Collectors.toList());
+            model.addAttribute("viaje", viaje);
+            model.addAttribute("capacidadBus", capacidadBus);
+            model.addAttribute("asientosOcupados", asientosOcupados);
+            model.addAttribute("usuarioNombre", "Invitado");
+            model.addAttribute("usuarioCorreo", "");
+            model.addAttribute("clienteId", "");
+            return "clientes/detalles-viaje";
+        }
+
+        // Verificar el viaje
+        Viaje viaje = viajeRepository.findById(viajeId)
+                .orElseThrow(() -> new IllegalArgumentException("Viaje no encontrado: " + viajeId));
+
+        // Crear un ticket por cada asiento seleccionado
+        for (Integer asiento : asientos) {
+            Ticket ticket = new Ticket();
+            ticket.setClienteId(clienteId);
+            ticket.setAsignacionId(viajeId);
+            ticket.setAsiento(asiento);
+            ticket.setFechaCompra(LocalDateTime.now().toString());
+            ticketRepository.save(ticket);
+        }
+
+        return "redirect:/user/clientes/dashboard?id=" + clienteId;
     }
 
     // Clase interna para generar PDF

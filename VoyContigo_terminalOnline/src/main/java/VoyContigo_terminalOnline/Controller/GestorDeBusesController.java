@@ -29,37 +29,6 @@ public class GestorDeBusesController {
     
 
 
-    // Método para registrar un nuevo bus
-    @PostMapping("/new-bus")
-    public String registerBus(@RequestParam("placa") String placa,
-                              @RequestParam("modelo") String modelo,
-                              @RequestParam("capacidad") int capacidad,
-                              HttpSession session,
-                              Model model) {
-        // Recuperar el admin de la sesión
-        AdminFlota admin = (AdminFlota) session.getAttribute("adminFlota");
-        if (admin == null || admin.getFlota() == null) {
-            model.addAttribute("error", "No se pudo identificar la empresa del administrador.");
-            return "redirect:/login-adminflota";
-        }
-
-        // Obtener el ID de la flota
-        String flotaId = admin.getFlota().getId();
-
-        // Imprimir el ID de la flota en la consola
-        System.out.println("Flota ID: " + flotaId);  // Imprime el ID de la flota en la consola
-
-        // Crear y guardar el bus con la flota asociada
-        Bus bus = new Bus();
-        bus.setPlaca(placa);
-        bus.setModelo(modelo);
-        bus.setCapacidad(capacidad);
-        bus.setFlota(admin.getFlota()); // Asignamos directamente el objeto Flota
-
-        busRepository.save(bus);
-        return "redirect:/adminflota/gestor-buses";
-    }
-
 
 
 

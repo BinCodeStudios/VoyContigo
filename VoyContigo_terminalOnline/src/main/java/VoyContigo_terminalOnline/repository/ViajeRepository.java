@@ -1,8 +1,12 @@
 package VoyContigo_terminalOnline.repository;
 
+import VoyContigo_terminalOnline.entity.Bus;
+import VoyContigo_terminalOnline.entity.Trabajador;
 import VoyContigo_terminalOnline.entity.Viaje;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -34,4 +38,13 @@ public interface ViajeRepository extends MongoRepository<Viaje, String> {
 
     // Método heredado de MongoRepository para buscar múltiples IDs
     List<Viaje> findAllById(Iterable<String> ids);
+    
+    List<Viaje> findByChoferAndFechaSalidaBetween(Trabajador chofer, LocalDateTime inicio, LocalDateTime fin);
+    List<Viaje> findByBusIdAndFechaSalidaBetween(String busId, LocalDateTime inicio, LocalDateTime fin);
+    List<Viaje> findByBus_IdAndFechaSalidaBetween(String busId, Date inicio, Date fin);
+    List<Viaje> findByBus_Id(String busId);
+
+    List<Viaje> findByChoferId(String choferId);
+
+
 }

@@ -185,7 +185,7 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light">
 	      <div class="container">
-	          <a class="navbar-brand" th:href="@{/admin/clientes/dashboard(id=${cliente.id})}">
+	          <a class="navbar-brand" th:href="@{/user/clientes/dashboard(id=${cliente.id})}">
 	              <img src="/img/VoyContigoLogo.png" alt="Voy Contigo">
 	          </a>
 	          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -194,19 +194,19 @@
 	          <div class="collapse navbar-collapse" id="navbarNav">
 	              <ul class="navbar-nav ml-auto">
 	                  <li class="nav-item">
-	                      <a class="nav-link" th:href="@{/admin/clientes/dashboard(id=${cliente.id})}">Dashboard</a>
+	                      <a class="nav-link" th:href="@{/user/clientes/dashboard(id=${cliente.id})}">Dashboard</a>
 	                  </li>
 	                  <li class="nav-item">
 	                      <a class="nav-link" th:href="@{/clientes/viajes/buscar(clienteId=${cliente.id})}">Buscar Viajes</a>
 	                  </li>
 	                  <li class="nav-item">
-	                      <a class="nav-link" th:href="@{/admin/clientes/pqr/crear(id=${cliente.id})}">Crear PQR</a>
+	                      <a class="nav-link" th:href="@{/user/clientes/pqr/crear(id=${cliente.id})}">Crear PQR</a>
 	                  </li>
 	                  <li class="nav-item">
-	                      <a class="nav-link" th:href="@{/admin/clientes/porfile/{id}(id=${cliente.id})}">Ver Perfil</a>
+	                      <a class="nav-link" th:href="@{/user/clientes/porfile/{id}(id=${cliente.id})}">Ver Perfil</a>
 	                  </li>
 	                  <li class="nav-item">
-	                      <a class="nav-link" th:href="@{/admin/clientes/loginclientes}">Cerrar Sesión</a>
+	                      <a class="nav-link" th:href="@{/user/clientes/loginclientes}">Cerrar Sesión</a>
 	                  </li>
 	              </ul>
 	          </div>
@@ -216,14 +216,14 @@
         <div class="card">
             <div class="card-header">Mi Perfil</div>
             <div class="card-body">
-                <img th:src="@{'/admin/clientes/foto/' + ${cliente.id}}" alt="Foto del Cliente" class="cliente-foto"/>
+                <img th:src="@{'/user/clientes/foto/' + ${cliente.id}}" alt="Foto del Cliente" class="cliente-foto"/>
                 <div class="detalles">
                     <p><strong>Nombre Completo:</strong> <span th:text="${cliente.nombreCompleto}"></span></p>
                     <p><strong>Correo:</strong> <span th:text="${cliente.correo}"></span></p>
                     <p><strong>Contraseña:</strong> ******</p>
                     <p><strong>PQRs registrados:</strong> <span th:text="${pqrsCount}"></span></p>
-                    <a th:href="@{'/admin/clientes/editar/' + ${cliente.id}}" class="btn btn-primary">Editar Datos Personales</a>
-                    <a th:href="@{'/admin/clientes/dashboard?id=' + ${cliente.id}}" class="btn btn-back">Volver al Dashboard</a>
+                    <a th:href="@{'/user/clientes/editar/' + ${cliente.id}}" class="btn btn-primary">Editar Datos Personales</a>
+                    <a th:href="@{'/user/clientes/dashboard?id=' + ${cliente.id}}" class="btn btn-back">Volver al Dashboard</a>
                 </div>
             </div>
         </div>

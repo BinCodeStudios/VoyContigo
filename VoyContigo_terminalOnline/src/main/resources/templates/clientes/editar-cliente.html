@@ -84,7 +84,7 @@
 <body>
 <div class="container">
     <h1>Editar Cliente</h1>
-    <form th:action="@{/admin/clientes/editar/{id}(id=${cliente.id})}" th:object="${cliente}" method="POST" enctype="multipart/form-data" onsubmit="return confirm('¿Confirma la edición de sus datos personales?');">
+    <form th:action="@{/user/clientes/editar/{id}(id=${cliente.id})}" th:object="${cliente}" method="POST" enctype="multipart/form-data" onsubmit="return confirm('¿Confirma la edición de sus datos personales?');">
         <div th:if="${error}" class="error" th:text="${error}"></div>
         <label for="nombreCompleto">Nombre Completo:</label>
         <input type="text" id="nombreCompleto" th:field="*{nombreCompleto}" required/>
@@ -101,7 +101,7 @@
 
         <button type="submit">Actualizar Datos</button>
     </form>
-    <a th:href="@{'/admin/clientes/porfile/' + ${cliente.id}}" class="back-link">Volver al Perfil</a>
+    <a th:href="@{'/user/clientes/porfile/' + ${cliente.id}}" class="back-link">Volver al Perfil</a>
 </div>
 <script>
     // Mostrar alerta de confirmación

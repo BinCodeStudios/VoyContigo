@@ -23,6 +23,9 @@ public class Viaje {
 
     @DBRef
     private OrigenDestino origen;
+    
+    @DBRef
+    private Trabajador chofer;
 
     @DBRef
     private OrigenDestino destino;

@@ -15,7 +15,7 @@
                 Bienvenido, <span th:text="${usuarioNombre}"></span> (<span th:text="${usuarioCorreo}"></span>)
             </p>
             <p th:if="${usuarioNombre == 'Invitado'}" class="text-lg font-semibold">
-                <a th:href="@{/admin/clientes/loginclientes}" class="text-blue-600 hover:underline">Iniciar sesión</a>
+                <a th:href="@{/user/clientes/loginclientes}" class="text-blue-600 hover:underline">Iniciar sesión</a>
             </p>
         </div>
     </div>

@@ -33,19 +33,61 @@
             margin: 0;
             font-family: Arial, sans-serif;
         }
-        .pqr-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-            min-height: calc(100vh - 200px); /* Adjust for navbar and footer */
-        }
-        .pqr-title {
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--dark);
-            font-size: 2rem;
-            font-weight: bold;
-        }
+		.pqr-list {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 20px;
+		}
+
+		.pqr-card-full {
+		    width: 100%;
+		    background: white;
+		    border: 1px solid #ddd;
+		    border-left: 6px solid var(--primary-medium);
+		    border-radius: 10px;
+		    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+		    transition: box-shadow 0.3s ease;
+		}
+
+		.pqr-card-full:hover {
+		    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+		}
+
+		.pqr-card-full .card-body {
+		    padding: 25px 30px;
+		}
+
+		.card-header-section {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    margin-bottom: 15px;
+		}
+
+		.pqr-id {
+		    font-size: 1.3rem;
+		    font-weight: 600;
+		    color: var(--primary-dark);
+		}
+
+		.pqr-info {
+		    display: grid;
+		    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		    gap: 12px 20px;
+		    font-size: 0.98rem;
+		}
+
+		.pqr-info div {
+		    line-height: 1.5;
+		    color: var(--dark);
+		}
+
+		.pqr-info strong {
+		    font-weight: 600;
+		    color: var(--primary-dark);
+		    margin-right: 6px;
+		}
+
         .btn-back {
             display: inline-block;
             margin-bottom: 20px;
@@ -60,42 +102,7 @@
         .btn-back:hover {
             background: var(--primary-dark);
         }
-        .pqr-card {
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            background: rgba(245, 245, 245, 0.95); /* Usando --light-gray con opacidad */
-        }
-        .pqr-card .card-body {
-            padding: 20px;
-        }
-        .pqr-card .card-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--dark);
-        }
-        .pqr-card p {
-            margin: 5px 0;
-            font-size: 1rem;
-        }
-        .pqr-card strong {
-            color: var(--dark);
-            display: inline-block;
-            width: 120px;
-            font-weight: 500;
-        }
-        .pqr-card .btn-primary {
-            background: var(--primary-medium);
-            border: none;
-            border-radius: 6px;
-            padding: 8px 16px;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
-        .pqr-card .btn-primary:hover {
-            background: var(--primary-dark);
-        }
+
     
         .log {
             max-width: 150px;
@@ -164,27 +171,29 @@
         </div>
     </nav>
 
-    <!-- Contenido Principal -->
-    <div class="container pqr-container">
-        <h1 class="pqr-title">Lista de PQRs</h1>
-        <a th:href="@{/admin/dashboard}" class="btn btn-back">Volver al Dashboard</a>
-        <div class="row">
-            <div th:each="pqr : ${pqrs}" class="col-md-4">
-                <div class="card pqr-card">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${pqr.id}"></h5>
-                        <p><strong>Cliente:</strong> <span th:text="${pqr.cliente?.nombreCompleto} ?: 'Sin cliente'"></span></p>
-                        <p><strong>Tipo:</strong> <span th:text="${pqr.tipo}"></span></p>
-                        <p><strong>Mensaje:</strong> <span th:text="${pqr.mensaje}"></span></p>
-                        <p><strong>Fecha:</strong> <span th:text="${pqr.fecha}"></span></p>
-                        <p><strong>Estado:</strong> <span th:text="${pqr.estado}"></span></p>
-                        <a th:href="@{/admin/pqrs/responder/{id}(id=${pqr.id})}" class="btn btn-primary">Responder</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<!-- Contenido Principal -->
+	<div class="container pqr-container">
+	    <h1 class="pqr-title">Lista de PQRs</h1>
+	    <a th:href="@{/admin/dashboard}" class="btn btn-back">Volver al Dashboard</a>
 
+	    <div class="pqr-list">
+	        <div th:each="pqr : ${pqrs}" class="card pqr-card-full">
+	            <div class="card-body">
+	                <div class="card-header-section">
+	                    <h5 class="pqr-id" th:text="'PQR #' + ${pqr.id}"></h5>
+	                    <a a th:href="@{/admin/pqrs/responder/{id}(id=${pqr.id})}" class="btn btn-primary">Responder</a>
+	                </div>
+	                <div class="pqr-info">
+	                    <div><strong>Cliente:</strong> <span th:text="${pqr.cliente?.nombreCompleto} ?: 'Sin cliente'"></span></div>
+	                    <div><strong>Tipo:</strong> <span th:text="${pqr.tipo}"></span></div>
+	                    <div><strong>Mensaje:</strong> <span th:text="${pqr.mensaje}"></span></div>
+	                    <div><strong>Fecha:</strong> <span th:text="${pqr.fecha}"></span></div>
+	                    <div><strong>Estado:</strong> <span th:text="${pqr.estado}"></span></div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
     <!-- Footer -->
     <footer>
         <div class="container">

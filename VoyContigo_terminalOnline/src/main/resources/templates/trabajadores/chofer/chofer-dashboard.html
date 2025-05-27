@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Chofer - VoyContigo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img/VoyContigoLogo.png" alt="Voy Contigo">
+            </a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-link" href="/trabajadores/logout">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+	<section class="container mt-5">
+	    <h2>Bienvenido, <span th:text="${nombre}">Chofer</span></h2>
+	    <p>Este es tu panel de control. Aquí puedes ver tus rutas asignadas, tu bus y gestionar tus viajes.</p>
+
+	    <!-- Información de los Viajes Asignados -->
+	    <div class="card mb-4" th:if="${viajesAsignados != null and !viajesAsignados.isEmpty()}">
+	        <div class="card-header bg-primary text-white">
+	            Viajes Asignados para Hoy
+	        </div>
+	        <div class="card-body">
+	            <div th:each="viaje : ${viajesAsignados}">
+	                <p><strong>Ruta:</strong> <span th:text="${viaje.origen.nombre} + ' → ' + ${viaje.destino.nombre}">Nombre de la Ruta</span></p>
+	                <p><strong>Hora de salida:</strong> <span th:text="${#temporals.format(viaje.fechaSalida, 'HH:mm')}">00:00</span></p>
+	                <p><strong>Hora estimada llegada:</strong> <span th:text="${#temporals.format(viaje.fechaLlegadaEstimada, 'HH:mm')}">00:00</span></p>
+	                <hr/>
+	            </div>
+	        </div>
+	    </div>
+
+	    <div class="card mb-4" th:if="${viajesAsignados == null or viajesAsignados.isEmpty()}">
+	        <div class="card-header bg-primary text-white">
+	            Viajes Asignados para Hoy
+	        </div>
+	        <div class="card-body">
+	            <p>No tienes viajes asignados para hoy.</p>
+	        </div>
+	    </div>
+
+	    <!-- Información del Bus Asignado -->
+	    <div class="card mb-4" th:if="${bus != null}">
+	        <div class="card-header bg-info text-white">
+	            Bus Asignado
+	        </div>
+	        <div class="card-body">
+	            <p><strong>Placa:</strong> <span th:text="${bus.placa}">ABC-123</span></p>
+	            <p><strong>Modelo:</strong> <span th:text="${bus.modelo}">Mercedes-Benz</span></p>
+	            <p><strong>Capacidad:</strong> <span th:text="${bus.capacidad}">40 pasajeros</span></p>
+	        </div>
+	    </div>
+
+	    <div class="card mb-4" th:if="${bus == null}">
+	        <div class="card-header bg-info text-white">
+	            Bus Asignado
+	        </div>
+	        <div class="card-body">
+	            <p>No hay bus asignado actualmente.</p>
+	        </div>
+	    </div>
+
+	    <!-- Botones para gestionar viajes -->
+	    <div class="text-center">
+	        <a href="/chofer/iniciar-viaje" class="btn btn-success mb-2">
+	            <i class="fas fa-play"></i> Iniciar Viaje
+	        </a>
+	        <a href="/chofer/finalizar-viaje" class="btn btn-danger mb-2">
+	            <i class="fas fa-stop"></i> Finalizar Viaje
+	        </a>
+	        <a href="/chofer/reportar-problema" class="btn btn-warning mb-2">
+	            <i class="fas fa-exclamation-triangle"></i> Reportar Problema
+	        </a>
+			<a href="/trabajadores/chofer/viaje/pdf" class="btn btn-secondary" target="_blank">
+			    <i class="fas fa-file-pdf"></i> Descargar Detalle del Viaje
+			</a>
+
+
+	    </div>
+	</section>
+
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+</html>

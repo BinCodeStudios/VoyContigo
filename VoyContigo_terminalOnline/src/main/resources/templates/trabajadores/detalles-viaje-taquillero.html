@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Viaje - VoyContigo</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <style>
+        /* Estilos para formulario y asientos */
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .asiento-label {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 4px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        .asiento-label.available {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        .asiento-label.occupied {
+            background-color: #dc3545;
+            color: white;
+            cursor: not-allowed;
+        }
+        .asiento-checkbox:checked + .asiento-label.available {
+            background-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .asiento-label {
+                width: 35px;
+                height: 35px;
+                line-height: 35px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/admin/dashboard}">
+                <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <span class="nav-link" th:text="'Bienvenido, ' + ${nombre}"></span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/trabajadores/taquillero/dashboard}">Ver Tickets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/trabajadores/taquillero/clientes}">Ver Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/trabajadores/taquillero/agregar-ticket}">Agregar Ticket</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" th:href="@{/trabajadores/logout}">Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="dashboard-section">
+        <div class="container">
+            <h1 class="dashboard-title text-center mt-4">Selección de Viaje</h1>
+
+            <!-- Mensaje de Error -->
+            <div th:if="${error}" class="alert alert-danger mt-4" role="alert">
+                <span th:text="${error}"></span>
+            </div>
+
+            <!-- Información del Viaje -->
+            <div class="mt-5">
+                <h2 class="text-center mb-4">Información del Trayecto</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${viaje.origen?.nombre} + ' - ' + ${viaje.destino?.nombre}"></h5>
+                        <p class="card-text" th:text="'Flota: ' + ${viaje.flota?.nombre ?: 'N/A'}"></p>
+                        <p class="card-text" th:text="'Salida: ' + ${viaje.fechaSalida ?: 'N/A'}"></p>
+                        <p class="card-text" th:text="'Llegada: ' + ${viaje.fechaLlegadaEstimada ?: 'N/A'}"></p>
+                        <p class="card-text" th:text="'Precio por asiento: $' + ${viaje.ruta?.precio ?: 0}"></p>
+                        <div class="mt-2">
+                            <p class="font-weight-bold">Servicios:</p>
+                            <ul class="list-inline">
+                                <li class="list-inline-item" th:if="${viaje.bus?.modelo != null and viaje.bus?.modelo.contains('WiFi')}">WiFi</li>
+                                <li class="list-inline-item" th:if="${viaje.bus?.modelo != null and viaje.bus?.modelo.contains('TV')}">Televisión</li>
+                                <li class="list-inline-item" th:if="${viaje.bus?.modelo != null and viaje.bus?.modelo.contains('AC')}">Aire Acondicionado</li>
+                                <li class="list-inline-item" th:if="${viaje.bus?.modelo != null and viaje.bus?.modelo.contains('Camas')}">Camas Reclinables</li>
+                                <li class="list-inline-item" th:if="${viaje.bus?.modelo != null and viaje.bus?.modelo.contains('Baño')}">Baño</li>
+                                <li class="list-inline-item" th:unless="${viaje.bus?.modelo != null and (viaje.bus?.modelo.contains('WiFi') or viaje.bus?.modelo.contains('TV') or viaje.bus?.modelo.contains('AC') or viaje.bus?.modelo.contains('Camas') or viaje.bus?.modelo.contains('Baño'))}">Ninguno</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selección de Asientos -->
+            <div class="mt-5">
+                <h2 class="text-center mb-4">Seleccionar Asientos</h2>
+                <form id="compraForm" th:action="@{/trabajadores/taquillero/agregar-ticket}" method="post" class="card">
+                    <div class="card-body">
+                        <input type="hidden" name="viajeId" th:value="${viaje?.id}">
+                        <input type="hidden" name="clienteId" th:value="${clienteId}">
+                        <div class="row">
+                            <div th:each="i : ${#numbers.sequence(1, capacidadBus)}" class="col-3 col-md-2 text-center mb-3">
+                                <input type="checkbox" 
+                                       th:id="'asiento-' + ${i}" 
+                                       name="asientos" 
+                                       th:value="${i}" 
+                                       th:disabled="${asientosOcupados != null and asientosOcupados.contains(i)}"
+                                       class="asiento-checkbox hidden">
+                                <label th:for="'asiento-' + ${i}" 
+                                       th:class="${asientosOcupados != null and asientosOcupados.contains(i)} ? 'asiento-label occupied' : 'asiento-label available'"
+                                       th:text="${i}"></label>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="font-weight-bold">Asientos seleccionados: <span id="asientosSeleccionados">Ninguno</span></p>
+                            <p class="font-weight-bold">Total: $<span id="totalPrecio">0</span></p>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4">Confirmar Ticket</button>
+                    </div>
+                </form>
+            </div>
+
+            <script th:inline="javascript">
+            /*<![CDATA[*/
+                const checkboxes = document.querySelectorAll('.asiento-checkbox');
+                const asientosSeleccionados = document.getElementById('asientosSeleccionados');
+                const totalPrecio = document.getElementById('totalPrecio');
+                const precioPorAsiento = /*[[${viaje.ruta?.precio ?: 0}]]*/ 0;
+
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateSelection);
+                });
+
+                function updateSelection() {
+                    const selected = Array.from(checkboxes)
+                        .filter(cb => cb.checked)
+                        .map(cb => cb.value);
+                    asientosSeleccionados.textContent = selected.join(', ') || 'Ninguno';
+                    totalPrecio.textContent = (selected.length * precioPorAsiento).toFixed(2);
+                }
+            /*]]>*/
+            </script>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center text-md-left mb-3">
+                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
+                    <p class="small">© Voy Contigo</p>
+                </div>
+                <div class="col-md-8 text-center text-md-right">
+                    <div class="footer-links">
+                        <a href="#">Enlaces de interés</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">Mapa del sitio</a>
+                        <a href="#">Política de privacidad</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 4 JS Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+</html>

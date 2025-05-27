@@ -108,6 +108,25 @@ public class GestorDeEmpleadosController {
         trabajadorRepository.save(trabajador);
         return "redirect:/adminflota/gestor-empleados";
     }
+    @GetMapping("/adminflota/gestor-empleados/editar/{id}")
+    public String editarTrabajador(@PathVariable("id") String id, Model model, HttpSession session) {
+        AdminFlota admin = (AdminFlota) session.getAttribute("adminFlota");
+        if (admin == null || admin.getFlota() == null) {
+            return "redirect:/login-adminflota";
+        }
+
+        Trabajador trabajador = trabajadorRepository.findById(id).orElse(null);
+        if (trabajador == null) {
+            return "redirect:/adminflota/gestor-empleados";
+        }
+
+        model.addAttribute("empresaNombre", admin.getFlota().getNombre());
+        model.addAttribute("trabajador", trabajador); // datos cargados
+        model.addAttribute("modoEdicion", true);
+        model.addAttribute("trabajadores", trabajadorRepository.findByFlotaId(admin.getFlota().getId()));
+
+        return "adminflota/gestor-empleados";
+    }
 
     @PostMapping("/adminflota/gestor-empleados/actualizar")
     public String actualizarTrabajador(@RequestParam("id") String id,

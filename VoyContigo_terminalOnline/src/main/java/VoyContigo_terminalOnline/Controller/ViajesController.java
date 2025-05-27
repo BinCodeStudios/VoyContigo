@@ -192,6 +192,6 @@ public class ViajesController {
             ticketRepository.save(ticket);
         }
 
-        return "redirect:/admin/clientes/dashboard?id=" + clienteId;
+        return "redirect:/user/clientes/dashboard?id=" + clienteId;
     }
 }

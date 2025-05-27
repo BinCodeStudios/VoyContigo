@@ -10,6 +10,9 @@
 	--primary-blur: #ffffff;
 }
 
+.form-label{
+	background-color: white;
+}
 body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
