@@ -221,4 +221,10 @@ public class AdminFlotaController {
             return "admin/admin-flota-list";
         }
     }
+    // Manejar cierre de sesión
+    @GetMapping("/logout-admin")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login-adminflota";
+    }
 }

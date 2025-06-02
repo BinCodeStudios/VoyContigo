@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${flota.id} ? 'Editar Flota' : 'Crear Flota'">Crear Flota - VoyContigo</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
 
     <!-- Estilos Externos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
@@ -148,7 +149,7 @@
                         <a class="nav-link" th:href="@{/admin/admin-flota}">Admin. de Flota</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/clientes}">Clientes</a>
+                        <a class="nav-link" th:href="@{/admin/clientes/lista-clientes}">Clientes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/pqrs}">PQRs</a>

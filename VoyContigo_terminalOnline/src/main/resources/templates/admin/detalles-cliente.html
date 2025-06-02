@@ -1,82 +1,271 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!-- Metadatos -->
     <meta charset="UTF-8">
-    <title>Detalles del Cliente</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cliente Admin General - Voy Contigo</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
+    <!-- Estilos Externos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+
+    <!-- Estilos Inline -->
     <style>
+        :root {
+            --primary-dark: #0A5959;
+            --primary-medium: #238C82;
+            --primary-light: #41A677;
+            --accent: #F2BB16;
+            --dark: #0D0D0D;
+            --light-gray: #f5f5f5;
+            --translucent: rgba(3, 41, 24, 0.79);
+        }
         body {
-            font-family: Arial, sans-serif;
+            background-image: url('/img/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            min-height: 100vh;
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
         }
-        .container {
-            max-width: 800px;
+        .card-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+        }
+        .card {
+            background: rgba(245, 245, 245, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
             margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
         }
-        h1 {
+        .card-header {
+            background: var(--primary-dark);
+            color: #fff;
             text-align: center;
-            color: #333;
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
-        .detalles {
-            margin-top: 20px;
+        .card-body {
+            padding: 2rem;
+        }
+        form {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 1.2rem;
         }
-        .detalles p {
-            font-size: 16px;
-            margin: 10px 0;
-            width: 100%;
-            max-width: 400px;
+        label {
+            font-size: 1rem;
+            color: var(--dark);
+            font-weight: 500;
+            margin-bottom: 0.3rem;
         }
-        .detalles strong {
-            display: inline-block;
-            width: 150px;
-            color: #555;
+        input[type="text"], input[type="email"], input[type="password"], select {
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        .cliente-foto {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-medium);
+            box-shadow: 0 0 8px rgba(35, 140, 130, 0.2);
         }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px 0;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
+        button {
+            padding: 0.8rem;
+            background: var(--primary-medium);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
         }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .btn-back {
-            background-color: #6c757d;
-        }
-        .btn-back:hover {
-            background-color: #5a6268;
-        }
+		.btn-back {
+		    display: inline-block;
+		    margin-bottom: 20px;
+		    background: var(--primary-medium);
+		    color: white;
+		    border: none;
+		    border-radius: 6px;
+		    padding: 10px 20px;
+		    text-decoration: none;
+		    transition: background 0.3s ease;
+		}
+		.btn-back:hover {
+		    background: var(--primary-dark);
+		}
+		table {
+		    width: 100%;
+		    border-collapse: collapse;
+		    margin: 1rem 0;
+		}
+		th, td {
+		    padding: 0.75rem;
+		    text-align: left;
+		    border-bottom: 1px solid #ddd;
+		}
+		th {
+		    background: var(--primary-medium);
+		    color: #fff;
+		    font-weight: bold;
+		}
+		td {
+		    background: rgba(255, 255, 255, 0.9);
+		}
+		.btn {
+		    display: inline-block;
+		    margin: 0.5rem;
+		    padding: 0.75rem;
+		    background: var(--primary-medium);
+		    color: #fff;
+		    text-decoration: none;
+		    border-radius: 6px;
+		    text-align: center;
+		    border: none;
+		    transition: background 0.3s ease;
+		}
+		.btn:hover {
+		    background: var(--primary-dark);
+		}
+
+		.cliente-foto {
+		    width: 150px;
+		    height: 150px;
+		    border-radius: 50%;
+		    border: 2px solid var(--primary-medium);
+		    margin-bottom: 20px;
+		}
+		.detalles p {
+		    font-size: 1rem;
+		    margin: 10px 0;
+		    display: flex;
+		    justify-content: center;
+		}
+		.detalles strong {
+		    width: 150px;
+		    color: var(--dark);
+		    font-weight: bold;
+		    text-align: right;
+		    margin-right: 20px;
+		}
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Detalles del Cliente</h1>
-    <div class="detalles">
-        <img th:src="@{'/admin/clientes/foto/' + ${cliente.id}}" alt="Foto del Cliente" class="cliente-foto"/>
-        <p><strong>Nombre Completo:</strong> <span th:text="${cliente.nombreCompleto}"></span></p>
-        <p><strong>Correo:</strong> <span th:text="${cliente.correo}"></span></p>
-        <p><strong>Contraseña:</strong> ******</p>
-        <p><strong>PQRs registrados:</strong> <span th:text="${pqrsCount}"></span></p>
-    </div>
-    <a th:href="@{/admin/clientes}" class="btn btn-back">Volver a la Lista</a>
-</div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/admin/dashboard}">
+                <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/flota}">Gestionar Flotas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " th:href="@{/admin/admin-flota}">Admin. de Flota</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/clientes/lista-clientes}">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/pqrs}">PQRs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/rutas}">Rutas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/origen-destino}">Orígenes y Destinos</a>
+                    </li>
+					<!-- Dropdown de perfil -->
+										<li class="nav-item dropdown">
+										    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+										       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										        <img th:src="@{/img/ICO.ico}" alt="Perfil"
+										             class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+										    </a>
+										    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+										        <div class="dropdown-divider"></div>
+										        <a class="dropdown-item" th:href="@{/logout-adminge}">
+										            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+										        </a>
+										    </div>
+										</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+	<div class="containers">
+		<div class="card-body d-flex flex-column align-items-center">
+		    <h1>Detalles del Cliente</h1>
+		    <div class="detalles">
+				<img th:src="@{'/admin/clientes/foto/' + ${cliente.id}}" alt="Foto del Cliente" class="cliente-foto"/>
+		        <p><strong>Nombre Completo:</strong> <span th:text="${cliente.nombreCompleto}"></span></p>
+		        <p><strong>Correo:</strong> <span th:text="${cliente.correo}"></span></p>
+		        <p><strong>Contraseña:</strong> ******</p>
+		        <p><strong>PQRs registrados:</strong> <span th:text="${pqrsCount}"></span></p>
+		    </div>
+		    <a th:href="@{/admin/clientes}" class="btn btn-back">Volver a la Lista</a>
+		</div>
+	</div>
+
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center text-md-left mb-3">
+					<img src="/img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+					<p class="small">© Voy Contigo</p>
+				</div>
+				<div class="col-md-8 text-center text-md-right">
+					<div class="footer-links">
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
+					</div>
+					<div class="footer-social">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+			</div>
+		</div>
+	</footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 </body>
-</html>
+</html>               

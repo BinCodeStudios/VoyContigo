@@ -81,10 +81,12 @@ public class ViajesController {
             Cliente cliente = clienteRepository.findById(clienteId).orElse(null);
             if (cliente != null) {
                 model.addAttribute("usuarioNombre", cliente.getNombreCompleto());
+                model.addAttribute("cliente", cliente); // Add full cliente object                
                 model.addAttribute("usuarioCorreo", cliente.getCorreo());
                 model.addAttribute("clienteId", clienteId);
             } else {
                 model.addAttribute("error", "Cliente no encontrado con ID: " + clienteId);
+                model.addAttribute("cliente", new Cliente()); // Empty cliente for safety
                 model.addAttribute("usuarioNombre", "Invitado");
                 model.addAttribute("usuarioCorreo", "");
                 model.addAttribute("clienteId", "");
@@ -127,8 +129,10 @@ public class ViajesController {
                 model.addAttribute("usuarioNombre", cliente.getNombreCompleto());
                 model.addAttribute("usuarioCorreo", cliente.getCorreo());
                 model.addAttribute("clienteId", clienteId);
+                model.addAttribute("cliente", cliente);
             } else {
                 model.addAttribute("error", "Cliente no encontrado con ID: " + clienteId);
+                model.addAttribute("cliente", new Cliente());
                 model.addAttribute("usuarioNombre", "Invitado");
                 model.addAttribute("usuarioCorreo", "");
                 model.addAttribute("clienteId", "");

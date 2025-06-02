@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${adminFlota.id} ? 'Editar Administrador - VoyContigo' : 'Crear Administrador - VoyContigo'"></title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
 
     <!-- Estilos Externos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
@@ -142,7 +143,7 @@
                         <a class="nav-link active" th:href="@{/admin/admin-flota}">Admin. de Flota</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/clientes}">Clientes</a>
+                        <a class="nav-link" th:href="@{/admin/clientes/lista-clientes}">Clientes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/pqrs}">PQRs</a>
@@ -153,6 +154,20 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/origen-destino}">Orígenes y Destinos</a>
                     </li>
+					<!-- Dropdown de perfil -->
+										<li class="nav-item dropdown">
+										    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+										       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										        <img th:src="@{/img/ICO.ico}" alt="Perfil"
+										             class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+										    </a>
+										    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+										        <div class="dropdown-divider"></div>
+										        <a class="dropdown-item" th:href="@{/logout-adminge}">
+										            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+										        </a>
+										    </div>
+										</li>
                 </ul>
             </div>
         </div>
@@ -195,34 +210,34 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 text-center text-md-left mb-3">
-                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
-                    <p class="small">© Voy Contigo</p>
-                </div>
-                <div class="col-md-8 text-center text-md-right">
-                    <div class="footer-links">
-                        <a href="#">Enlaces de interés</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Mapa del sitio</a>
-                        <a href="#">Política de privacidad</a>
-                    </div>
-                    <div class="footer-social">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
-            </div>
-        </div>
-    </footer>
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center text-md-left mb-3">
+					<img src="/img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+					<p class="small">© Voy Contigo</p>
+				</div>
+				<div class="col-md-8 text-center text-md-right">
+					<div class="footer-links">
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
+					</div>
+					<div class="footer-social">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+			</div>
+		</div>
+	</footer>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>

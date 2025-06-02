@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Administrador - VoyContigo</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
 
     <!-- Estilos Externos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
@@ -136,6 +137,21 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/origen-destino}">Orígenes y Destinos</a>
                     </li>
+					</li>
+										<!-- Dropdown de perfil -->
+															<li class="nav-item dropdown">
+															    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+															       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															        <img th:src="@{/img/ICO.ico}" alt="Perfil"
+															             class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+															    </a>
+															    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+															        <div class="dropdown-divider"></div>
+															        <a class="dropdown-item" th:href="@{/logout-adminge}">
+															            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+															        </a>
+															    </div>
+															</li>
                 </ul>
             </div>
         </div>
@@ -177,10 +193,10 @@
                 </div>
                 <div class="col-md-8 text-center text-md-right">
                     <div class="footer-links">
-                        <a href="#">Enlaces de interés</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Mapa del sitio</a>
-                        <a href="#">Política de privacidad</a>
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
                     </div>
                     <div class="footer-social">
                         <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>

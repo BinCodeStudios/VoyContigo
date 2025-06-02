@@ -3,20 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalles del Viaje</title>
+	<link rel="icon" th:href="@{'/user/clientes/foto/' + ${cliente.id}}" type="image/png">
+
     <script src="https://cdn.tailwindcss.com"></script>
+	<!-- Bootstrap & FontAwesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+	<!-- Custom Styles -->
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="bg-gray-100">
+	<!-- NAVBAR -->
+	<nav class="navbar navbar-expand-lg navbar-light">
+	    <div class="container">
+	        <a class="navbar-brand" th:href="@{/user/clientes/dashboard(id=${cliente.id})}">
+	            <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
+	        </a>
+	        <ul class="navbar-nav ml-auto align-items-center">
+	            <li class="nav-item">
+	                <a class="nav-link " th:href="@{/user/clientes/dashboard(id=${cliente.id})}">Dashboard</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link active" th:href="@{/clientes/viajes/buscar(clienteId=${cliente.id})}">Buscar Viajes</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" th:href="@{/user/clientes/pqr/crear(id=${cliente.id})}">Crear PQR</a>
+	            </li>
+
+	            <!-- Dropdown de perfil -->
+	            <li class="nav-item dropdown">
+	                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+	                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                    <img th:src="@{'/user/clientes/foto/' + ${cliente.id}}" alt="Perfil"
+	                         class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+	                </a>
+	                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+	                    <a class="dropdown-item" th:href="@{/user/clientes/porfile/{id}(id=${cliente.id})}">
+	                        <i class="fas fa-user"></i> Ver Perfil
+	                    </a>
+	                    <div class="dropdown-divider"></div>
+	                    <a class="dropdown-item" th:href="@{/user/clientes/loginclientes}">
+	                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+	                    </a>
+	                </div>
+	            </li>
+	        </ul>
+	    </div>
+	</nav>
 <div class="container mx-auto p-6">
     <!-- Información del usuario -->
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold">Detalles del Viaje</h1>
         <div class="text-right">
-            <p th:if="${usuarioNombre != 'Invitado'}" class="text-lg font-semibold">
-                Bienvenido, <span th:text="${usuarioNombre}"></span> (<span th:text="${usuarioCorreo}"></span>)
-            </p>
-            <p th:if="${usuarioNombre == 'Invitado'}" class="text-lg font-semibold">
-                <a th:href="@{/user/clientes/loginclientes}" class="text-blue-600 hover:underline">Iniciar sesión</a>
-            </p>
+			<p class="mb-0 font-weight-bold"><span th:text="${usuarioNombre}"></span></p>			
+			<p class="mb-0 font-weight-bold"><span th:text="${usuarioCorreo}"></span></p>
         </div>
     </div>
 
@@ -33,47 +74,168 @@
         <p class="text-gray-600" th:text="'Llegada: ' + ${viaje.fechaLlegadaEstimada ?: 'N/A'}"></p>
         <p class="text-gray-600" th:text="'Precio por asiento: $' + ${viaje.ruta?.precio ?: 0}"></p>
         <div class="mt-2">
-            <p class="text-sm font-medium">Servicios:</p>
-            <ul class="flex space-x-2 text-sm text-gray-500">
-                <li th:if="${viaje.bus?.modelo?.contains('WiFi')}">WiFi</li>
-                <li th:if="${viaje.bus?.modelo?.contains('TV')}">Televisión</li>
-                <li th:if="${viaje.bus?.modelo?.contains('AC')}">Aire Acondicionado</li>
-                <li th:if="${viaje.bus?.modelo?.contains('Camas')}">Camas Reclinables</li>
-                <li th:if="${viaje.bus?.modelo?.contains('Baño')}">Baño</li>
-            </ul>
+			<!-- Íconos -->
+			<div class="d-flex flex-wrap justify-content-md-end mx-2 mb-2">
+				<p class="text-sm font-medium">Servicios:</p>
+
+			    <i class="fas fa-wifi text-success mx-2 mb-2" title="Wi-Fi" style="font-size: 1.5rem;"></i>
+			    <i class="fas fa-snowflake text-info mx-2 mb-2" title="Aire Acondicionado" style="font-size: 1.5rem;"></i>
+			    <i class="fas fa-tv text-warning mx-2 mb-2" title="Pantalla TV" style="font-size: 1.5rem;"></i>
+			    <i class="fas fa-plug text-danger mx-2 mb-2" title="Cargador" style="font-size: 1.5rem;"></i>
+			</div>
         </div>
     </div>
 
-    <!-- Selección de asientos -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-xl font-semibold mb-4">Seleccionar Asientos</h2>
-        <form id="compraForm" th:action="@{/clientes/viajes/comprar}" method="post">
-            <input type="hidden" name="viajeId" th:value="${viaje?.id}">
-            <input type="hidden" name="clienteId" th:value="${clienteId}">
-            <div class="grid grid-cols-4 gap-4">
-                <div th:each="i : ${#numbers.sequence(1, capacidadBus)}" class="text-center">
-                    <input type="checkbox" 
-                           th:id="'asiento-' + ${i}" 
-                           name="asientos" 
-                           th:value="${i}" 
-                           th:disabled="${asientosOcupados?.contains(i)}"
-                           class="hidden asiento-checkbox">
-                    <label th:for="'asiento-' + ${i}" 
-                           th:class="${asientosOcupados?.contains(i)} ? 'bg-red-500 text-white p-2 rounded' : 'bg-green-500 text-white p-2 rounded cursor-pointer'"
-                           th:text="${i}"></label>
+	<!-- Selección de asientos -->
+	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
+	  <h2 class="title">Seleccionar Asientos</h2>
+	  <form id="compraForm" th:action="@{/clientes/viajes/comprar}" method="post">
+	    <input type="hidden" name="viajeId" th:value="${viaje?.id}">
+	    <input type="hidden" name="clienteId" th:value="${clienteId}">
+	    <div class="bus-container">
+			<br>
+	      <div class="bus-body">
+			<div class="driver-area">
+			<div class="fa-user fas"> </div>
+			</div>
+			<br>
+	        <div class="seats-container">
+	          <div class="grid grid-cols-4 gap-4" style="width: 160px; margin: 0 auto;">
+	            <div th:each="i : ${#numbers.sequence(1, capacidadBus)}" class="text-center">
+	              <input type="checkbox" 
+	                     th:id="'asiento-' + ${i}" 
+	                     name="asientos" 
+	                     th:value="${i}" 
+	                     th:disabled="${asientosOcupados?.contains(i)}"
+	                     class="hidden asiento-checkbox" />
+	              <label th:for="'asiento-' + ${i}" 
+	                     th:class="${asientosOcupados?.contains(i)} ? 'seat occupied' : 'seat available'"
+	                     th:text="${i}"></label>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="mt-6">
+	      <p class="text-lg font-semibold">Asientos seleccionados: <span id="asientosSeleccionados"></span></p>
+	      <p class="text-lg font-semibold">Total: $<span id="totalPrecio">0</span></p>
+	    </div>
+	    <button type="submit" th:disabled="${usuarioNombre == 'Invitado'}" 
+	            class="mt-4 bg-red-600 text-white  px-4 py-2 rounded-md hover:bg-green-700"
+	            th:classappend="${usuarioNombre == 'Invitado'} ? 'opacity-50 cursor-not-allowed' : ''">Pagar</button>
+	  </form>
+	</div>
+
+</div>
+<!-- FOOTER -->
+<footer class="mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center text-md-left mb-3">
+                <img src="/img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+                <p class="small">© Voy Contigo</p>
+            </div>
+            <div class="col-md-8 text-center text-md-right">
+                <div class="footer-links">
+                    <a href="/enlaces">Enlaces de interés</a>
+                    <a href="/contacto">Contacto</a>
+                    <a href="/mapa-site">Mapa del sitio</a>
+                    <a href="/politica">Política de privacidad</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
-            <div class="mt-6">
-                <p class="text-lg font-semibold">Asientos seleccionados: <span id="asientosSeleccionados"></span></p>
-                <p class="text-lg font-semibold">Total: $<span id="totalPrecio">0</span></p>
-            </div>
-            <button type="submit" th:disabled="${usuarioNombre == 'Invitado'}" 
-                    class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                    th:classappend="${usuarioNombre == 'Invitado'} ? 'opacity-50 cursor-not-allowed' : ''">Pagar</button>
-        </form>
+        </div>
+        <div class="copyright text-center mt-3">
+            © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+        </div>
     </div>
-</div>
+</footer>
+<style>
+  /* Container y título */
 
+  .title {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #1f2937;
+    margin-bottom: 24px;
+    font-weight: bold;
+  }
+  .driver-area {
+    position: absolute;
+	display: inline-block;
+    width: 40px;
+    height: 30px;
+    background-color: #d1d5db;
+    border: 2px solid #4b5563;
+    border-radius: 5px;
+    top: -20px;
+    z-index: 10; /* que quede encima si es necesario */
+	margin-bottom: 10px; /* separa del cuerpo del bus */
+	display: flex;
+	justify-content: center; /* Centra horizontalmente */
+	align-items: center; 
+
+  }
+
+  .bus-container {
+    position: relative;
+    width: 220px; /* ancho fijo */
+    margin: 0 auto;
+    padding: 30px 20px 40px 20px; /* espacio interno para la forma */
+    background-color: #f9fafb;
+    border: 4px solid #1f2937;
+    border-radius: 60px 60px 20px 20px;
+    box-sizing: border-box;
+    /* alto automático para que crezca con el contenido */
+  }
+
+  .bus-body {
+    width: 100%;
+    /* quitar alto fijo */
+    /* Si quieres un efecto sombra o capa extra, ponlo aquí */
+    position: relative;
+  }
+
+  /* Estilos de asiento */
+  .seat {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 6px;
+    font-weight: 600;
+    color: white;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  .seat.available {
+    background-color: #22c55e;
+    cursor: pointer;
+  }
+  .seat.available:hover {
+    background-color: #16a34a;
+  }
+  .seat.occupied {
+    background-color: #ef4444;
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+
+  /* Ocultar checkboxes */
+  .asiento-checkbox {
+    display: none;
+  }
+
+  /* Mostrar seleccionado */
+  .asiento-checkbox:checked + label {
+    background-color: #3b82f6;
+  }
+</style>
 <script th:inline="javascript">
 /*<![CDATA[*/
     const checkboxes = document.querySelectorAll('.asiento-checkbox');

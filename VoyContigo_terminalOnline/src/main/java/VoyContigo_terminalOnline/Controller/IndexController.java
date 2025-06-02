@@ -11,4 +11,20 @@ public class IndexController {
     public String showHomePage() {
         return "index";
     }
+    @GetMapping("/enlaces")
+    public String showEnlaces() {
+    	return"enlaces-interes";
+    }
+    @GetMapping("/contacto")
+    public String showContacto(){
+    	return"contacto";
+    }
+    @GetMapping("/mapa-site")
+    public String showMap() {
+    	return "mapa-sitio";
+    }
+    @GetMapping("/politica")
+    public String showPolitica() {
+    	return"politica-privacidad";
+    }
 }

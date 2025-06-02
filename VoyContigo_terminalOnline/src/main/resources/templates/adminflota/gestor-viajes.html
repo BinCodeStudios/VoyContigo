@@ -3,10 +3,240 @@
 <head>
     <meta charset="UTF-8" />
     <title>Gestor de Viajes - [[${empresaNombre}]]</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-</head>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/login.css}">
+	<style>
+	        :root {
+	            --primary-dark: #0A5959;
+	            --primary-medium: #238C82;
+	            --primary-light: #41A677;
+	            --accent: #F2BB16;
+	            --dark: #0D0D0D;
+	            --light-gray: #f5f5f5;
+	            --translucent: rgba(3, 41, 24, 0.79);
+	        }
+	        body {
+	            background-image: url('/img/background.jpg');
+	            background-size: cover;
+	            background-repeat: no-repeat;
+	            background-position: center;
+	            min-height: 100vh;
+	            margin: 0;
+	            font-family: Arial, sans-serif;
+	        }
+	        .main-container {
+	            max-width: 1200px;
+	            margin: 40px auto;
+	            padding: 20px;
+	            min-height: calc(100vh - 200px);
+	            background: rgba(245, 245, 245, 0.95);
+	            border-radius: 8px;
+	            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	        }
+	        .page-title {
+	            text-align: center;
+	            margin-bottom: 20px;
+	            color: var(--dark);
+	            font-size: 2rem;
+	            font-weight: bold;
+	            background: linear-gradient(45deg, var(--primary-medium), var(--primary-light));
+	            -webkit-background-clip: text;
+	            -webkit-text-fill-color: transparent;
+	        }
+	        .empresa-info {
+	            display: flex;
+	            align-items: center;
+	            justify-content: center;
+	            border-radius: 6px;
+	            padding: 15px;
+	            margin-bottom: 20px;
+	            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	        }
+	        .empresa-info span {
+	            font-size: 1.2rem;
+	            font-weight: bold;
+	            color: var(--dark);
+	        }
+	        .routes-container {
+	            display: flex;
+	            justify-content: space-between;
+	            gap: 20px;
+	        }
+	        .lista-rutas, .rutas-seleccionadas {
+	            flex: 1;
+	        }
+	        .card {
+	            background: #fff;
+	            border: none;
+	            border-radius: 10px;
+	            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	            margin-bottom: 20px;
+	        }
+	        .card-header {
+	            background: linear-gradient(45deg, var(--primary-medium), var(--primary-light));
+	            color: #fff;
+	            border-radius: 10px 10px 0 0;
+	            font-weight: bold;
+	            padding: 15px;
+	        }
+	        .card-body {
+	            padding: 15px;
+	        }
+	        .route-item {
+	            background: #f1f1f1;
+	            padding: 10px;
+	            border-radius: 6px;
+	            margin-bottom: 8px;
+	            display: flex;
+	            justify-content: space-between;
+	            align-items: center;
+	            transition: transform 0.3s ease, opacity 0.3s ease;
+	        }
+	        .route-item.entering {
+	            animation: slideInRight 0.3s ease forwards;
+	        }
+	        .route-item.exiting {
+	            animation: slideOutLeft 0.3s ease forwards;
+	        }
+	        .btn {
+	            position: relative;
+	            padding: 8px 16px;
+	            border-radius: 6px;
+	            border: none;
+	            font-weight: bold;
+	            overflow: hidden;
+	            transition: background 0.3s ease, transform 0.2s ease;
+	        }
+	        .btn-primary {
+	            background: var(--primary-medium);
+	            color: #fff;
+	        }
+	        .btn-primary:hover {
+	            background: var(--primary-dark);
+	            transform: translateY(-2px);
+	        }
+	        .btn-danger {
+	            background: #dc3545;
+	            color: #fff;
+	        }
+	        .btn-danger:hover {
+	            background: #c82333;
+	        }
+	        .btn::after {
+	            content: '';
+	            position: absolute;
+	            top: 50%;
+	            left: 50%;
+	            width: 0;
+	            height: 0;
+	            background: rgba(255, 255, 255, 0.3);
+	            border-radius: 50%;
+	            transform: translate(-50%, -50%);
+	            transition: width 0.4s ease, height 0.4s ease;
+	        }
+	        .btn:active::after {
+	            width: 200px;
+	            height: 200px;
+	            opacity: 0;
+	        }
+	        .mensaje-vacio {
+	            color: gray;
+	            font-style: italic;
+	            text-align: center;
+	            padding: 20px;
+	        }
+	   
+	        .log {
+	            max-width: 150px;
+	            margin-bottom: 10px;
+	        }
+	        .footer-links a {
+	            color: #fff;
+	            margin: 0 10px;
+	            text-decoration: none;
+	            font-size: 0.9rem;
+	        }
+	        .footer-links a:hover {
+	            color: var(--primary-light);
+	            text-decoration: underline;
+	        }
+	        .footer-social .social-icon {
+	            color: #fff;
+	            margin: 0 10px;
+	            font-size: 1.2rem;
+	        }
+	        .footer-social .social-icon:hover {
+	            color: var(--primary-light);
+	        }
+	        .copyright {
+	            text-align: center;
+	            margin-top: 20px;
+	            font-size: 0.85rem;
+	        }
+	        @keyframes slideInRight {
+	            from { transform: translateX(50px); opacity: 0; }
+	            to { transform: translateX(0); opacity: 1; }
+	        }
+	        @keyframes slideOutLeft {
+	            from { transform: translateX(0); opacity: 1; }
+	            to { transform: translateX(-50px); opacity: 0; }
+	        }
+	        @media (max-width: 768px) {
+	            .routes-container {
+	                flex-direction: column;
+	            }
+	        }
+	    </style>
+		</head>
 <body>
-<div class="container mt-4">
+	<nav class="navbar navbar-expand-lg navbar-light">
+	    <div class="container">
+	        <a class="navbar-brand" th:href="@{/adminflota/dashboard}">
+	            <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" width="150">
+	        </a>
+	        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+	            <span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="collapse navbar-collapse" id="navbarNav">
+	            <ul class="navbar-nav ml-auto">
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/adminflota/dashboard}">Dashboard</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/adminflota/gestor-buses}">Gestor de Buses</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/adminflota/gestor-empleados}">Gestionar Empleados</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link " th:href="@{/adminflota/gestor-rutas}">Gestor de Rutas</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link active" th:href="@{/adminflota/gestor-viajes}">Gestor de Viajes</a>
+	                </li>
+					<!-- Dropdown de perfil -->
+										<li class="nav-item dropdown">
+										    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+										       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										        <img th:src="@{/img/ICO.ico}" alt="Perfil"
+										             class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+										    </a>
+										    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+										        <div class="dropdown-divider"></div>
+										        <a class="dropdown-item" th:href="@{/logout-admin}">
+										            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+										        </a>
+										    </div>
+										</li>
+	            </ul>
+	        </div>
+	    </div>
+	</nav>
+<div class="container main-container">
 
     <h1>Gestor de Viajes - <span th:text="${empresaNombre}">Nombre Empresa</span></h1>
 
@@ -72,6 +302,7 @@
 	        <tr th:each="viaje : ${viajes}">
 	            <td th:text="${viaje.origen.nombre} + ' → ' + ${viaje.destino.nombre}"></td>
 				<td th:text="${viaje.bus != null} ? ${viaje.bus.placa} + ' - ' + ${viaje.bus.modelo} : 'Sin asignar'"></td>
+				<td th:text="${viaje.fechaSalida != null} ? ${viaje.fechaSalida}"></td>
 
 	            <td>
 	                <a th:href="@{'/adminflota/gestor-viajes/editar/' + ${viaje.id}}" class="btn btn-sm btn-warning">Editar</a>
@@ -86,9 +317,6 @@
 	</table>
 </div>
 
-<script src="/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
 
 
 
@@ -103,400 +331,34 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-<!--
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Viajes - [[${empresaNombre}]]</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	    <link rel="stylesheet" th:href="@{/css/style.css}">
-	    <link rel="stylesheet" th:href="@{/css/login.css}">
-	    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
-    <style>
-        :root {
-            --primary-dark: #0A5959;
-            --primary-medium: #238C82;
-            --primary-light: #41A677;
-            --accent: #F2BB16;
-            --dark: #0D0D0D;
-            --light-gray: #f5f5f5;
-            --translucent: rgba(3, 41, 24, 0.79);
-        }
-        body {
-            background-image: url('/img/background.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        .main-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-            background: rgba(245, 245, 245, 0.95);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .page-title {
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--dark);
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, var(--primary-medium), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .flota-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .flota-info img {
-            margin-right: 15px;
-            border-radius: 8px;
-        }
-        .flota-info span {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--dark);
-        }
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .card-header {
-            background: linear-gradient(45deg, var(--primary-medium), var(--primary-light));
-            color: #fff;
-            border-radius: 10px 10px 0 0;
-            font-weight: bold;
-            padding: 15px;
-        }
-        .card-body {
-            padding: 20px;
-        }
-        .form-label {
-            font-weight: bold;
-            color: var(--dark);
-        }
-        input, select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-medium);
-            box-shadow: 0 0 8px rgba(35, 140, 130, 0.2);
-            transform: scale(1.02);
-        }
-        .table {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .table thead {
-            background: var(--primary-dark);
-            color: #fff;
-        }
-        .table th, .table td {
-            padding: 15px;
-            vertical-align: middle;
-        }
-        .table-striped tbody tr {
-            opacity: 0;
-            animation: fadeInRow 0.5s ease forwards;
-        }
-        .table-striped tbody tr:nth-child(odd) {
-            background-color: #f8f9fa;
-        }
-        .btn {
-            position: relative;
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: none;
-            font-weight: bold;
-            overflow: hidden;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
-        .btn-primary {
-            background: var(--primary-medium);
-            color: #fff;
-        }
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-        .btn-warning {
-            background: #ffc107;
-            color: #212529;
-        }
-        .btn-warning:hover {
-            background: #e0a800;
-        }
-        .btn-danger {
-            background: #dc3545;
-            color: #fff;
-        }
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        .btn-secondary {
-            background: #6c757d;
-            color: #fff;
-        }
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-        }
-        .btn:active::after {
-            width: 200px;
-            height: 200px;
-            opacity: 0;
-        }
-     
-        .log {
-            max-width: 150px;
-            margin-bottom: 10px;
-        }
-		.empresa-info {
-				          display: flex;
-				          align-items: center;
-				          justify-content: center;
-				          border-radius: 6px;
-				          padding: 15px;
-				          margin-bottom: 20px;
-				          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-				      }
-				      .empresa-info span {
-				          font-size: 1.2rem;
-				          font-weight: bold;
-				          color: var(--dark);
-				      }
-        .footer-links a {
-            color: #fff;
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        .footer-links a:hover {
-            color: var(--primary-light);
-            text-decoration: underline;
-        }
-        .footer-social .social-icon {
-            color: #fff;
-            margin: 0 10px;
-            font-size: 1.2rem;
-        }
-        .footer-social .social-icon:hover {
-            color: var(--primary-light);
-        }
-        .copyright {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.85rem;
-        }
-        @keyframes fadeInRow {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 768px) {
-            .main-container {
-                margin: 20px;
-                padding: 15px;
-            }
-            .flota-info {
-                flex-direction: column;
-                align-items: center;
-            }
-            .flota-info img {
-                margin-bottom: 10px;
-            }
-            .table {
-                font-size: 0.9rem;
-            }
-            .table th, .table td {
-                padding: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/adminflota/dashboard}">
-                <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" width="150">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/adminflota/dashboard}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/adminflota/gestor-buses}">Gestor de Buses</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/adminflota/gestor-empleados}">Gestionar Empleados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/adminflota/gestor-rutas}">Gestor de Rutas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/adminflota/gestor-viajes}">Gestor de Viajes</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-	<div class="empresa-info">
-	          <span>Flota: <strong th:text="${empresaNombre != null} ? ${empresaNombre} : 'Nombre de la Empresa'"></strong></span>
-	      </div>
-     Formulario Crear / Editar 
-    <div class="card mb-4">
-        <div class="card-header" th:text="${modoEdicion} ? 'Editar Viaje' : 'Crear Nuevo Viaje'"></div>
-        <div class="card-body">
-            <form th:action="${modoEdicion} ? @{/adminflota/gestor-viajes/actualizar} : @{/adminflota/gestor-viajes/crear}" method="post">
-
-                <input type="hidden" name="id" th:value="${viaje.id}" th:if="${modoEdicion}" />
-
-                 Selector de Ruta 
-                <div class="mb-3">
-                    <label for="rutaId" class="form-label">Ruta</label>
-                    <select id="rutaId" name="rutaId" class="form-select" required>
-                        <option value="" disabled th:if="${viaje.ruta == null}" selected>Seleccione una ruta</option>
-                        <option th:each="ruta : ${rutas}" 
-                                th:value="${ruta.id}" 
-                                th:text="${ruta.origen.nombre} + ' - ' + ${ruta.destino.nombre}" 
-                                th:selected="${viaje.ruta != null} ? ${ruta.id} == ${viaje.ruta.id} : false">
-                        </option>
-                    </select>
-                </div>
-
-                 Selector de Bus 
-                <div class="mb-3">
-                    <label for="busId" class="form-label">Bus</label>
-                    <select id="busId" name="busId" class="form-select" required>
-                        <option value="" disabled th:if="${viaje.bus == null}" selected>Seleccione un bus</option>
-                        <option th:each="bus : ${buses}" 
-                                th:value="${bus.id}" 
-                                th:text="${bus.placa} + ' - ' + ${bus.modelo}" 
-                                th:selected="${viaje.bus != null} ? ${bus.id} == ${viaje.bus.id} : false">
-                        </option>
-                    </select>
-                </div>
-
-                 Fecha de salida 
-                <div class="mb-3">
-                    <label for="fecha" class="form-label">Fecha de salida</label>
-                    <input id="fecha" name="fecha" type="datetime-local" class="form-control" 
-                        th:value="${viaje.fechaSalida != null} ? ${#dates.format(viaje.fechaSalida, 'yyyy-MM-dd\'T\'HH:mm')} : ''" 
-                        required />
-                </div>
-
-                <button type="submit" class="btn btn-primary" th:text="${modoEdicion} ? 'Actualizar' : 'Crear'"></button>
-
-                <a href="/adminflota/gestor-viajes" class="btn btn-secondary" th:if="${modoEdicion}">Cancelar</a>
-            </form>
-        </div>
-    </div>
-	 TABLA DE VIAJES 
-	<table class="table table-striped">
-	    <thead>
-	        <tr>
-	            <th>Ruta</th>
-	            <th>Bus</th>
-	            <th>Fecha de salida</th>
-	            <th>Acciones</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	        <tr th:each="viaje : ${viajes}">
-	            <td th:text="${viaje.origen.nombre} + ' → ' + ${viaje.destino.nombre}"></td>
-				<td th:text="${viaje.bus != null} ? ${viaje.bus.placa} + ' - ' + ${viaje.bus.modelo} : 'Sin asignar'"></td>
-
-	            <td>
-	                <a th:href="@{'/adminflota/gestor-viajes/editar/' + ${viaje.id}}" class="btn btn-sm btn-warning">Editar</a>
-	                <a th:href="@{'/adminflota/gestor-viajes/eliminar/' + ${viaje.id}}" class="btn btn-sm btn-danger"
-	                   onclick="return confirm('¿Está seguro que desea eliminar este viaje?');">Eliminar</a>
-	            </td>
-	        </tr>
-	        <tr th:if="${#lists.isEmpty(viajes)}">
-	            <td colspan="4" class="text-center">No hay viajes registrados.</td>
-	        </tr>
-	    </tbody>
-	</table>
-</div>
-
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 text-center text-md-left mb-3">
-                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
-                    <p class="small">© Voy Contigo</p>
-                </div>
-                <div class="col-md-8 text-center text-md-right">
-                    <div class="footer-links">
-                        <a href="#">Enlaces de interés</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Mapa del sitio</a>
-                        <a href="#">Política de privacidad</a>
-                    </div>
-                    <div class="footer-social">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
-            </div>
-        </div>
-    </footer>
+<!-- Footer -->
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 text-center text-md-left mb-3">
+				<img src="/img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+				<p class="small">© Voy Contigo</p>
+			</div>
+			<div class="col-md-8 text-center text-md-right">
+				<div class="footer-links">
+					<a href="/enlaces">Enlaces de interés</a>
+					<a href="/contacto">Contacto</a>
+					<a href="/mapa-site">Mapa del sitio</a>
+					<a href="/politica">Política de privacidad</a>
+				</div>
+				<div class="footer-social">
+					<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+					<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+					<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+					<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="copyright">
+			© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+		</div>
+	</div>
+</footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
@@ -544,4 +406,3 @@
     </style>
 </body>
 </html>
--->

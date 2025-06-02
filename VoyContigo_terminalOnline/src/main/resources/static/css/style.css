@@ -86,13 +86,16 @@ body {
 }
 
 .form-control {
-	color: var(--accent);
-	background-color: var(--translucentform);
+	color: var(#0D0D0D);
+	background-color: var(white);
+	border-radius: 8px #0D0D0D;
+	
 }
 
 .ticket-form .form-control:focus {
 	border-color: var(--primary-medium);
 	box-shadow: 0 0 0 0.2rem rgba(35, 140, 130, 0.25);
+	
 }
 
 .ticket-form .btn-search {

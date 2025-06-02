@@ -5,6 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Voy Contigo - Inicio de Sesión</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
 	<!-- Bootstrap 4 CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
 	<!-- Font Awesome -->
@@ -16,34 +18,31 @@
 <body>
 	<!-- Navbar -->
 	<nav class="navbar navbar-expand-lg navbar-light">
-		<div class="container">
-			<a class="navbar-brand" href="#">
-				<img src="img/VoyContigoLogo.png" alt="Voy Contigo">
-			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a class="btn btn-cliente" href="/admin/clientes/loginclientes">Iniciar Sesión Cliente</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Trabajador</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="login-adminflota">Admin.Flota</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link active" href="/login">Admin. General</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/"><i class="fas fa-search search-icon"></i></a>
-					</li>
-				</ul>
+			<div class="container">
+				<a class="navbar-brand" href="/">
+					<img src="/img/VoyContigoLogo.png" alt="Voy Contigo">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="btn btn-cliente" href="/user/clientes/loginclientes">Iniciar Sesión Cliente</a>
+						</li>
+						<li class="nav-item">
+						                        <a class="nav-link" href="/trabajadores/login">Trabajador</a>
+						                    </li>
+						<li class="nav-item">
+							<a class="nav-link" href="/login-adminflota">Admin.Flota</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active " href="/login">Admin. General</a>
+						</li>
+					</ul>
+				</div>
 			</div>
-		</div>
-	</nav>
+		</nav>
 
 	<!-- Login Section -->
 	<section class="login-section">
@@ -135,10 +134,10 @@
 				</div>
 				<div class="col-md-8 text-center text-md-right">
 					<div class="footer-links">
-						<a href="#">Enlaces de interés</a>
-						<a href="#">Contacto</a>
-						<a href="#">Mapa del sitio</a>
-						<a href="#">Política de privacidad</a>
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
 					</div>
 					<div class="footer-social">
 						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>

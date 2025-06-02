@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Voy Contigo - Terminal de Transporte</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
+	<!-- Bootstrap 4 CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/login.css">
+
+	<style>
+		:root {
+		  --color-bg: #f8f9fa;
+		  --color-primary: #1a73e8;
+		  --color-text: #111;
+		  --color-muted: #666;
+		  --spacing: 64px;
+		}
+
+
+
+		header {
+		  background: linear-gradient(to right, #1a73e8, #004bbd);
+		  color: white;
+		  padding: 100px 20px 60px;
+		  text-align: center;
+		}
+
+		header h1 {
+		  font-size: 3rem;
+		  font-weight: 700;
+		  margin-bottom: 12px;
+		}
+
+		header p {
+		  font-size: 1.25rem;
+		  opacity: 0.95;
+		}
+
+		.container {
+		  max-width: 1100px;
+		  margin: 0 auto;
+		  padding: 20px;
+		}
+
+		.site-map-grid {
+		  display: grid;
+		  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		  gap: 48px;
+		}
+
+		.site-map-section h2 {
+		  font-size: 1.5rem;
+		  font-weight: 600;
+		  margin-bottom: 18px;
+		}
+
+		.site-map-section ul {
+		  list-style: none;
+		  padding: 0;
+		}
+
+		.site-map-section li {
+		  margin-bottom: 12px;
+		}
+
+		.site-map-section a {
+		  text-decoration: none;
+		  color: var(--color-text);
+		  font-weight: 500;
+		  transition: color 0.2s ease;
+		}
+
+		.site-map-section a:hover {
+		  color: var(--color-primary);
+		}
+
+
+
+		@media (max-width: 600px) {
+		  header h1 {
+		    font-size: 2.2rem;
+		  }
+
+		  .site-map-section h2 {
+		    font-size: 1.3rem;
+		  }
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+				<img src="img/VoyContigoLogo.png" alt="Voy Contigo">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="btn btn-cliente" href="/user/clientes/loginclientes">Iniciar Sesión Cliente</a>
+					</li>
+					<li class="nav-item">
+					                        <a class="nav-link" href="/trabajadores/login">Trabajador</a>
+					                    </li>
+					<li class="nav-item">
+						<a class="nav-link" href="login-adminflota">Admin.Flota</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " href="/login">Admin. General</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+	  <div class="site-map-grid">
+
+	    <div class="site-map-section">
+	      <h2>Institucional</h2>
+	      <ul>
+	        <li><a href="/">Inicio</a></li>
+	        <li><a href="/politica">Política de Privacidad</a></li>
+	      </ul>
+	    </div>
+
+	    <div class="site-map-section">
+	      <h2>Servicios</h2>
+	      <ul>
+	        <li><a href="/user/clientes/loginclientes">Compra de Tiquetes</a></li>
+			<li><a href="/trabajadores/login">Trabajadores</a></li>
+
+	      </ul>
+	    </div>
+
+	    <div class="site-map-section">
+	      <h2>Soporte</h2>
+	      <ul>
+	        <li><a href="/contacto">Desarrolladores</a></li>
+	      </ul>
+	    </div>
+
+	    <div class="site-map-section">
+	      <h2>Administración</h2>
+	      <ul>
+	        <li><a href="/login">Administrador General</a></li>
+	        <li><a href="/login-adminflota">Administrador de Flota</a></li>
+	        <li><a href="/login">Iniciar Sesión</a></li>
+	      </ul>
+	    </div>
+
+	  </div>
+	</div>
+
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center text-md-left mb-3">
+					<img src="img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+					<p class="small">© Voy Contigo</p>
+				</div>
+				<div class="col-md-8 text-center text-md-right">
+					<div class="footer-links">
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
+					</div>
+					<div class="footer-social">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+			</div>
+		</div>
+	</footer>
+
+	<!-- Bootstrap 4 JS Dependencies -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Voy Contigo - Terminal de Transporte</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
+	<!-- Bootstrap 4 CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="css/login.css">
+
+	<style>
+		body {
+		  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		  background-color: #f8f9fa;
+		  color: #343a40;
+		}
+
+		.hero {
+		  background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1556740749-887f6717d7e4') no-repeat center center/cover;
+		  padding: 100px 0;
+		  color: white;
+		  text-align: center;
+		}
+
+		.hero h1 {
+		  font-size: 3rem;
+		  font-weight: bold;
+		}
+
+		.info-card {
+		  background-color: white;
+		  border: none;
+		  border-radius: 12px;
+		  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+		  padding: 30px;
+		  transition: transform 0.3s ease;
+		}
+
+		.info-card:hover {
+		  transform: translateY(-5px);
+		}
+
+		.info-card i {
+		  font-size: 2rem;
+		  color: #238C82;
+		  margin-bottom: 15px;
+		}
+
+		.developer-card {
+		  background: #ffffff;
+		  border-radius: 10px;
+		  padding: 20px;
+		  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+		  transition: all 0.3s ease;
+		}
+
+		.developer-card:hover {
+		  transform: scale(1.02);
+		}
+
+		.developer-card i {
+		  font-size: 1.5rem;
+		  margin-right: 10px;
+		  color: #495057;
+		}
+
+		.developer-name {
+		  font-weight: 600;
+		}
+
+		.section-title {
+		  font-size: 2rem;
+		  font-weight: 600;
+		  margin-bottom: 30px;
+		  text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+				<img src="img/VoyContigoLogo.png" alt="Voy Contigo">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="btn btn-cliente" href="/user/clientes/loginclientes">Iniciar Sesión Cliente</a>
+					</li>
+					<li class="nav-item">
+					                        <a class="nav-link" href="/trabajadores/login">Trabajador</a>
+					                    </li>
+					<li class="nav-item">
+						<a class="nav-link" href="login-adminflota">Admin.Flota</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " href="/login">Admin. General</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Información de contacto -->
+	<section class="container py-5">
+	  <div class="row text-center mb-5">
+	    <div class="col-md-4 mb-4">
+	      <div class="info-card h-100">
+	        <i class="fas fa-map-marker-alt"></i>
+	        <h5 class="mt-3">Dirección</h5>
+	        <p>Terminal De Transportes<br>Bucaramanga, Santander</p>
+	      </div>
+	    </div>
+	    <div class="col-md-4 mb-4">
+	      <div class="info-card h-100">
+	        <i class="fas fa-phone-alt"></i>
+	        <h5 class="mt-3">Teléfono</h5>
+	        <p>+57 1 2345678<br>Lunes a Viernes, 8am - 5pm</p>
+	      </div>
+	    </div>
+	    <div class="col-md-4 mb-4">
+	      <div class="info-card h-100">
+	        <i class="fas fa-envelope"></i>
+	        <h5 class="mt-3">Correo electrónico</h5>
+	        <p>contacto@voycontigo.com</p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- Redes sociales de los desarrolladores -->
+	  <h2 class="section-title">Redes de los desarrolladores</h2>
+	  <div class="row justify-content-center">
+	    <div class="col-md-4 mb-4">
+	      <div class="developer-card text-center">
+	        <p class="developer-name">Rangel Arley</p>
+	        <p>
+			  <a href="https://www.instagram.com/devarley.exe" target="_blank"><i class="fab fa-instagram"></i></a>
+
+	          <a href="https://github.com/DevArley" target="_blank"><i class="fab fa-github"></i></a>
+	        </p>
+	      </div>
+	    </div>
+	    <div class="col-md-4 mb-4">
+	      <div class="developer-card text-center">
+	        <p class="developer-name">Prada Yeison</p>
+	        <p>
+	          <a href="https://www.instagram.com/yeison02._.ssj/" target="_blank"><i class="fab fa-instagram"></i></a>
+	        </p>
+	      </div>
+	    </div>
+	    <div class="col-md-4 mb-4">
+	      <div class="developer-card text-center">
+	        <p class="developer-name">Daniel Delgado</p>
+	        <p>
+	          <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="text-center mt-5 text-muted">
+	    <small>Materia: Desarrollo Aplicaciones Empresariales | Docente: Julian Barney</small>
+	  </div>
+	</section>
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center text-md-left mb-3">
+					<img src="img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+					<p class="small">© Voy Contigo</p>
+				</div>
+				<div class="col-md-8 text-center text-md-right">
+					<div class="footer-links">
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
+					</div>
+					<div class="footer-social">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+			</div>
+		</div>
+	</footer>
+
+	<!-- Bootstrap 4 JS Dependencies -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -86,17 +86,8 @@ public class AdminClienteController {
         return "/admin/detalles-cliente";
     }
     
-    // Obtener foto del cliente
     @GetMapping("/foto/{id}")
-    public void obtenerFotoCliente(@PathVariable("id") String id, HttpServletResponse response, HttpSession session) throws IOException {
-        if (session.getAttribute("clienteLoggedIn") == null) {
-            response.sendRedirect("/admin/clientes/loginclientes");
-            return;
-        }
-        if (!id.equals(session.getAttribute("clienteLoggedIn"))) {
-            response.sendRedirect("/admin/clientes/loginclientes");
-            return;
-        }
+    public void obtenerFotoCliente(@PathVariable("id") String id, HttpServletResponse response) throws IOException {
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
@@ -127,6 +118,7 @@ public class AdminClienteController {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al obtener la foto");
         }
     }
+
 
 
     

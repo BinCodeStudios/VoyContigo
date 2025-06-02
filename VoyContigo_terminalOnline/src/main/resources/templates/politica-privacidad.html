@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Voy Contigo - Terminal de Transporte</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
+	<!-- Bootstrap 4 CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="css/login.css">
+
+	<style>
+		:root {
+		  --bg: #ffffff;
+		  --primary: #238C82;
+		  --text: #1b1b1b;
+		  --subtext: #444;
+		  --muted: #888;
+		  --container: 1000px;
+		}
+
+		* {
+		  box-sizing: border-box;
+		  margin: 0;
+		  padding: 0;
+		}
+
+		body {
+		  font-family: 'Inter', sans-serif;
+		  line-height: 1.7;
+		  color: var(--text);
+		  background: var(--bg);
+		}
+
+		header {
+		  background: linear-gradient(to right, #1a73e8, #004bbd);
+		  color: white;
+		  padding: 100px 20px 60px;
+		  text-align: center;
+		}
+
+		header h1 {
+		  font-size: 3rem;
+		  font-weight: 700;
+		  margin-bottom: 14px;
+		}
+
+		header p {
+		  font-size: 1.2rem;
+		  max-width: 600px;
+		  margin: 0 auto;
+		  opacity: 0.95;
+		}
+
+		main {
+		  max-width: var(--container);
+		  margin: 60px auto;
+		  padding: 0 24px;
+		}
+
+		section {
+		  margin-bottom: 48px;
+		}
+
+		h2 {
+		  font-size: 1.6rem;
+		  color: var(--primary);
+		  margin-bottom: 16px;
+		  font-weight: 600;
+		}
+
+		p {
+		  margin-bottom: 18px;
+		  color: var(--subtext);
+		}
+
+		footer {
+		  text-align: center;
+		  font-size: 0.9rem;
+		  color: var(--muted);
+		  padding: 40px 0;
+		  border-top: 1px solid #e5e5e5;
+		  margin-top: 60px;
+		}
+
+		@media (max-width: 600px) {
+		  header h1 {
+		    font-size: 2.2rem;
+		  }
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light">
+			<div class="container">
+				<a class="navbar-brand" href="/">
+					<img src="/img/VoyContigoLogo.png" alt="Voy Contigo">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="btn btn-cliente" href="/user/clientes/loginclientes">Iniciar Sesión Cliente</a>
+						</li>
+						<li class="nav-item">
+						                        <a class="nav-link" href="/trabajadores/login">Trabajador</a>
+						                    </li>
+						<li class="nav-item">
+							<a class="nav-link" href="/login-adminflota">Admin.Flota</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link " href="/login">Admin. General</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+
+	<main>
+	  <section>
+	    <h2>1. Recopilación de Información</h2>
+	    <p>Recopilamos datos personales como nombre, correo electrónico y número de identificación, cuando te registras, compras un tiquete o accedes a funcionalidades específicas de nuestra plataforma.</p>
+	  </section>
+
+	  <section>
+	    <h2>2. Uso de la Información</h2>
+	    <p>La información recopilada se utiliza para brindar un servicio seguro y personalizado, mejorar la experiencia del usuario, emitir facturas, y cumplir con obligaciones legales o contractuales.</p>
+	  </section>
+
+	  <section>
+	    <h2>3. Protección de Datos</h2>
+	    <p>Implementamos medidas de seguridad avanzadas para proteger tus datos contra accesos no autorizados, alteraciones o destrucción. Nuestra base de datos está cifrada y auditada periódicamente.</p>
+	  </section>
+
+	  <section>
+	    <h2>4. Compartición de Datos</h2>
+	    <p>No vendemos ni compartimos tu información con terceros, salvo cuando sea estrictamente necesario para cumplir con requerimientos legales o prestar servicios relacionados con el transporte.</p>
+	  </section>
+
+	  <section>
+	    <h2>5. Derechos del Usuario</h2>
+	    <p>Como usuario tienes derecho a acceder, modificar o eliminar tus datos personales, así como a revocar tu consentimiento. Para ello, puedes escribirnos a <strong>datos@voycontigo.com</strong>.</p>
+	  </section>
+
+	  <section>
+	    <h2>6. Cambios a esta Política</h2>
+	    <p>Nos reservamos el derecho de modificar esta política en cualquier momento. Las actualizaciones serán notificadas en esta misma página con su respectiva fecha de modificación.</p>
+	  </section>
+	</main>
+
+
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center text-md-left mb-3">
+					<img src="img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+					<p class="small">© Voy Contigo</p>
+				</div>
+				<div class="col-md-8 text-center text-md-right">
+					<div class="footer-links">
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
+					</div>
+					<div class="footer-social">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+			</div>
+		</div>
+	</footer>
+
+	<!-- Bootstrap 4 JS Dependencies -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -2,87 +2,186 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Buscar Viajes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Viajes | Voy Contigo</title>
+	<link rel="icon" th:href="@{'/user/clientes/foto/' + ${cliente.id}}" type="image/png">
+
+    <!-- Bootstrap & FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+	<style>
+	  .btn-verde {
+	    background-color: #16a34a !important;
+	    border-color: #16a34a !important;
+	    color: white !important;
+	  }
+	</style>
 </head>
-<body class="bg-gray-100">
-<div class="container mx-auto p-6">
-    <!-- Información del usuario -->
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold">Buscar Viajes</h1>
-        <div class="text-right">
-            <p th:if="${usuarioNombre != 'Invitado'}" class="text-lg font-semibold">
-                Bienvenido, <span th:text="${usuarioNombre}"></span> (<span th:text="${usuarioCorreo}"></span>)
-            </p>
-            <p th:if="${usuarioNombre == 'Invitado'}" class="text-lg font-semibold">
-                <a th:href="@{/user/clientes/loginclientes}" class="text-blue-600 hover:underline">Iniciar sesión</a>
-            </p>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/user/clientes/dashboard(id=${cliente.id})}">
+            <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
+        </a>
+        <ul class="navbar-nav ml-auto align-items-center">
+            <li class="nav-item">
+                <a class="nav-link " th:href="@{/user/clientes/dashboard(id=${cliente.id})}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" th:href="@{/clientes/viajes/buscar(clienteId=${cliente.id})}">Buscar Viajes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/clientes/pqr/crear(id=${cliente.id})}">Crear PQR</a>
+            </li>
+
+            <!-- Dropdown de perfil -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img th:src="@{'/user/clientes/foto/' + ${cliente.id}}" alt="Perfil"
+                         class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/user/clientes/porfile/{id}(id=${cliente.id})}">
+                        <i class="fas fa-user"></i> Ver Perfil
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" th:href="@{/user/clientes/loginclientes}">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- CONTENIDO -->
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary-dark font-weight-bold">Buscar Viajes</h2>
+        <div th:if="${usuarioNombre != 'Invitado'}" class="text-right">
+            <p class="mb-0 font-weight-bold"><span th:text="${usuarioNombre}"></span></p>			
+			<p class="mb-0 font-weight-bold"><span th:text="${usuarioCorreo}"></span></p>
+
+        </div>
+        <div th:if="${usuarioNombre == 'Invitado'}">
+            <a th:href="@{/user/clientes/loginclientes}" class="btn btn-outline-primary">Iniciar sesión</a>
         </div>
     </div>
 
-    <!-- Mensaje de error (si existe) -->
-    <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
-        <span th:text="${error}"></span>
-    </div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <!-- Formulario de búsqueda -->
-    <form th:action="@{/clientes/viajes/buscar}" method="get" class="bg-white rounded-lg shadow-md p-6 mb-6">
+    <!-- FORMULARIO DE BÚSQUEDA -->
+    <form th:action="@{/clientes/viajes/buscar}" method="get" class="card p-4 shadow-sm mb-5">
         <input type="hidden" name="clienteId" th:value="${clienteId}">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <!-- Origen -->
-            <div>
-                <label for="origen" class="block text-sm font-medium text-gray-700">Origen</label>
-                <select id="origen" name="origen" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+        <div class="form-row">
+            <div class="form-label col-md-3">
+                <label for="origen">Origen</label>
+                <select id="origen" name="origen" class="form-control">
                     <option value="">Seleccione un origen</option>
-                    <option th:each="origen : ${origenes}" 
-                            th:value="${origen.nombre}" 
-                            th:text="${origen.nombre}"></option>
+                    <option th:each="origen : ${origenes}" th:value="${origen.nombre}" th:text="${origen.nombre}"></option>
                 </select>
             </div>
-            <!-- Destino -->
-            <div>
-                <label for="destino" class="block text-sm font-medium text-gray-700">Destino</label>
-                <select id="destino" name="destino" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <div class="form-label col-md-3">
+                <label for="destino">Destino</label>
+                <select id="destino" name="destino" class="form-control">
                     <option value="">Seleccione un destino</option>
-                    <option th:each="destino : ${destinos}" 
-                            th:value="${destino.nombre}" 
-                            th:text="${destino.nombre}"></option>
+                    <option th:each="destino : ${destinos}" th:value="${destino.nombre}" th:text="${destino.nombre}"></option>
                 </select>
             </div>
-            <!-- Flota -->
-            <div>
-                <label for="flota" class="block text-sm font-medium text-gray-700">Flota</label>
-                <select id="flota" name="flota" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <div class="form-label col-md-3">
+                <label for="flota">Flota</label>
+                <select id="flota" name="flota" class="form-control">
                     <option value="">Seleccione una flota</option>
-                    <option th:each="flota : ${flotas}" 
-                            th:value="${flota.nombre}" 
-                            th:text="${flota.nombre}"></option>
+                    <option th:each="flota : ${flotas}" th:value="${flota.nombre}" th:text="${flota.nombre}"></option>
                 </select>
             </div>
-            <!-- Fecha -->
-            <div>
-                <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
-                <input type="datetime-local" id="fecha" name="fecha" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <div class="form-label col-md-3">
+                <label for="fecha">Fecha</label>
+                <input type="datetime-local" id="fecha" name="fecha" class="form-control">
             </div>
         </div>
-        <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Filtrar</button>
+		<br>
+        <div class="text-right">
+			<button type="submit" class="btn btn-primary btn-verde">Buscar</button>
+        </div>
     </form>
 
-    <!-- Resultados de búsqueda -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-xl font-semibold mb-4">Viajes Disponibles</h2>
-        <div th:if="${not #lists.isEmpty(viajes)}">
-            <div th:each="viaje : ${viajes}" class="border-b py-4">
-                <h3 class="text-lg font-medium" th:text="${viaje.origen?.nombre} + ' - ' + ${viaje.destino?.nombre}"></h3>
-                <p class="text-gray-600" th:text="'Flota: ' + ${viaje.flota?.nombre ?: 'N/A'}"></p>
-                <p class="text-gray-600" th:text="'Salida: ' + ${viaje.fechaSalida ?: 'N/A'}"></p>
-                <p class="text-gray-600" th:text="'Precio: $' + ${viaje.ruta?.precio ?: 0}"></p>
-                <a th:href="@{/clientes/viajes/detalles/{id}(id=${viaje.id},clienteId=${clienteId})}" 
-                   class="text-blue-600 hover:underline">Ver detalles</a>
+	<!-- RESULTADOS -->
+	<div class="card shadow-sm p-4">
+	    <h4 class="text-primary-dark mb-4">Viajes Disponibles</h4>
+
+	    <div th:if="${not #lists.isEmpty(viajes)}">
+	        <div th:each="viaje : ${viajes}" class="mb-4">
+	            <div class="card border-0 shadow-sm p-3">
+	                <div class="d-flex flex-column flex-md-row align-items-start justify-content-between">
+	                    <!-- Info principal -->
+	                    <div class="flex-grow-1 pr-md-4">
+	                        <h5 class="text-primary-dark mb-2" th:text="${viaje.origen?.nombre} + ' → ' + ${viaje.destino?.nombre}"></h5>
+	                        <p class="mb-1"><strong>Flota:</strong> <span th:text="${viaje.flota?.nombre ?: 'N/A'}"></span></p>
+	                        <p class="mb-1"><strong>Salida:</strong> <span th:text="${viaje.fechaSalida}"></span></p>
+	                        <p class="mb-1"><strong>Precio:</strong> $<span th:text="${viaje.ruta?.precio ?: 0}"></span></p>
+
+	                        <!-- Botón -->
+	                        <a th:href="@{/clientes/viajes/detalles/{id}(id=${viaje.id},clienteId=${clienteId})}" 
+	                           class="btn btn-outline-primary btn-verde btn-sm mt-2">Ver detalles</a>
+	                    </div>
+
+	                    <!-- Íconos -->
+	                    <div class="d-flex flex-wrap justify-content-md-end mt-3 mt-md-0">
+	                        <i class="fas fa-wifi text-success mx-2 mb-2" title="Wi-Fi" style="font-size: 1.5rem;"></i>
+	                        <i class="fas fa-snowflake text-info mx-2 mb-2" title="Aire Acondicionado" style="font-size: 1.5rem;"></i>
+	                        <i class="fas fa-tv text-warning mx-2 mb-2" title="Pantalla TV" style="font-size: 1.5rem;"></i>
+	                        <i class="fas fa-plug text-danger mx-2 mb-2" title="Cargador" style="font-size: 1.5rem;"></i>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+
+	    <p th:if="${#lists.isEmpty(viajes)}" class="text-muted">No se encontraron viajes con los filtros seleccionados.</p>
+	</div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center text-md-left mb-3">
+                <img src="/img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+                <p class="small">© Voy Contigo</p>
+            </div>
+            <div class="col-md-8 text-center text-md-right">
+                <div class="footer-links">
+                    <a href="/enlaces">Enlaces de interés</a>
+                    <a href="/contacto">Contacto</a>
+                    <a href="/mapa-site">Mapa del sitio</a>
+                    <a href="/politica">Política de privacidad</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
         </div>
-        <p th:if="${#lists.isEmpty(viajes)}" class="text-gray-600">No se encontraron viajes.</p>
+        <div class="copyright text-center mt-3">
+            © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+        </div>
     </div>
-</div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalles del Cliente - VoyContigo</title>
+	<link rel="icon" th:href="@{'/user/clientes/foto/' + ${cliente.id}}" type="image/png">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
@@ -183,51 +185,78 @@
     </style>
 </head>
 <body>
+	<!-- NAVBAR -->
 	<nav class="navbar navbar-expand-lg navbar-light">
-	      <div class="container">
-	          <a class="navbar-brand" th:href="@{/user/clientes/dashboard(id=${cliente.id})}">
-	              <img src="/img/VoyContigoLogo.png" alt="Voy Contigo">
-	          </a>
-	          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-	              <span class="navbar-toggler-icon"></span>
-	          </button>
-	          <div class="collapse navbar-collapse" id="navbarNav">
-	              <ul class="navbar-nav ml-auto">
-	                  <li class="nav-item">
-	                      <a class="nav-link" th:href="@{/user/clientes/dashboard(id=${cliente.id})}">Dashboard</a>
-	                  </li>
-	                  <li class="nav-item">
-	                      <a class="nav-link" th:href="@{/clientes/viajes/buscar(clienteId=${cliente.id})}">Buscar Viajes</a>
-	                  </li>
-	                  <li class="nav-item">
-	                      <a class="nav-link" th:href="@{/user/clientes/pqr/crear(id=${cliente.id})}">Crear PQR</a>
-	                  </li>
-	                  <li class="nav-item">
-	                      <a class="nav-link" th:href="@{/user/clientes/porfile/{id}(id=${cliente.id})}">Ver Perfil</a>
-	                  </li>
-	                  <li class="nav-item">
-	                      <a class="nav-link" th:href="@{/user/clientes/loginclientes}">Cerrar Sesión</a>
-	                  </li>
-	              </ul>
-	          </div>
-	      </div>
-	  </nav>
-    <div class="containers">
-        <div class="card">
-            <div class="card-header">Mi Perfil</div>
-            <div class="card-body">
-                <img th:src="@{'/user/clientes/foto/' + ${cliente.id}}" alt="Foto del Cliente" class="cliente-foto"/>
-                <div class="detalles">
-                    <p><strong>Nombre Completo:</strong> <span th:text="${cliente.nombreCompleto}"></span></p>
-                    <p><strong>Correo:</strong> <span th:text="${cliente.correo}"></span></p>
-                    <p><strong>Contraseña:</strong> ******</p>
-                    <p><strong>PQRs registrados:</strong> <span th:text="${pqrsCount}"></span></p>
-                    <a th:href="@{'/user/clientes/editar/' + ${cliente.id}}" class="btn btn-primary">Editar Datos Personales</a>
-                    <a th:href="@{'/user/clientes/dashboard?id=' + ${cliente.id}}" class="btn btn-back">Volver al Dashboard</a>
-                </div>
-            </div>
-        </div>
-    </div>
+	    <div class="container">
+	        <a class="navbar-brand" th:href="@{/user/clientes/dashboard(id=${cliente.id})}">
+	            <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
+	        </a>
+	        <ul class="navbar-nav ml-auto align-items-center">
+	            <li class="nav-item">
+	                <a class="nav-link " th:href="@{/user/clientes/dashboard(id=${cliente.id})}">Dashboard</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" th:href="@{/clientes/viajes/buscar(clienteId=${cliente.id})}">Buscar Viajes</a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" th:href="@{/user/clientes/pqr/crear(id=${cliente.id})}">Crear PQR</a>
+	            </li>
+
+	            <!-- Dropdown de perfil -->
+	            <li class="nav-item dropdown">
+	                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+	                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                    <img th:src="@{'/user/clientes/foto/' + ${cliente.id}}" alt="Perfil"
+	                         class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+	                </a>
+	                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+	                    <a class="dropdown-item" th:href="@{/user/clientes/porfile/{id}(id=${cliente.id})}">
+	                        <i class="fas fa-user"></i> Ver Perfil
+	                    </a>
+	                    <div class="dropdown-divider"></div>
+	                    <a class="dropdown-item" th:href="@{/user/clientes/loginclientes}">
+	                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+	                    </a>
+	                </div>
+	            </li>
+	        </ul>
+	    </div>
+	</nav>
+	<div class="containers">
+	    <div class="card">
+	        <div class="card-header">
+	            <i class="fas fa-user-circle"></i> Mi Perfil
+	        </div>
+	        <div class="card-body d-flex flex-column align-items-center">
+	            <img th:src="@{'/user/clientes/foto/' + ${cliente.id}}" alt="Foto del Cliente" class="cliente-foto mb-3"/>
+
+	            <h4 class="mb-2 text-uppercase font-weight-bold" th:text="${cliente.nombreCompleto}"></h4>
+	            <span class="badge badge-pill badge-info mb-3">
+	                <i class="fas fa-envelope"></i> <span th:text="${cliente.correo}"></span>
+	            </span>
+
+	            <div class="w-100 mt-4">
+	                <hr>
+	                <div class="row justify-content-center text-left">
+	                    <div class="col-md-6">
+	                        <p><strong><i class="fas fa-lock"></i> Contraseña:</strong> ******</p>
+	                        <p><strong><i class="fas fa-ticket-alt"></i> PQRs registrados:</strong> <span th:text="${pqrsCount}"></span></p>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="mt-4">
+	                <a th:href="@{'/user/clientes/editar/' + ${cliente.id}}" class="btn btn-primary mr-2">
+	                    <i class="fas fa-edit"></i> Editar Datos Personales
+	                </a>
+	                <a th:href="@{'/user/clientes/dashboard?id=' + ${cliente.id}}" class="btn btn-back">
+	                    <i class="fas fa-arrow-left"></i> Volver al Dashboard
+	                </a>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
 
     <footer>
         <div class="container">
@@ -238,10 +267,10 @@
                 </div>
                 <div class="col-md-8 text-center text-md-right">
                     <div class="footer-links">
-                        <a href="#">Enlaces de interés</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Mapa del sitio</a>
-                        <a href="#">Política de privacidad</a>
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
                     </div>
                     <div class="footer-social">
                         <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>

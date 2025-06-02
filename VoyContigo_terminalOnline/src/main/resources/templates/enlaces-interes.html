@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Voy Contigo - Terminal de Transporte</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
+	<!-- Bootstrap 4 CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="css/login.css">
+
+	<style>
+		:root {
+		  --color-bg: #f9f9fb;
+		  --color-primary: #1a73e8;
+		  --color-text: #111;
+		  --color-muted: #666;
+		  --spacing: 48px;
+		}
+
+		* {
+		  box-sizing: border-box;
+		  margin: 0;
+		  padding: 0;
+		}
+
+
+
+		header {
+		  background: linear-gradient(to right, #1a73e8, #0066cc);
+		  color: white;
+		  padding: 80px 20px 60px;
+		  text-align: center;
+		}
+
+		header h1 {
+		  font-size: 3.2rem;
+		  font-weight: 700;
+		  margin-bottom: 10px;
+		}
+
+		header p {
+		  font-size: 1.25rem;
+		  opacity: 0.9;
+		}
+
+		section.links {
+		  max-width: 1100px;
+		  margin: var(--spacing) auto;
+		  padding: 0 20px;
+		}
+
+		.link-block {
+		  display: grid;
+		  grid-template-columns: 80px 1fr;
+		  gap: 32px;
+		  align-items: center;
+		  margin-bottom: 64px;
+		  padding-bottom: 32px;
+		  border-bottom: 1px solid #e3e3e3;
+		}
+
+		.link-block:last-child {
+		  border-bottom: none;
+		}
+
+		.link-block img {
+		  width: 64px;
+		  height: 64px;
+		  object-fit: contain;
+		  filter: grayscale(1);
+		}
+
+		.link-content h3 {
+		  font-size: 1.5rem;
+		  margin-bottom: 8px;
+		}
+
+		.link-content p {
+		  color: var(--color-muted);
+		  font-size: 1rem;
+		  margin-bottom: 12px;
+		}
+
+		.link-content a {
+		  color: var(--color-primary);
+		  font-weight: 500;
+		  text-decoration: none;
+		  font-size: 1rem;
+		  border-bottom: 1px solid transparent;
+		  transition: all 0.2s ease;
+		}
+
+		.link-content a:hover {
+		  border-bottom: 1px solid var(--color-primary);
+		}
+
+		@media(max-width: 768px) {
+		  .link-block {
+		    grid-template-columns: 1fr;
+		    text-align: center;
+		  }
+
+		  .link-block img {
+		    margin: 0 auto 12px;
+		  }
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+				<img src="img/VoyContigoLogo.png" alt="Voy Contigo">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="btn btn-cliente" href="/user/clientes/loginclientes">Iniciar Sesión Cliente</a>
+					</li>
+					<li class="nav-item">
+					                        <a class="nav-link" href="/trabajadores/login">Trabajador</a>
+					                    </li>
+					<li class="nav-item">
+						<a class="nav-link" href="login-adminflota">Admin.Flota</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" href="/login">Admin. General</a>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<section class="links">
+	  <div class="link-block">
+	    <img src="https://usercontent.one/wp/www.transmoralar.com/wp-content/uploads/2023/04/Logo-Ministerio-de-Transporte-Grande-1.png?media=1684381732" alt="Ministerio de Transporte">
+	    <div class="link-content">
+	      <h3>Ministerio de Transporte</h3>
+	      <p>Normativas, licencias, infraestructura vial y políticas públicas actualizadas.</p>
+	      <a href="https://www.mintransporte.gov.co/" target="_blank" rel="noopener">Visitar sitio oficial →</a>
+	    </div>
+	  </div>
+
+	  <div class="link-block">
+	    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFbnsYysl-gMSFnImVcahfMqvnHTf3cAJO3Q&s" alt="Supertransporte">
+	    <div class="link-content">
+	      <h3>Superintendencia de Transporte</h3>
+	      <p>Supervisión, protección al usuario, trámites y canal de PQRS.</p>
+	      <a href="https://www.supertransporte.gov.co/" target="_blank" rel="noopener">Visitar sitio oficial →</a>
+	    </div>
+	  </div>
+
+	  <div class="link-block">
+		<img src="data:image/png;base64,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" alt="Ministerio de Transporte">
+	    <div class="link-content">
+	      <h3>RUNT</h3>
+	      <p>Consulta de vehículos, licencias, comparendos y más desde el Registro Único.</p>
+	      <a href="https://www.runt.com.co/" target="_blank" rel="noopener">Visitar sitio oficial →</a>
+	    </div>
+	  </div>
+
+	  <div class="link-block">
+	    <img src="https://terminalbucaramanga.com/sites/default/files/pautauno_0.jpg" alt="Terminales">
+	    <div class="link-content">
+	      <h3>Terminales de Transporte</h3>
+	      <p>Conoce las rutas, horarios y servicios de las principales terminales del país.</p>
+	      <a href="https://www.terminaldetransporte.gov.co/" target="_blank" rel="noopener">Visitar sitio oficial →</a>
+	    </div>
+	  </div>
+	</section>
+
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center text-md-left mb-3">
+					<img src="img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+					<p class="small">© Voy Contigo</p>
+				</div>
+				<div class="col-md-8 text-center text-md-right">
+					<div class="footer-links">
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
+					</div>
+					<div class="footer-social">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+			</div>
+		</div>
+	</footer>
+
+	<!-- Bootstrap 4 JS Dependencies -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

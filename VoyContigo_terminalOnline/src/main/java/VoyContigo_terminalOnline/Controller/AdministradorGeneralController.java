@@ -111,4 +111,10 @@ public class AdministradorGeneralController {
             return "admin/create";
         }
     }
+    // Manejar cierre de sesión
+    @GetMapping("/logout-adminge")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
+    }
 }

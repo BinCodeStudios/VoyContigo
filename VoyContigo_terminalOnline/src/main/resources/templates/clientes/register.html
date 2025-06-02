@@ -1,356 +1,215 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Cliente - VoyContigo</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Voy Contigo - Inicio de Sesión</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
+	<!-- Bootstrap 4 CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="/css/login.css">
-    <style>
-        :root {
-            --primary-dark: #0A5959;
-            --primary-medium: #238C82;
-            --primary-light: #41A677;
-            --accent: #F2BB16;
-            --dark: #0D0D0D;
-            --light-gray: #f5f5f5;
-        }
-     
-   
-        .btn-cliente {
-            background: var(--primary-medium);
-            color: #fff !important;
-            padding: 8px 16px;
-            border-radius: 6px;
-        }
-        .btn-cliente:hover {
-            background: var(--primary-dark);
-        }
-        .search-icon {
-            font-size: 1.2rem;
-        }
-        .containers{
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 0.5s ease;
-        }
-        .card-header {
-            background: linear-gradient(45deg, var(--primary-medium), var(--primary-light));
-            color: #fff;
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-radius: 10px 10px 0 0;
-            padding: 15px;
-        }
-        .card-body {
-            padding: 30px;
-        }
-        .form-group {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            position: absolute;
-            top: 12px;
-            left: 15px;
-            color: var(--dark);
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            pointer-events: none;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-medium);
-            box-shadow: 0 0 8px rgba(35, 140, 130, 0.2);
-            transform: scale(1.02);
-        }
-        .form-group input:not(:placeholder-shown) + label,
-        .form-group input:focus + label {
-            top: -10px;
-            left: 10px;
-            font-size: 0.75rem;
-            background: #fff;
-            padding: 0 5px;
-            color: var(--primary-medium);
-        }
-        .password-group {
-            position: relative;
-        }
-        .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: var(--dark);
-        }
-        .error {
-            color: #dc3545;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        .info {
-            color: var(--dark);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        .btn {
-            position: relative;
-            display: inline-block;
-            padding: 12px 24px;
-            border-radius: 6px;
-            border: none;
-            font-weight: bold;
-            overflow: hidden;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
-        .btn-primary {
-            background: var(--primary-medium);
-            color: #fff;
-        }
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-        }
-        .btn:active::after {
-            width: 200px;
-            height: 200px;
-            opacity: 0;
-        }
-   
-        .log {
-            max-width: 150px;
-            margin-bottom: 10px;
-        }
-        .footer-links a {
-            color: #fff;
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        .footer-links a:hover {
-            color: var(--primary-light);
-            text-decoration: underline;
-        }
-        .footer-social .social-icon {
-            color: #fff;
-            margin: 0 10px;
-            font-size: 1.2rem;
-        }
-        .footer-social .social-icon:hover {
-            color: var(--primary-light);
-        }
-        .copyright {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.85rem;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 768px) {
-            .container {
-                margin: 20px;
-                padding: 15px;
-            }
-            .card-body {
-                padding: 20px;
-            }
-        }
-    </style>
 </head>
+
 <body>
 	<!-- Navbar -->
 	<nav class="navbar navbar-expand-lg navbar-light">
+			<div class="container">
+				<a class="navbar-brand" href="/">
+					<img src="/img/VoyContigoLogo.png" alt="Voy Contigo">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="btn btn-cliente" href="/user/clientes/loginclientes">Iniciar Sesión Cliente</a>
+						</li>
+						<li class="nav-item">
+						                        <a class="nav-link" href="/trabajadores/login">Trabajador</a>
+						                    </li>
+						<li class="nav-item">
+							<a class="nav-link" href="/login-adminflota">Admin.Flota</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link " href="/login">Admin. General</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+	<!-- Login Section -->
+	<section class="login-section">
 		<div class="container">
-			<a class="navbar-brand" href="#">
-				<img src="/img/VoyContigoLogo.png" alt="Voy Contigo">
-			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a class="btn btn-cliente" href="/admin/clientes/loginclientes">Iniciar Sesión Cliente</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Trabajador</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="login-adminflota">Admin.Flota</a>
-					<li class="nav-item">
-						<a class="nav-link active" href="/login">Admin. General</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fas fa-search search-icon"></i></a>
-					</li>
-				</ul>
+			<div class="row login-container">
+				<!-- Terminal Image Column -->
+				<div class="col-md-6 terminal-image-col">
+					<div class="terminal-content">
+						<h2 class="welcome-text">¡Bienvenido a <span>Voy Contigo</span>!</h2>
+						<p class="welcome-message">Tu viaje seguro y confiable empieza aquí. Regístrate y únete a nuestra comunidad de viajeros felices.</p>
+						<div class="terminal-badges">
+							<div class="badge-item">
+								<i class="fas fa-bus"></i>
+								<span>Viajes seguros</span>
+							</div>
+							<div class="badge-item">
+								<i class="fas fa-clock"></i>
+								<span>24/7 Servicio</span>
+							</div>
+							<div class="badge-item">
+								<i class="fas fa-map-marker-alt"></i>
+								<span>Múltiples destinos</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Login Form Column -->
+				<div class="col-md-6 login-form-col">
+					<div class="login-form-container">
+						<div class="login-form-header">
+							<h3>Registrate para iniciar tus compras</h3>
+							<p>Accede a tu cuenta de cliente</p>
+						</div>
+
+						<form class="login-form" th:action="@{/user/clientes/register}" th:object="${cliente}" method="post" enctype="multipart/form-data">
+
+						    <div class="form-group">
+						        <div class="input-group">
+						            <div class="input-group-prepend">
+						                <span class="input-group-text"><i class="fas fa-user"></i></span>
+						            </div>
+						            <input type="text" id="nombreCompleto" th:field="*{nombreCompleto}" class="form-control" placeholder="Nombre completo" required />
+						        </div>
+						    </div>
+
+						    <div class="form-group">
+						        <div class="input-group">
+						            <div class="input-group-prepend">
+						                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+						            </div>
+						            <input type="email" id="correo" th:field="*{correo}" class="form-control" placeholder="Correo electrónico" required />
+						        </div>
+						    </div>
+
+						    <div class="form-group password-group">
+						        <div class="input-group">
+						            <div class="input-group-prepend">
+						                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+						            </div>
+						            <input type="password" id="contrasena" th:field="*{contrasena}" class="form-control" placeholder="Contraseña" required />
+						            <div class="input-group-append">
+						                <span class="input-group-text toggle-password"><i class="fas fa-eye"></i></span>
+						            </div>
+						        </div>
+						    </div>
+							<label for="fotoFile" class="form-label text-black">Foto (opcional, máx. 10MB)</label>
+
+							<div class="form-group">
+							    <div class="input-group">
+							        <div class="input-group-prepend">
+							            <span class="input-group-text"><i class="fas fa-image"></i></span>
+							        </div>
+							        <input type="file" id="fotoFile" name="fotoFile" accept="image/png" class="form-control" />
+							    </div>
+							</div>
+							<small class="form-text text-muted">La foto debe ser una imagen PNG de hasta 10MB.</small>
+
+							<br>
+							<button type="submit" class="btn btn-login btn-block">
+							    <span>Registrarse</span>
+							    <i class="fas fa-user-plus"></i>
+							</button>
+
+							<p class="text-center mt-3">
+							    ¿Ya tienes cuenta?
+							    <a th:href="@{/user/clientes/loginclientes}" class="btn btn-link">Inicia Sesión</a>
+							</p>
+
+						</form>
+
+
+					</div>
+				</div>
 			</div>
 		</div>
-	</nav>
-    <div class="containers">
-        <div class="card">
-            <div class="card-header">Registrarse</div>
-            <div class="card-body">
-                <div th:if="${fileSizeError}" class="error">El archivo excede el tamaño máximo permitido (10MB).</div>
-                <form th:action="@{/user/clientes/register}" th:object="${cliente}" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <input type="text" id="nombreCompleto" th:field="*{nombreCompleto}" class="form-control" placeholder=" " required/>
-                        <label for="nombreCompleto">Nombre Completo</label>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="correo" th:field="*{correo}" class="form-control" placeholder=" " required/>
-                        <label for="correo">Correo</label>
-                    </div>
-                    <div class="form-group password-group">
-                        <input type="password" id="contrasena" th:field="*{contrasena}" class="form-control" placeholder=" " required/>
-                        <label for="contrasena">Contraseña</label>
-                        <span class="toggle-password"><i class="fas fa-eye"></i></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="fotoFile">Foto (opcional, máx. 10MB)</label>
-                        <input type="file" id="fotoFile" name="fotoFile" accept="image/png" class="form-control"/>
-                        <p class="info">La foto debe ser una imagen PNG de hasta 10MB.</p>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Registrarse</button>
-                    <p class="text-center mt-3">
-                        ¿Ya tienes cuenta? <a th:href="@{/user/clientes/loginclientes}" class="btn btn-cliente">Inicia Sesión</a>
-                    </p>
-                </form>
-            </div>
-        </div>
-    </div>
+	</section>
 
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 text-center text-md-left mb-3">
-                    <img src="/img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
-                    <p class="small">© Voy Contigo</p>
-                </div>
-                <div class="col-md-8 text-center text-md-right">
-                    <div class="footer-links">
-                        <a href="#">Enlaces de interés</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Mapa del sitio</a>
-                        <a href="#">Política de privacidad</a>
-                    </div>
-                    <div class="footer-social">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
-            </div>
-        </div>
-    </footer>
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center text-md-left mb-3">
+					<img src="img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+					<p class="small">© Voy Contigo</p>
+				</div>
+				<div class="col-md-8 text-center text-md-right">
+					<div class="footer-links">
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
+					</div>
+					<div class="footer-social">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+			</div>
+		</div>
+	</footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
-    <script>
-        // Toggle password visibility
-        document.querySelector('.toggle-password').addEventListener('click', function () {
-            const passwordInput = document.getElementById('contrasena');
-            const icon = this.querySelector('i');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
+	<!-- Bootstrap 4 JS Dependencies -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+	<script>
+		// Toggle password visibility
+		document.querySelector('.toggle-password').addEventListener('click', function () {
+			const passwordInput = document.getElementById('password');
+			const icon = this.querySelector('i');
 
-        // Add floating label effect
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('focus', () => {
-                input.previousElementSibling.classList.add('label-focused');
-            });
-            input.addEventListener('blur', () => {
-                if (input.value === '') {
-                    input.previousElementSibling.classList.remove('label-focused');
-                }
-            });
-            if (input.value !== '') {
-                input.previousElementSibling.classList.add('label-focused');
-            }
-        });
+			if (passwordInput.type === 'password') {
+				passwordInput.type = 'text';
+				icon.classList.remove('fa-eye');
+				icon.classList.add('fa-eye-slash');
+			} else {
+				passwordInput.type = 'password';
+				icon.classList.remove('fa-eye-slash');
+				icon.classList.add('fa-eye');
+			}
+		});
 
-        // Button ripple effect
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                ripple.classList.add('ripple');
-                this.appendChild(ripple);
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = e.clientX - rect.left - size / 2 + 'px';
-                ripple.style.top = e.clientY - rect.top - size / 2 + 'px';
-                setTimeout(() => ripple.remove(), 600);
-            });
-        });
-    </script>
-    <style>
-        .label-focused {
-            top: -10px !important;
-            font-size: 0.75rem !important;
-            background: #fff;
-            padding: 0 5px;
-            color: var(--primary-medium) !important;
-        }
-        .ripple {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: rippleEffect 0.6s linear;
-            pointer-events: none;
-        }
-        @keyframes rippleEffect {
-            to { transform: scale(4); opacity: 0; }
-        }
-    </style>
+		// Add floating label effect
+		const inputs = document.querySelectorAll('.form-control');
+		inputs.forEach(input => {
+			input.addEventListener('focus', () => {
+				input.parentElement.classList.add('input-focused');
+			});
+
+			input.addEventListener('blur', () => {
+				if (input.value === '') {
+					input.parentElement.classList.remove('input-focused');
+				}
+			});
+
+			// Check on load if input has value
+			if (input.value !== '') {
+				input.parentElement.classList.add('input-focused');
+			}
+		});
+	</script>
 </body>
+
 </html>

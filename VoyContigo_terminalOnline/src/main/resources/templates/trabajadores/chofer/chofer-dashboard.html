@@ -4,99 +4,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Chofer - VoyContigo</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .card-header i {
+            margin-right: 8px;
+        }
+
+        .btn-logout {
+            color: #fff;
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+
+        .bus-features i {
+            font-size: 1.5rem;
+            color: #238C82;
+            margin-right: 8px;
+        }
+
+
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <img src="/img/VoyContigoLogo.png" alt="Voy Contigo">
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light">
+			<div class="container">
+				<a class="navbar-brand" href="/">
+					<img src="/img/VoyContigoLogo.png" alt="Voy Contigo">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ml-auto">
+
+						<li class="nav-item">
+							<a href="/trabajadores/logout" class="btn btn-logout">
+							                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+							                </a>						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+    <!-- CONTENIDO -->
+    <section class="container mt-5">
+        <h2 class="mb-4">Bienvenido, <span th:text="${nombre}">Chofer</span></h2>
+        <p class="lead">Este es tu panel de control. Aquí puedes consultar tu agenda de viajes y detalles del bus asignado.</p>
+
+        <!-- VIAJES ASIGNADOS -->
+        <div class="card mb-4" th:if="${viajesAsignados != null and !viajesAsignados.isEmpty()}">
+            <div style="background-color: #41A677;" class="card-header  text-white">
+                <i class="fas fa-route"></i> Viajes Asignados para Hoy
+            </div>
+            <div class="card-body">
+                <div th:each="viaje : ${viajesAsignados}">
+                    <p><strong>Ruta:</strong> <span th:text="${viaje.origen.nombre} + ' → ' + ${viaje.destino.nombre}">Nombre de la Ruta</span></p>
+                    <p><strong>Hora de salida:</strong> <span th:text="${#temporals.format(viaje.fechaSalida, 'HH:mm')}">00:00</span></p>
+                    <p><strong>Hora estimada llegada:</strong> <span th:text="${#temporals.format(viaje.fechaLlegadaEstimada, 'HH:mm')}">00:00</span></p>
+                    <hr/>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4" th:if="${viajesAsignados == null or viajesAsignados.isEmpty()}">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-route"></i> Viajes Asignados para Hoy
+            </div>
+            <div class="card-body">
+                <p>No tienes viajes asignados para hoy.</p>
+            </div>
+        </div>
+
+        <!-- BUS ASIGNADO -->
+        <div class="card mb-4" th:if="${bus != null}">
+            <div style="background-color: #41A677;" class="card-header  text-white">
+                <i class="fas fa-bus"></i> Bus Asignado
+            </div>
+            <div class="card-body">
+                <p><strong>Placa:</strong> <span th:text="${bus.placa}">ABC-123</span></p>
+                <p><strong>Modelo:</strong> <span th:text="${bus.modelo}">Mercedes-Benz</span></p>
+                <p><strong>Capacidad:</strong> <span th:text="${bus.capacidad}">40 pasajeros</span></p>
+                <hr>
+                <h5>Comodidades del Bus</h5>
+                <div class="bus-features d-flex flex-wrap">
+                    <div class="mr-4"><i class="fas fa-wifi"></i> Wi-Fi</div>
+                    <div class="mr-4"><i class="fas fa-plug"></i> Cargadores USB</div>
+                    <div class="mr-4"><i class="fas fa-snowflake"></i> Aire Acondicionado</div>
+                    <div class="mr-4"><i class="fas fa-tv"></i> Pantallas</div>
+                    <div class="mr-4"><i class="fas fa-chair"></i> Asientos reclinables</div>
+                    <div class="mr-4"><i class="fas fa-restroom"></i> Baño</div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4" th:if="${bus == null}">
+            <div class="card-header bg-info text-white">
+                <i class="fas fa-bus"></i> Bus Asignado
+            </div>
+            <div class="card-body">
+                <p>No hay bus asignado actualmente.</p>
+            </div>
+        </div>
+
+        <!-- BOTONES DE ACCIÓN -->
+        <div class="text-center">
+
+            <a href="/trabajadores/chofer/viaje/pdf" class="btn btn-secondary m-1" target="_blank">
+                <i class="fas fa-file-pdf"></i> Descargar Detalle del Viaje
             </a>
-            <div class="navbar-nav ml-auto">
-                <a class="nav-link" href="/trabajadores/logout">Cerrar Sesión</a>
-            </div>
         </div>
-    </nav>
+    </section>
+	<br>
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 text-center text-md-left mb-3">
+					<img src="/img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+					<p class="small">© Voy Contigo</p>
+				</div>
+				<div class="col-md-8 text-center text-md-right">
+					<div class="footer-links">
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
+					</div>
+					<div class="footer-social">
+						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				© 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+			</div>
+		</div>
+	</footer>
 
-	<section class="container mt-5">
-	    <h2>Bienvenido, <span th:text="${nombre}">Chofer</span></h2>
-	    <p>Este es tu panel de control. Aquí puedes ver tus rutas asignadas, tu bus y gestionar tus viajes.</p>
-
-	    <!-- Información de los Viajes Asignados -->
-	    <div class="card mb-4" th:if="${viajesAsignados != null and !viajesAsignados.isEmpty()}">
-	        <div class="card-header bg-primary text-white">
-	            Viajes Asignados para Hoy
-	        </div>
-	        <div class="card-body">
-	            <div th:each="viaje : ${viajesAsignados}">
-	                <p><strong>Ruta:</strong> <span th:text="${viaje.origen.nombre} + ' → ' + ${viaje.destino.nombre}">Nombre de la Ruta</span></p>
-	                <p><strong>Hora de salida:</strong> <span th:text="${#temporals.format(viaje.fechaSalida, 'HH:mm')}">00:00</span></p>
-	                <p><strong>Hora estimada llegada:</strong> <span th:text="${#temporals.format(viaje.fechaLlegadaEstimada, 'HH:mm')}">00:00</span></p>
-	                <hr/>
-	            </div>
-	        </div>
-	    </div>
-
-	    <div class="card mb-4" th:if="${viajesAsignados == null or viajesAsignados.isEmpty()}">
-	        <div class="card-header bg-primary text-white">
-	            Viajes Asignados para Hoy
-	        </div>
-	        <div class="card-body">
-	            <p>No tienes viajes asignados para hoy.</p>
-	        </div>
-	    </div>
-
-	    <!-- Información del Bus Asignado -->
-	    <div class="card mb-4" th:if="${bus != null}">
-	        <div class="card-header bg-info text-white">
-	            Bus Asignado
-	        </div>
-	        <div class="card-body">
-	            <p><strong>Placa:</strong> <span th:text="${bus.placa}">ABC-123</span></p>
-	            <p><strong>Modelo:</strong> <span th:text="${bus.modelo}">Mercedes-Benz</span></p>
-	            <p><strong>Capacidad:</strong> <span th:text="${bus.capacidad}">40 pasajeros</span></p>
-	        </div>
-	    </div>
-
-	    <div class="card mb-4" th:if="${bus == null}">
-	        <div class="card-header bg-info text-white">
-	            Bus Asignado
-	        </div>
-	        <div class="card-body">
-	            <p>No hay bus asignado actualmente.</p>
-	        </div>
-	    </div>
-
-	    <!-- Botones para gestionar viajes -->
-	    <div class="text-center">
-	        <a href="/chofer/iniciar-viaje" class="btn btn-success mb-2">
-	            <i class="fas fa-play"></i> Iniciar Viaje
-	        </a>
-	        <a href="/chofer/finalizar-viaje" class="btn btn-danger mb-2">
-	            <i class="fas fa-stop"></i> Finalizar Viaje
-	        </a>
-	        <a href="/chofer/reportar-problema" class="btn btn-warning mb-2">
-	            <i class="fas fa-exclamation-triangle"></i> Reportar Problema
-	        </a>
-			<a href="/trabajadores/chofer/viaje/pdf" class="btn btn-secondary" target="_blank">
-			    <i class="fas fa-file-pdf"></i> Descargar Detalle del Viaje
-			</a>
-
-
-	    </div>
-	</section>
-
-
-    <footer>
-        <div class="container">
-            <div class="copyright">
-                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
-            </div>
-        </div>
-    </footer>
-
+    <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>

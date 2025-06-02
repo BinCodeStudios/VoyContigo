@@ -5,6 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Voy Contigo - Terminal de Transporte</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
 	<!-- Bootstrap 4 CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
 	<!-- Font Awesome -->
@@ -21,7 +23,7 @@
 	<!-- Navbar -->
 	<nav class="navbar navbar-expand-lg navbar-light">
 		<div class="container">
-			<a class="navbar-brand" href="#">
+			<a class="navbar-brand" href="/">
 				<img src="img/VoyContigoLogo.png" alt="Voy Contigo">
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -39,11 +41,9 @@
 						<a class="nav-link" href="login-adminflota">Admin.Flota</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link active" href="/login">Admin. General</a>
+						<a class="nav-link" href="/login">Admin. General</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fas fa-search search-icon"></i></a>
-					</li>
+
 				</ul>
 			</div>
 		</div>
@@ -92,7 +92,7 @@
 						</div>
 					</div>
 				</div>
-				<button type="submit" class="btn btn-search btn-block">Buscar</button>
+				<a href="/user/clientes/loginclientes"  type="submit" class="btn btn-search btn-block">Comprar</a>
 			</form>
 		</div>
 	</section>
@@ -238,7 +238,6 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="news-card">
-						<img src="/api/placeholder/500/300" alt="Noticia" class="news-image">
 						<div class="news-date">23 de abril de 2025</div>
 						<h5 class="news-title">¡La seguridad de los pasajeros es nuestra prioridad!</h5>
 						<p class="news-text">El 17% mejoras en instalaciones desde la Terminal de Transporte de Bogotá
@@ -259,7 +258,6 @@
 						<h5 class="news-title">Zonas del Programa Paga a casi un millón de vehículos</h5>
 						<p class="news-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vitae felis
 							vel magna faucibus luctus.</p>
-						<button class="btn btn-sm btn-success mt-2">Ver todas las noticias</button>
 					</div>
 				</div>
 			</div>
@@ -276,10 +274,10 @@
 				</div>
 				<div class="col-md-8 text-center text-md-right">
 					<div class="footer-links">
-						<a href="#">Enlaces de interés</a>
-						<a href="#">Contacto</a>
-						<a href="#">Mapa del sitio</a>
-						<a href="#">Política de privacidad</a>
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
 					</div>
 					<div class="footer-social">
 						<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>

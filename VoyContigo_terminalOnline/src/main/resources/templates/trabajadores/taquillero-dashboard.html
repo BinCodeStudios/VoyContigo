@@ -1,146 +1,169 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard Taquillero - VoyContigo</title>
+	<link rel="icon" type="image/png" href="/img/ICO.ico">
+
     <!-- Bootstrap 4 CSS -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
-	 <!-- Font Awesome -->
-	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	 <link rel="stylesheet" href="/css/style.css">
-	 <link rel="stylesheet" href="/css/login.css">
-	 <link rel="stylesheet" href="/css/dashboard.css">
-	 <link rel="stylesheet" href="/css/style.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
+    />
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/login.css">
     <style>
-        /* Estilos para el carrusel con imágenes largas */
-        .info-carousel .carousel-item {
-            padding: 10px 20px;
-        }
-        .info-card {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            text-align: center;
-            margin: 0 auto;
-            max-width: 1000px;
-        }
-        .info-card img {
-            width: 100%;
-            height: 250px; /* Más larga */
-            object-fit: cover;
-            object-position: center;
-        }
-        .info-card .content {
-            padding: 15px;
-        }
-        .info-card .btn {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
-            text-decoration: none;
-        }
-        .info-card .btn:hover {
-            background-color: #0056b3;
+        body {
+            background-color: #f8f9fa;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Cards de funciones optimizadas - solo agrandar */
-        .function-cards {
+        /* Card Principal Dashboard + Nombre */
+        .dashboard-header {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .dashboard-header h1 {
+            font-weight: 700;
+            color: #343a40;
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        .dashboard-header .user-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #007bff;
+        }
+        /* Card menú principal */
+        .menu-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 123, 255, 0.15);
+            padding: 25px 20px;
+            margin-bottom: 30px;
+        }
+        .menu-cards-container {
+            display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 25px;
+            flex-wrap: wrap;
         }
-        .function-card {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+        .menu-card-item {
+            flex: 1 1 200px;
+            max-width: 220px;
+            background: #007bff;
+            color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
             cursor: pointer;
-        }
-        .function-card:hover {
-            transform: scale(1.1); /* Solo se agranda */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        .function-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .function-card .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            text-decoration: none;
         }
-        .function-card:hover .overlay {
-            opacity: 1;
+        .menu-card-item:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+            text-decoration: none;
+            color: #fff;
         }
-        .function-card .overlay h5 {
-            margin: 0;
-            font-size: 14px;
+        .menu-card-item i {
+            font-size: 48px;
+            margin-bottom: 15px;
         }
-        .function-card .overlay p {
-            font-size: 12px;
-            margin: 5px 0;
+        .menu-card-item span {
+            font-weight: 700;
+            font-size: 1.1rem;
         }
-        .function-card .overlay a {
+        /* Card Tabla */
+        .tickets-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px 20px;
+        }
+        .tickets-card h2 {
+            font-weight: 700;
+            color: #343a40;
+            margin-bottom: 1.5rem;
+        }
+        /* Formulario Buscar */
+        .form-inline {
+            justify-content: flex-start !important;
+            flex-wrap: wrap;
+        }
+        .form-inline input.form-control {
+            max-width: 250px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        /* Tabla */
+        .table thead {
+            background-color: #41A677;
+            color: #fff;
+        }
+        .table thead th {
+            font-weight: 600;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f9ff;
+        }
+        /* Footer */
+        footer {
+            background-color: #343a40;
+            color: #bbb;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        footer a {
+            color: #bbb;
+            margin: 0 10px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
             color: #fff;
             text-decoration: underline;
-            font-size: 12px;
         }
-
-        /* Tabla */
-        .table th, .table td {
-            vertical-align: middle;
+        footer .footer-social a {
+            margin-left: 10px;
+            font-size: 20px;
         }
-        .table .btn-sm {
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .info-card img {
-                height: 180px;
+        @media (max-width: 576px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
-            .function-card {
-                width: 100px;
-                height: 100px;
+            .dashboard-header .user-name {
+                margin-top: 8px;
             }
-            .function-card .overlay h5 {
-                font-size: 12px;
+            .menu-cards-container {
+                flex-direction: column;
+                align-items: center;
             }
-            .function-card .overlay p {
-                font-size: 10px;
-            }
-            .function-card .overlay a {
-                font-size: 10px;
+            .menu-card-item {
+                max-width: 100%;
             }
         }
     </style>
 </head>
 <body>
-
 	<!-- Navbar -->
 	  <nav class="navbar navbar-expand-lg navbar-light">
 	      <div class="container">
-	          <a class="navbar-brand" th:href="@{/admin/dashboard}">
+	          <a class="navbar-brand" th:href="@{/trabajadores/taquillero/dashboard}">
 	              <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo">
 	          </a>
 	          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -148,9 +171,6 @@
 	          </button>
 	          <div class="collapse navbar-collapse" id="navbarNav">
 	              <ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-					                 <span class="nav-link" th:text="'Bienvenido, ' + ${nombre}"></span>
-					             </li>
 					             <li class="nav-item">
 					                 <a class="nav-link active" th:href="@{/trabajadores/taquillero/dashboard}">Ver Tickets</a>
 					             </li>
@@ -161,157 +181,142 @@
 					                 <a class="nav-link" th:href="@{/trabajadores/taquillero/agregar-ticket}">Agregar Ticket</a>
 					             </li>
 					             <li class="nav-item">
-					                 <a class="nav-link text-danger" th:href="@{/trabajadores/logout}">Cerrar Sesión</a>
+									<a class="nav-link btn btn-danger text-white" th:href="@{/trabajadores/logout}">Cerrar Sesión</a>
 					             </li>
 	              </ul>
 	          </div>
 	      </div>
 	  </nav>
-	
-	
-    <!-- Dashboard Section -->
-    <section class="dashboard-section">
-        <div class="container">
-            <h1 class="dashboard-title text-center mt-4">Dashboard Taquillero</h1>
-            <p class="dashboard-subtitle text-center">Gestiona tickets y clientes de Voy Contigo</p>
 
-            <!-- Carrusel Informativo -->
-            <h2 class="text-center mt-4">Información para Taquilleros</h2>
-            <div id="infoCarousel" class="carousel slide info-carousel" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <li data-target="#infoCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#infoCarousel" data-slide-to="1"></li>
-                    <li data-target="#infoCarousel" data-slide-to="2"></li>
-                </ol>
-                <div class="carousel-inner">
-                    <!-- Card 1: Gestionar Tickets -->
-                    <div class="carousel-item active">
-                        <div class="info-card">
-                            <img th:src="@{/img/1.png}" alt="Gestionar Tickets">
-                            <div class="content">
-                                <h3>Gestiona los Tickets</h3>
-                                <p>Visualiza y filtra los tickets de los clientes, y descarga sus comprobantes en PDF.</p>
-                                <a th:href="@{/trabajadores/taquillero/dashboard}" class="btn">Ver Tickets</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 2: Gestionar Clientes -->
-                    <div class="carousel-item">
-                        <div class="info-card">
-                            <img th:src="@{/img/2.png}" alt="Gestionar Clientes">
-                            <div class="content">
-                                <h3>Administra Clientes</h3>
-                                <p>Consulta la lista de clientes y sus tickets asociados.</p>
-                                <a th:href="@{/trabajadores/taquillero/clientes}" class="btn">Ver Clientes</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 3: Agregar Ticket -->
-                    <div class="carousel-item">
-                        <div class="info-card">
-                            <img th:src="@{/img/3.png}" alt="Agregar Ticket">
-                            <div class="content">
-                                <h3>Genera Nuevos Tickets</h3>
-                                <p>Selecciona clientes, elige viajes y asientos, y genera tickets con comprobantes PDF.</p>
-                                <a th:href="@{/trabajadores/taquillero/agregar-ticket}" class="btn">Agregar Ticket</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <a class="carousel-control-prev" href="#infoCarousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#infoCarousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
+	<div class="card mb-4 p-3">
+	  <div class="d-flex justify-content-between align-items-center flex-wrap">
+	    <!-- Título a la izquierda -->
+	    <div>
+	      <h2 class="mb-1">Dashboard Taquillero</h2>
+	      <p class="text-muted mb-0">Gestiona tickets y clientes de Voy Contigo</p>
+	    </div>
 
-       
-            <!-- Buscador de Tickets -->
-            <div class="mt-5">
-                <h2 class="text-center mb-4">Buscar Tickets por Cliente</h2>
-                <form th:action="@{/trabajadores/taquillero/dashboard}" method="get" class="form-inline justify-content-center">
-                    <div class="form-group mb-2">
-                        <input type="text" name="clienteId" placeholder="ID del Cliente" 
-                               class="form-control" 
-                               th:value="${clienteId}">
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2 ml-2">
-                        Buscar
-                    </button>
-                </form>
-            </div>
+	    <!-- Nombre del taquillero a la derecha, debajo del título -->
+	    <div class="text-right" style="min-width: 180px;">
+	      <small class="d-block text-secondary">Bienvenido,</small>
+	      <h5 th:text="${nombre}" class="mb-0"></h5>
+	    </div>
+	  </div>
 
-            <!-- Tabla de Tickets -->
-            <div class="mt-5">
-                <h2 class="text-center mb-4">Lista de Tickets</h2>
-                <div th:if="${not #lists.isEmpty(tickets)}">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>ID Ticket</th>
-                                    <th>ID Cliente</th>
-                                    <th>ID Asignación</th>
-                                    <th>Asiento</th>
-                                    <th>Fecha Compra</th>
-                                  
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="ticket : ${tickets}">
-                                    <td th:text="${ticket.id}"></td>
-                                    <td th:text="${ticket.clienteId}"></td>
-                                    <td th:text="${ticket.asignacionId}"></td>
-                                    <td th:text="${ticket.asiento}"></td>
-                                    <td th:text="${ticket.fechaCompra}"></td>
-                                   
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <p th:if="${#lists.isEmpty(tickets)}" class="text-center text-muted">
-                    No se encontraron tickets.
-                </p>
+	  <!-- Contenedor para las cards del menú -->
+	  <div class="mt-4 d-flex flex-wrap justify-content-end gap-3">
+	    <!-- Card 1: Ver Tickets -->
+	    <a th:href="@{/trabajadores/taquillero/dashboard}" class="function-card btn btn-outline-primary text-center p-3" style="width: 140px; border-radius: 8px; text-decoration: none;">
+	      <i class="fas fa-ticket-alt fa-2x mb-2"></i>
+	      <div>Ver Tickets</div>
+	    </a>
+
+	    <!-- Card 2: Ver Clientes -->
+	    <a th:href="@{/trabajadores/taquillero/clientes}" class="function-card btn btn-outline-success text-center p-3" style="width: 140px; border-radius: 8px; text-decoration: none;">
+	      <i class="fas fa-users fa-2x mb-2"></i>
+	      <div>Ver Clientes</div>
+	    </a>
+
+	    <!-- Card 3: Agregar Ticket -->
+	    <a th:href="@{/trabajadores/taquillero/agregar-ticket}" class="function-card btn btn-outline-info text-center p-3" style="width: 140px; border-radius: 8px; text-decoration: none;">
+	      <i class="fas fa-plus-circle fa-2x mb-2"></i>
+	      <div>Agregar Ticket</div>
+	    </a>
+	  </div>
+	</div>
+
+
+	  <!-- Contenedor para las cards del menú (a la derecha) -->
+	  <div class="mt-4 d-flex flex-wrap justify-content-end gap-3">
+	    <!-- Aquí irán las cards de menú (botones) -->
+	  </div>
+	</div>
+
+
+        <!-- Card Tabla Tickets -->
+        <div class="card mb-4 p-3">
+            <h2>Tabla Tickets</h2>
+
+            <!-- Buscar Tickets -->
+            <form
+                th:action="@{/trabajadores/taquillero/dashboard}"
+                method="get"
+                class="form-inline mb-4"
+            >
+                <input
+                    type="text"
+                    name="clienteId"
+                    placeholder="ID del Cliente"
+                    class="form-control"
+                    th:value="${clienteId}"
+                />
+				<button type="submit" class="btn btn-warning">Buscar</button>
+
+            </form>
+
+            <!-- Tabla Tickets -->
+            <div th:if="${not #lists.isEmpty(tickets)}" class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID Ticket</th>
+                            <th>ID Cliente</th>
+                            <th>ID Asignación</th>
+                            <th>Asiento</th>
+                            <th>Fecha Compra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="ticket : ${tickets}">
+                            <td th:text="${ticket.id}">1</td>
+                            <td th:text="${ticket.clienteId}">123</td>
+                            <td th:text="${ticket.asignacionId}">456</td>
+                            <td th:text="${ticket.asiento}">5A</td>
+                            <td th:text="${ticket.fechaCompra}">2025-06-01</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+            <p
+                th:if="${#lists.isEmpty(tickets)}"
+                class="text-center text-muted"
+            >
+                No se encontraron tickets.
+            </p>
         </div>
     </section>
 
-	<!-- Footer -->
-	    <footer>
-	        <div class="container">
-	            <div class="row">
-	                <div class="col-md-4 text-center text-md-left mb-3">
-	                    <img th:src="@{/img/VoyContigoLogo.png}" alt="Voy Contigo" class="log">
-	                    <p class="small">© Voy Contigo</p>
-	                </div>
-	                <div class="col-md-8 text-center text-md-right">
-	                    <div class="footer-links">
-	                        <a href="#">Enlaces de interés</a>
-	                        <a href="#">Contacto</a>
-	                        <a href="#">Mapa del sitio</a>
-	                        <a href="#">Política de privacidad</a>
-	                    </div>
-	                    <div class="footer-social">
-	                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-	                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-	                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-	                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-	                    </div>
-	                </div>
+	<footer>
+	    <div class="container">
+	        <div class="row">
+	            <div class="col-md-4 text-center text-md-left mb-3">
+	                <img src="/img/VoyContigoLogo.png" alt="Voy Contigo" class="log">
+	                <p class="small">© Voy Contigo</p>
 	            </div>
-	            <div class="copyright">
-	                © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+	            <div class="col-md-8 text-center text-md-right">
+	                <div class="footer-links">
+						<a href="/enlaces">Enlaces de interés</a>
+						<a href="/contacto">Contacto</a>
+						<a href="/mapa-site">Mapa del sitio</a>
+						<a href="/politica">Política de privacidad</a>
+	                </div>
+	                <div class="footer-social">
+	                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+	                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+	                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+	                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+	                </div>
 	            </div>
 	        </div>
-	    </footer>
+	        <div class="copyright">
+	            © 2025 Terminal de Transporte de Bogotá. Todos los derechos reservados.
+	        </div>
+	    </div>
+	</footer>
 
-	    <!-- Bootstrap 4 JS Dependencies -->
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
-	</body>
-	</html>
+    <!-- Bootstrap 4 JS Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+</html>
